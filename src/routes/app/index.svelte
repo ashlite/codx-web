@@ -5,6 +5,6 @@
     return {
       status: 307,
       redirect: '/app/catalogue/collection'
-    };
+    }
   }
 </script>

@@ -2,8 +2,9 @@ import * as jose from 'jose'
 import cookie from 'cookie'
 
 export async function handle({ event, resolve }) {
-	const {codx_token} = cookie.parse(event.request.headers.get('cookie'))
-  if (codx_token !== undefined){
+  const cookieData = event.request.headers.get('cookie')
+  const { codx_token } = cookie.parse(cookieData)
+  if (codx_token){
     // const parsedCookie = JSON.parse(cookie)
     const claims = jose.decodeJwt(codx_token)
     if (Date(claims.exp) < Date.now()) {
@@ -19,6 +20,7 @@ export async function handle({ event, resolve }) {
   } else {
     event.locals.user = null
   }
+
 	return await resolve(event);
 }
 

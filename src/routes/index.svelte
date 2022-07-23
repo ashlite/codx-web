@@ -3,6 +3,8 @@
   import { session } from '$app/stores'
   import { goto } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
+  import Cookie from 'js-cookie'
+  import * as jose from 'jose'
   let gsiReady = false
   let mounted = false
   let loginProcess = false
@@ -40,8 +42,17 @@
       withCredentials: true
     })
     let responseJson = await responseXdocToken.json()
+    console.log(responseJson)
     if (responseXdocToken.status === 200){
-      if (responseJson.user_level > 0) {
+      if (responseJson.forwardBody.user_level > 0) {
+        Cookie.remove('g_state')
+        const claims = jose.decodeJwt(responseJson.forwardBody.access_token)
+        $session.user = {
+          name: claims.name,
+          email: claims.email,
+          avatar: claims.avatar,
+          level: claims.level,
+        }
         goto('/app')
       } else {
         goto('/unauthorized')
@@ -65,9 +76,9 @@
         <p class="py-6">Aplikasi codx internal, khusus untuk karyawan yang memiliki hak akses.</p>
         <p class="py-6">Silahkan pilih user google yang mau anda gunakan untuk login, jika tidak silahkan tekan tombol dibawah.</p>
         {#if $session.user}
-          <button class="btn btn-secondary" on:click={goto('/app')}>Go to App</button>
+          <button class="btn btn-secondary" on:click={() => goto('/app')}>Go to App</button>
         {:else}
-          <button class="btn btn-primary" on:click={displayGsi}>Sign In / Sign Up</button>
+          <button class="btn btn-primary" on:click={() => displayGsi()}>Sign In / Sign Up</button>
         {/if}
       {/if}
     </div>

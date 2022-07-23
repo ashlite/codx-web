@@ -10,36 +10,48 @@
 
 </script>
 
-<div class="flex flex-row gap-4 bg-base-300 shadow-xl h-52 overflow-clip rounded-lg">
-  <figure class="basis-2/5">
+<div class="grid grid-cols-5 gap-4 bg-base-300 shadow-xl h-52 overflow-clip rounded-lg">
+  <figure class="col-span-2">
   {#if data.cover}
     <img src={data.cover} alt="Collection Cover" class="object-contain" />
   {:else}
     <img src="https://dummyimage.com/400x600/edb200/ffffff&text=NO+IMG" alt="No Img Fallback" class="object-contain" />
   {/if}
   </figure>
-  <div class="basis-3/5 pt-2 pr-4">
+  <div class="col-span-3 pt-2 pr-4">
     <div class="flex flex-row gap-4 mt-2">
       <div class="badge badge-secondary">{data.category}</div>
       {#if data.released}
         <div class="badge badge-primary">{data.released}</div>
       {/if}
     </div>
-    <h2 class="text-xl truncate ...">{data.name}</h2>
+    <h2 class="text-xl truncate">{data.name}</h2>
     <div class="flex flex-row h-16 w-full mb-4">
       <div class="">
-        <div class="stat-title text-l">Age</div>
-        <div class="stat-value text-base">{data.min_age ? data.min_age : 'xx'}</div>
+        <div class="stat-title">Age</div>
+        {#if data.min_age}
+          <div class="stat-value text-lg text-base">{data.min_age}</div>
+        {:else}
+          <div class="stat-value text-lg text-error">--</div>
+        {/if}
       </div>
       <div class="divider divider-horizontal" />
       <div class="">
-        <div class="stat-title text-l">Players</div>
-        <div class="stat-value text-base">{data.min_player ? data.min_player : 'xx'} - {data.max_player ? data.max_player : 'xx'}</div>
+        <div class="stat-title">Players</div>
+        {#if data.min_player || data.max_player}
+          <div class="stat-value text-lg text-base">{data.min_player ? data.min_player : 'xx'} - {data.max_player ? data.max_player : 'xx'}</div>
+        {:else}
+          <div class="stat-value text-lg text-error">--</div>
+        {/if}
       </div>
       <div class="divider divider-horizontal" />
       <div class="">
         <div class="stat-title text-l">Total Playtime</div>
-        <div class="stat-value text-base">{data.min_playtime ? data.min_playtime : 'xx'} - {data.max_playtime ? data.max_playtime : 'xx'} min</div>
+        {#if data.min_player || data.max_player}
+          <div class="stat-value text-lg text-base">{data.min_playtime ? data.min_playtime : 'xx'} - {data.max_playtime ? data.max_playtime : 'xx'} min</div>
+        {:else}
+          <div class="stat-value text-lg text-error">--</div>
+        {/if}
       </div>
     </div>
     

@@ -1,9 +1,12 @@
 <script>
   import { bggSearchResult } from '$lib/store'
+  import { createEventDispatcher } from 'svelte'
   let startSearching = false
   let query = ''
   let totalResult = null
   let resetToogle = false
+
+  const dispatch = createEventDispatcher()
 
   async function SearchGame(){
     if (query) {
@@ -37,6 +40,10 @@
     query = ''
     totalResult = null
     resetToogle = false
+    bggSearchResult.set()
+    dispatch('message', {
+      text: 'Reset'
+    })
   }
 
 </script>

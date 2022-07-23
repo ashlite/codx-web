@@ -44,11 +44,18 @@
           <a class="btn btn-accent btn-xs text-xs font-bold" href="/app/logout">LOGOUT</a>
         </div>
       </div>
+      <div class="bg-warning text-neutral p-2 font-bold" >Shortcut: 
+        <kbd class="kbd kbd-xs text-base-content">Alt</kbd>
+        +
+        <kbd class="kbd kbd-xs text-base-content">Shift</kbd>
+        +
+        <kbd class="kbd kbd-xs text-base-content">...</kbd>
+      </div>
       <div class="form-control w-full max-w-xs mb-8" id="theme-selector">
         <label class="label" for="theme-selector" >
           <span class="label-text">Theme Selector</span>
         </label>
-        <select data-choose-theme class="select select-bordered w-full max-w-xs">
+        <select data-choose-theme class="select select-bordered w-full max-w-xs select-sm">
           <option value="halloween">Halloween</option>
           <option value="dracula">Dracula</option>
           <option value="luxury">Luxury</option>
