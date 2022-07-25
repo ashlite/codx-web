@@ -3,9 +3,8 @@ import cookie from 'cookie'
 
 export async function handle({ event, resolve }) {
   const cookieData = event.request.headers.get('cookie')
-  const { codx_token } = cookie.parse(cookieData)
+  const { codx_token } = cookie.parse(String(cookieData))
   if (codx_token){
-    // const parsedCookie = JSON.parse(cookie)
     const claims = jose.decodeJwt(codx_token)
     if (Date(claims.exp) < Date.now()) {
       event.locals.user = null
