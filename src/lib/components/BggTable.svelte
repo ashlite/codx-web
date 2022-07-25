@@ -1,5 +1,5 @@
 <script>
-  export let xmlDataFull
+  export let data
   import BggBtn from "./BggBtn.svelte"
 </script>
 
@@ -15,17 +15,17 @@
       </tr>
     </thead>
     <tbody>
-      {#each xmlDataFull as bg}
+      {#each data as bg}
         <tr>
-          <td>{bg.getAttribute('id')}</td>
-          {#if bg.getElementsByTagName('yearpublished')[0] === undefined}
+          <td>{bg.id}</td>
+          {#if bg.yearpublished === undefined}
           <td>--</td>
           {:else}
-          <td>{bg.getElementsByTagName('yearpublished')[0].getAttribute('value')}</td>
+          <td>{bg.yearpublished.value}</td>
           {/if}
-          <td class="overflow-hidden">{bg.getElementsByTagName('name')[0].getAttribute('value')}</td>
+          <td class="overflow-hidden">{bg.name.value}</td>
           <td>
-            <BggBtn id={bg.getAttribute('id')} type="both"/>
+            <BggBtn id={bg.id} type="both"/>
           </td>
         </tr>
       {/each}

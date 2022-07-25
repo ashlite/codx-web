@@ -1,6 +1,8 @@
 <script>
-  import { listCollectionCategory, collectionEditorData } from '$lib/store'
+  import { listCollectionCategory, collectionEditorData, toastAlert } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
+  import {post} from '$lib/api'
+
 
   async function PullDataBgg(bggId){
     let response = await BggSingleItem(bggId)
@@ -106,7 +108,7 @@
   <div class="w-full">
     <div id="cover" class="form-control w-full">
       <label class="label" for="cover">
-        <span class="label-text">Image Link</span>
+        <span class="label-text">Image Link (Must using CDN format)</span>
       </label>
       <input id="cover-input" type="text" class="input input-bordered w-full" bind:value={$collectionEditorData.cover}/>
     </div>

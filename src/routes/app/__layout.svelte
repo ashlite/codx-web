@@ -18,7 +18,12 @@
 <script>
   export let user
   import { page } from '$app/stores'
+  import ToastAlert from '$lib/components/ToastAlert.svelte'
+  import GlobalModal from '$lib/components/GlobalModal.svelte'
 </script>
+
+<ToastAlert />
+<GlobalModal />
 
 <div class="drawer drawer-mobile">
   <input id="my-drawer" type="checkbox" class="drawer-toggle" />
@@ -34,7 +39,7 @@
         <div class="basis-1/4">
           <div class="avatar">
             <div class="w-16 rounded-full">
-              <img src={user.avatar} alt="user avatar" />
+              <img src={`https://avatars.dicebear.com/api/adventurer-neutral/${user.name}.svg`} alt="user avatar"/>
             </div>
           </div>
         </div>

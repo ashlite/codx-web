@@ -1,5 +1,6 @@
 <script>
   import { get } from '$lib/api'
+  import {globalModal} from '$lib/store'
   import CollectionCard from '$lib/components/CollectionCard.svelte'
   import PaginationNav from '$lib/components/PaginationNav.svelte'
   import ModalDelete from '$lib/components/ModalDelete.svelte'
@@ -36,7 +37,7 @@
     {#await listCollection}
       <button class="btn btn-primary btn-disabled w-full loading" />
     {:then collection}
-      <button class="btn btn-primary w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => goto('/app/catalogue/collection/editor')}>
+      <button class="btn btn-primary w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.collectionEditor()}>
           Add New Collection 
         <span class="ml-4">
           <kbd class="kbd kbd-xs text-base-content">N</kbd>

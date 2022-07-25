@@ -22,9 +22,9 @@ export async function BggSingleItem(bggId){
 
   return {
     boardgame:{
-      name: bggObject.name[0].value,
+      name: (Array.isArray(bggObject.name) ? bggObject.name[0].value : bggObject.name.value),
       released: bggObject.yearpublished.value,
-      category: (bggObject.type == 'boardgame' ? 'core game' : 'expansion'),
+      category: (bggObject.type == 'boardgame' ? 'Core Game' : 'Expansion'),
       min_player: bggObject.minplayers.value,
       max_player: bggObject.maxplayers.value,
       min_playtime: bggObject.minplaytime.value,

@@ -67,7 +67,7 @@
 <div class="pb-20">
   <div class="grid grid-cols-12 border-b-2 border-secondary pb-6 mb-4">
     <div class="col-span-6" >
-      <h1 class="text-4xl font-bold">Add New Collection</h1>
+      <h1 class="text-4xl font-bold">Add New or Edit Collection</h1>
     </div>
     <div class="col-start-10 col-span-3">
       <button aria-label="Confirm" class="btn btn-success w-full" on:click={() => PostDataCollection()}>

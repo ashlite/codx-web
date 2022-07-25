@@ -1,10 +1,16 @@
 <script>
   import { bggSearchResult } from '$lib/store'
   import { createEventDispatcher } from 'svelte'
+  import {XMLParser} from 'fast-xml-parser'
+  
   let startSearching = false
   let query = ''
   let totalResult = null
   let resetToogle = false
+  const parser = new XMLParser({
+    ignoreAttributes : false,
+    attributeNamePrefix : "",
+  })
 
   const dispatch = createEventDispatcher()
 
@@ -18,11 +24,10 @@
           //   'Cache-Control': `public, max-age=5`
           // }
         })
-        const parser = new DOMParser()
-        const xmlDoc = parser.parseFromString(await response.text(),"text/xml")
-        totalResult = xmlDoc.getElementsByTagName('items')[0].getAttribute('total')
+        const dataBgg = parser.parse(await response.text(),"text/xml")
+        totalResult = dataBgg.items.total
         if (totalResult > 0) {
-          bggSearchResult.set(xmlDoc.getElementsByTagName('item'))
+          bggSearchResult.set(dataBgg.items.item)
         } else {
           bggSearchResult.set([null])
         }
