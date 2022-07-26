@@ -6,7 +6,7 @@ export const get = async () => {
 
 export const post = async ({ request }) => {
   const jsonData = await request.json()
-  const response = await fetch(`http://localhost:8000/idtokenauth?source=web`,{
+  const response = await fetch(`${import.meta.env.VITE_BACKEND}/idtokenauth?source=web`,{
     method: 'POST',
     mode: 'cors',
     headers:{
