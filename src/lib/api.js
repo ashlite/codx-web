@@ -1,8 +1,5 @@
-import Cookies from 'js-cookie'
-let token = Cookies.get('codx-token')
-
 export async function post(endpoint, data) {
-  const url = `http://localhost:8000${endpoint}`
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
   return fetch(url, {
 		method: 'POST',
 		credentials: 'include',
@@ -18,7 +15,7 @@ export async function post(endpoint, data) {
 }
 
 export async function get(endpoint) {
-  const url = `http://localhost:8000${endpoint}`
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
 	return fetch(url, {
 		method: 'GET',
 		credentials: 'include',
@@ -31,7 +28,7 @@ export async function get(endpoint) {
 }
 
 export async function patch(endpoint, data) {
-  const url = `http://localhost:8000${endpoint}`
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
   return fetch(url, {
     method: 'PATCH',
     credentials: 'include',
@@ -45,7 +42,7 @@ export async function patch(endpoint, data) {
 }
 
 export async function del(endpoint) {
-  const url = `http://localhost:8000${endpoint}`
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
   return fetch(url, {
     method: 'DELETE',
     credentials: 'include',
@@ -58,7 +55,7 @@ export async function del(endpoint) {
 }
 
 export async function logout(){
-  const url = `http://localhost:8000/logout`
+  const url = `${import.meta.env.VITE_BACKEND}/logout`
   return fetch(url, {
     method: 'POST',
     credentials: 'include',
