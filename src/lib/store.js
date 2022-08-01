@@ -7,6 +7,7 @@ export const collectionDeleteName = writable('')
 export const listCollection = writable(false)
 export const totalCollection = writable(false)
 export const toggleModalCollectionEditor = writable(false)
+export const collectionRefresh = writable(false)
 
 //Untuk keperluan Global Modal
 function createModal(){
@@ -15,7 +16,9 @@ function createModal(){
     subscribe,
     close:() => set(false),
     open:(title) => set({title: title}),
-    collectionEditor:() => set({title: 'Collection Editor', type: 'collectionEditor'}),
+    collectionEditor:(id) => set({title: 'Collection Editor', type: 'collectionEditor', size:'lg', data:{collectionId: id}}),
+    collectionFromBgg:(id) => set({title: 'Collection Editor', type: 'collectionEditor', size:'lg', data: {bggId: id}}),
+    deleteCollection:(id, name) => set({title: 'Delete Collection', type: 'deleteCollection', size:'sm', data: {id, name}}),
   }
 }
 
@@ -73,7 +76,7 @@ export const listCollectionCategory = writable(false)
 // Untuk Keperluan Toast Notification
 function createToast(){
   const _toast = writable([])
-  function send (message, type = 'info', duration = 3000){
+  function send (message, type, duration = 3000){
     _toast.update(state => {
       return [...state, {message, type, duration}]
     })

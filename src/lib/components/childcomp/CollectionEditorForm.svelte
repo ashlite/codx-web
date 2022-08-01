@@ -1,7 +1,6 @@
 <script>
   import { listCollectionCategory, collectionEditorData, toastAlert } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
-  import {post} from '$lib/api'
 
 
   async function PullDataBgg(bggId){

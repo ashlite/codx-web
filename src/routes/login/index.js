@@ -19,7 +19,6 @@ export const post = async ({ request }) => {
     withCredentials: true
   })
   const cookieData = response.headers.get('set-cookie')
-  console.log(cookieData)
   const forwardBody = await response.json()
 
   return {
