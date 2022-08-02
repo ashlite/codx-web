@@ -19,8 +19,8 @@
       {#await listProduct then value}
         {#each value.data as product}
           <tr>
+            <td>{product.collection.name}</td>
             <td>{product.name}</td>
-            <td>{product.product}</td>
             <td>{product.sku}</td>
             <td>{product.buy_price}</td>
             <td>{product.sell_price}</td>

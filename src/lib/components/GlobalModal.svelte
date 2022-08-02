@@ -1,6 +1,6 @@
 <script>
   import {globalModal} from '$lib/store'
-  import EditorCreatCollection from './childcomp/EditorCreatCollection.svelte'
+  import FormCreateCollection from './childcomp/FormCreateCollection.svelte'
   import ModalDelete from './childcomp/ModalDelete.svelte';
 </script>
 
@@ -17,7 +17,7 @@
       {#if $globalModal.type == 'deleteCollection'}
         <ModalDelete data={$globalModal.data} />
       {:else if $globalModal.type == 'collectionEditor'}
-        <EditorCreatCollection data={$globalModal.data} />
+        <FormCreateCollection data={$globalModal.data} />
       {/if}
     </div>
   </div>
