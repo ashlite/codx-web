@@ -16,9 +16,10 @@ function createModal(){
     subscribe,
     close:() => set(false),
     open:(title) => set({title: title}),
-    collectionEditor:() => set({title: 'Collection Editor', type: 'createCollection', size:'lg'}),
-    collectionFromBgg:(id) => set({title: 'Collection Editor', type: 'createCollection', size:'lg', data: {bggId: id}}),
+    collectionCreate:() => set({title: 'Create New Collection', type: 'createCollection', size:'lg'}),
+    collectionFromBgg:(id) => set({title: 'Create New Collection', type: 'createCollection', size:'lg', data: {bggId: id}}),
     deleteCollection:(id, name) => set({title: 'Delete Collection', type: 'deleteCollection', size:'sm', data: {id, name}}),
+    collectionEdit:(collection) => set({title: 'Edit Collection', type: 'editCollection', size:'lg', data: {collection}}),
   }
 }
 

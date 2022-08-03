@@ -5,17 +5,18 @@
   import PaginationNav from '$lib/components/PaginationNav.svelte'
   import { RingLoader } from 'svelte-loading-spinners'
   import { shortcut } from '$lib/shortcut'
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte'
 
   let totalCollection = get('/utils/count?collection=1')
   let listCollection = get(`/collection?limit=10`)
 
-  collectionRefresh.subscribe(value => {
+  const unsubscribe = collectionRefresh.subscribe(value => {
     if (value){
       RefreshData()
       collectionRefresh.set(false)
     }
   })
+  onDestroy(unsubscribe)
 
   onMount(() => {
     RefreshData()
@@ -49,7 +50,7 @@
     {#await listCollection}
       <button class="btn btn-primary btn-lg btn-disabled w-full loading" />
     {:then collections}
-      <button class="btn btn-primary btn-lg w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.collectionEditor()}>
+      <button class="btn btn-primary btn-lg w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.collectionCreate()}>
           Add New Collection 
         <span class="ml-4">
           <kbd class="kbd kbd-xs text-base-content">N</kbd>

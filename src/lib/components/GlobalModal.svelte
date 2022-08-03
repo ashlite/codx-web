@@ -1,6 +1,7 @@
 <script>
   import {globalModal} from '$lib/store'
   import FormCreateCollection from './childcomp/FormCreateCollection.svelte'
+  import FormEditCollection from './childcomp/FormEditCollection.svelte'
   import ModalDelete from './childcomp/ModalDelete.svelte'
 </script>
 
@@ -18,6 +19,8 @@
         <ModalDelete data={$globalModal.data} />
       {:else if $globalModal.type == 'createCollection'}
         <FormCreateCollection data={$globalModal.data} />
+      {:else if $globalModal.type == 'editCollection'}
+        <FormEditCollection data={$globalModal.data} />
       {/if}
     </div>
   </div>
