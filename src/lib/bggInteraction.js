@@ -1,6 +1,7 @@
 import {XMLParser} from 'fast-xml-parser'
 import { toastAlert } from './store'
 import axios from 'axios'
+import { decodeXML } from 'entities'
 
 export async function BggSingleItem(bggId){
   const fixArray = [] 
@@ -29,7 +30,7 @@ export async function BggSingleItem(bggId){
   
     return {
       boardgame:{
-        name: (Array.isArray(bggObject.name) ? bggObject.name[0].value : bggObject.name.value),
+        name: decodeXML(decodeXML(Array.isArray(bggObject.name) ? bggObject.name[0].value : bggObject.name.value)),
         released: bggObject.yearpublished.value,
         category: (bggObject.type == 'boardgame' ? 'Core Game' : 'Expansion'),
         min_player: bggObject.minplayers.value,
@@ -40,7 +41,7 @@ export async function BggSingleItem(bggId){
         game_difficulties: bggObject.statistics.ratings.averageweight.value,
         cover: bggObject.image,
         thumb_cover: bggObject.thumbnail,
-        description: bggObject.description,
+        description: decodeXML(decodeXML(bggObject.description)),
       },
       bggGroup: fixArray
     }

@@ -1,8 +1,10 @@
 <script>
   import AddCollectionModal from "./AddCollectionModal.svelte"
   import { globalModal } from "$lib/store"
+  
   export let type
   export let id
+  
 
 </script>
 

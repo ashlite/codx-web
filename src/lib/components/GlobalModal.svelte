@@ -1,7 +1,7 @@
 <script>
   import {globalModal} from '$lib/store'
   import FormCreateCollection from './childcomp/FormCreateCollection.svelte'
-  import ModalDelete from './childcomp/ModalDelete.svelte';
+  import ModalDelete from './childcomp/ModalDelete.svelte'
 </script>
 
 <input type="checkbox" id="global-modal" class="modal-toggle" checked={$globalModal}/>
@@ -16,7 +16,7 @@
     <div id="modal-body">
       {#if $globalModal.type == 'deleteCollection'}
         <ModalDelete data={$globalModal.data} />
-      {:else if $globalModal.type == 'collectionEditor'}
+      {:else if $globalModal.type == 'createCollection'}
         <FormCreateCollection data={$globalModal.data} />
       {/if}
     </div>

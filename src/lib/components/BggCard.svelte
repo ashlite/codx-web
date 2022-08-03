@@ -1,6 +1,7 @@
 <script>
   export let data
   import BggBtn from "./BggBtn.svelte"
+  import {decodeXML} from 'entities'
 </script>
 
 <div class="indicator">
@@ -19,7 +20,7 @@
         <div class="badge badge-accent">{xmlData.getAttribute('rank')}</div>
       </div> -->
       <h2 class="card-title text-base truncate">
-        {data.name.value}
+        {decodeXML(data.name.value)}
       </h2>
       <div class="card-actions justify-center">
         <BggBtn id={data.id} type="both"/>

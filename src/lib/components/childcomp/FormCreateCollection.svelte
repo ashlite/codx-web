@@ -3,11 +3,12 @@
   import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
   import { onMount } from 'svelte'
+  import { decodeHTML, encodeHTML } from 'entities'
   export let data
   
   let listCollectionCategory = get('/category')
   let dataCollection = {category: 'Core Game'}
-  let dataProduct = {track_inventory:true}
+  let dataProduct = {name:'retail', track_inventory:true}
   let parentGame = []
   let childrenGame = []
   let searchQuery = ''
@@ -75,16 +76,17 @@
     toastAlert.warning('Processing...')
     let sendData = {}
     sendData.collection = {...dataCollection}
+    sendData.collection.name = encodeHTML(dataCollection.name)
+    sendData.collection.description = encodeHTML(dataCollection.description)
     if (inputProduct) {
       sendData.product = {...dataProduct}
     }
     if (dataCollection.category == 'Core Game' && dataCollection.category == 'Core & Expansion' && childrenGame.length > 0){
-      sendData.slave = childrenGame.map(({id, ...other}) => id)
+      sendData.collection.slave = childrenGame.map(({id, ...other}) => id)
     }
     if (dataCollection.category == 'Expansion' && dataCollection.category == 'Core & Expansion' && parentGame.length > 0){
-      sendData.master = childrenGame.map(({id, ...other}) => id)
+      sendData.collection.master = childrenGame.map(({id, ...other}) => id)
     }
-
     
     try{      
       let response = await post('/collection', sendData)
@@ -287,13 +289,13 @@
           </table>
         </div>
         <div class="col-span-6 border-x-2 border-secondary px-2" >
-          <div class="grid grid-cols-4 gap-4">
+          <form class="grid grid-cols-4 gap-4" on:submit|preventDefault={() => SearchBoardgame()}>
             <input id="game-search" type="text" placeholder="Search game" class="input input-sm col-span-3 input-bordered w-full" bind:value={searchQuery} />
             {#if startSearching}
               <button class="btn btn-sm btn-info loading" />
             {:else}
               {#if searchQuery.length >= 1}
-                <button class="btn btn-sm btn-info" on:click={() => SearchBoardgame()}>
+                <button class="btn btn-sm btn-info" type="submit">
                   <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path xmlns="http://www.w3.org/2000/svg" d="M10 4C6.68629 4 4 6.68629 4 10C4 13.3137 6.68629 16 10 16C13.3137 16 16 13.3137 16 10C16 6.68629 13.3137 4 10 4ZM2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10C18 11.8487 17.3729 13.551 16.3199 14.9056L21.7071 20.2929C22.0976 20.6834 22.0976 21.3166 21.7071 21.7071C21.3166 22.0976 20.6834 22.0976 20.2929 21.7071L14.9056 16.3199C13.551 17.3729 11.8487 18 10 18C5.58172 18 2 14.4183 2 10Z" fill="#0D0D0D"></path>
                   </svg>
@@ -306,8 +308,7 @@
                 </button>
               {/if}
             {/if}
-            
-          </div>
+          </form>
           <table class="table table-compact w-full">
             <thead>
               <tr>

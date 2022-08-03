@@ -13,6 +13,7 @@
     try {
       await del(`/collection/${data.id}`)
       toastAlert.success('Collection deleted')
+      collectionRefresh.set(true)
     } catch (error) {
       toastAlert.error(error)
     } finally {

@@ -33,7 +33,7 @@
 
 </script>
 
-<div class="flex justify-between">
+<div class="flex justify-between items-center">
   <div class="stat">
     <div class="stat-title">Total Collections</div>
     {#await totalCollection}
