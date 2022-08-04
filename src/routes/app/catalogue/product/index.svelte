@@ -1,5 +1,6 @@
 <script>
   import { get } from '$lib/api'
+  import {priceFormater} from '$lib/tools'
 
   let listProduct = get(`/product/`)
 </script>
@@ -22,8 +23,8 @@
             <td>{product.collection.name}</td>
             <td>{product.name}</td>
             <td>{product.sku}</td>
-            <td>{product.buy_price}</td>
-            <td>{product.sell_price}</td>
+            <td>{priceFormater(product.buy_price)}</td>
+            <td>{priceFormater(product.sell_price)}</td>
           </tr>
         {/each}
       {/await}
