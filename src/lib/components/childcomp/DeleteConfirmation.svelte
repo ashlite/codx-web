@@ -1,5 +1,5 @@
 <script>
-  import { globalModal, toastAlert } from '$lib/store'
+  import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
   import { RingLoader } from 'svelte-loading-spinners'
   import {del} from '$lib/api'
   import { createEventDispatcher } from 'svelte'
@@ -11,8 +11,8 @@
   async function DeleteItem() {
     deleteProcess = true
     try {
-      await del(`/collection/${data.id}`)
-      toastAlert.success('Collection deleted')
+      await del(`/${data.type}/${data.id}`)
+      toastAlert.success('Item deleted')
       collectionRefresh.set(true)
     } catch (error) {
       toastAlert.error(error)
@@ -27,7 +27,7 @@
 </script>
 
 {#if deleteProcess}
-  <h3 class="text-lg font-bold text-center">Processing Delete Collection</h3>
+  <h3 class="text-lg font-bold text-center">Processing Delete...</h3>
   <div class="mx-auto my-6 w-fit">
     <RingLoader size="100" color="#FF3E00" unit="px" duration="2s"/>
   </div>

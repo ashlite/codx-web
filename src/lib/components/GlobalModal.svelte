@@ -2,7 +2,8 @@
   import {globalModal} from '$lib/store'
   import FormCreateCollection from './childcomp/FormCreateCollection.svelte'
   import FormEditCollection from './childcomp/FormEditCollection.svelte'
-  import ModalDelete from './childcomp/ModalDelete.svelte'
+  import FormProductEditor from './childcomp/FormProductEditor.svelte'
+  import DeleteConfirmation from './childcomp/DeleteConfirmation.svelte'
 </script>
 
 <input type="checkbox" id="global-modal" class="modal-toggle" checked={$globalModal}/>
@@ -15,12 +16,16 @@
       <button class="btn btn-sm btn-error" on:click={() => globalModal.close()}>X</button>
     </div>
     <div id="modal-body">
-      {#if $globalModal.type == 'deleteCollection'}
-        <ModalDelete data={$globalModal.data} />
+      {#if $globalModal.type == 'deleteConfirmation'}
+        <DeleteConfirmation data={$globalModal.data} />
       {:else if $globalModal.type == 'createCollection'}
         <FormCreateCollection data={$globalModal.data} />
       {:else if $globalModal.type == 'editCollection'}
         <FormEditCollection data={$globalModal.data} />
+      {:else if $globalModal.type == 'editProduct'}
+        <FormProductEditor data={$globalModal.data} />
+      {:else if $globalModal.type == 'deleteProduct'}
+        <FormProductEditor data={$globalModal.data} />
       {/if}
     </div>
   </div>

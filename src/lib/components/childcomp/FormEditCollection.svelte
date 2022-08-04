@@ -19,7 +19,6 @@
 
   onMount(() => {
     firstInput.focus()
-    console.log(dataCollection)
   })
 
   async function PullDataBgg(bggId){

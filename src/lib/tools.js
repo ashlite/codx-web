@@ -4,5 +4,5 @@ export function priceFormater(price, currency = 'IDR') {
 
 export function marginCalc(buy, sell, type = 'nominal'){
   if (type == 'nominal') return sell - buy
-  if (type == 'percent') return ((sell - buy) / sell) * 100
+  if (type == 'percent') return Math.round(((sell - buy) / sell) * 100)
 }

@@ -7,7 +7,7 @@ export const collectionDeleteName = writable('')
 export const listCollection = writable(false)
 export const totalCollection = writable(false)
 export const toggleModalCollectionEditor = writable(false)
-export const collectionRefresh = writable(false)
+export const collectionRefresh = writable(false) //request refresh ke subscriber
 
 //Untuk keperluan Global Modal
 function createModal(){
@@ -18,8 +18,9 @@ function createModal(){
     open:(title) => set({title: title}),
     collectionCreate:() => set({title: 'Create New Collection', type: 'createCollection', size:'lg'}),
     collectionFromBgg:(id) => set({title: 'Create New Collection', type: 'createCollection', size:'lg', data: {bggId: id}}),
-    deleteCollection:(id, name) => set({title: 'Delete Collection', type: 'deleteCollection', size:'sm', data: {id, name}}),
+    deleteConfirmation:(id, name, type) => set({title: 'Delete Confirmation', type: 'deleteConfirmation', size:'sm', data: {id, name, type}}),
     collectionEdit:(collection) => set({title: 'Edit Collection', type: 'editCollection', size:'lg', data: {collection}}),
+    editProduct:(product) => set({title: 'Product Editor', type: 'editProduct', size:'md', data: {product}}),
   }
 }
 
