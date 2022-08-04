@@ -77,7 +77,8 @@
     let sendData = {}
     sendData.collection = {...dataCollection}
     sendData.collection.name = encodeHTML(dataCollection.name)
-    sendData.collection.description = encodeHTML(dataCollection.description)
+    sendData.collection.description = encodeHTML(dataCollection.description||'')
+
     if (inputProduct) {
       sendData.product = {...dataProduct}
     }

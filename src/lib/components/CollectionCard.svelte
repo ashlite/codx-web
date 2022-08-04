@@ -35,23 +35,23 @@
       <div class="divider divider-horizontal" />
       <div class="">
         <div class="stat-title">Players</div>
-        {#if data.min_player == data.max_player}
-          <div class="stat-value text-lg text-base">{data.min_player}</div>
-        {:else if data.max_player}
-          <div class="stat-value text-lg text-base">{data.min_player} - {data.max_player}</div>
-        {:else}
+        {#if data.min_player == undefined}
           <div class="stat-value text-lg text-error">N/A</div>
+        {:else if data.min_player == data.max_player}
+          <div class="stat-value text-lg text-base">{data.min_player}</div>
+        {:else}
+          <div class="stat-value text-lg text-base">{data.min_player} - {data.max_player}</div>
         {/if}
       </div>
       <div class="divider divider-horizontal" />
       <div class="">
         <div class="stat-title text-l">Total Playtime</div>
-        {#if data.min_playtime == data.max_playtime}
-          <div class="stat-value text-lg text-base">{data.min_playtime} min</div>
-        {:else if data.max_playtime}
-          <div class="stat-value text-lg text-base">{data.min_playtime} - {data.max_playtime} min</div>
-        {:else}
+        {#if data.min_playtime == undefined}
           <div class="stat-value text-lg text-error">N/A</div>
+        {:else if data.min_playtime == data.max_playtime}
+          <div class="stat-value text-lg text-base">{data.min_playtime} min</div>
+        {:else}
+          <div class="stat-value text-lg text-base">{data.min_playtime} - {data.max_playtime} min</div>
         {/if}
       </div>
     </div>
