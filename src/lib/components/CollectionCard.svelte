@@ -23,38 +23,42 @@
       {/if}
     </div>
     <h2 class="text-xl truncate">{decodeHTML(data.name)}</h2>
-    <div class="flex flex-row h-16 w-full mb-4">
-      <div class="">
-        <div class="stat-title">Age</div>
-        {#if data.min_age}
-          <div class="stat-value text-lg text-base">{data.min_age}</div>
-        {:else}
-          <div class="stat-value text-lg text-error">N/A</div>
-        {/if}
+    {#if data.category == 'Expansion' || data.category == 'Core Game' || data.category == 'Core & Expansion'}
+      <div class="flex flex-row h-16 w-full mb-4">
+        <div class="">
+          <div class="stat-title">Age</div>
+          {#if data.min_age}
+            <div class="stat-value text-lg text-base">{data.min_age}</div>
+          {:else}
+            <div class="stat-value text-lg text-error">N/A</div>
+          {/if}
+        </div>
+        <div class="divider divider-horizontal" />
+        <div class="">
+          <div class="stat-title">Players</div>
+          {#if data.min_player == undefined}
+            <div class="stat-value text-lg text-error">N/A</div>
+          {:else if data.min_player == data.max_player}
+            <div class="stat-value text-lg text-base">{data.min_player}</div>
+          {:else}
+            <div class="stat-value text-lg text-base">{data.min_player} - {data.max_player}</div>
+          {/if}
+        </div>
+        <div class="divider divider-horizontal" />
+        <div class="">
+          <div class="stat-title text-l">Total Playtime</div>
+          {#if data.min_playtime == undefined}
+            <div class="stat-value text-lg text-error">N/A</div>
+          {:else if data.min_playtime == data.max_playtime}
+            <div class="stat-value text-lg text-base">{data.min_playtime} min</div>
+          {:else}
+            <div class="stat-value text-lg text-base">{data.min_playtime} - {data.max_playtime} min</div>
+          {/if}
+        </div>
       </div>
-      <div class="divider divider-horizontal" />
-      <div class="">
-        <div class="stat-title">Players</div>
-        {#if data.min_player == undefined}
-          <div class="stat-value text-lg text-error">N/A</div>
-        {:else if data.min_player == data.max_player}
-          <div class="stat-value text-lg text-base">{data.min_player}</div>
-        {:else}
-          <div class="stat-value text-lg text-base">{data.min_player} - {data.max_player}</div>
-        {/if}
-      </div>
-      <div class="divider divider-horizontal" />
-      <div class="">
-        <div class="stat-title text-l">Total Playtime</div>
-        {#if data.min_playtime == undefined}
-          <div class="stat-value text-lg text-error">N/A</div>
-        {:else if data.min_playtime == data.max_playtime}
-          <div class="stat-value text-lg text-base">{data.min_playtime} min</div>
-        {:else}
-          <div class="stat-value text-lg text-base">{data.min_playtime} - {data.max_playtime} min</div>
-        {/if}
-      </div>
-    </div>
+    {:else}
+      <div class="h-16 w-full mb-4"></div>
+    {/if}
     
     <div class="card-actions justify-end">
       <button class="btn btn-success" on:click={() => goto(`/app/catalogue/collection/${data.id}`)}>

@@ -30,6 +30,7 @@
     dataCollection = {
       bgg_id: bggId,
       ...response.boardgame,
+      bgg_group: response.bggGroup
     }
   }
   
@@ -78,16 +79,17 @@
     sendData.collection = {...dataCollection}
     sendData.collection.name = encodeHTML(dataCollection.name)
     sendData.collection.description = encodeHTML(dataCollection.description||'')
-
     if (inputProduct) {
       sendData.product = {...dataProduct}
     }
-    if (dataCollection.category == 'Core Game' && dataCollection.category == 'Core & Expansion' && childrenGame.length > 0){
+    if ((dataCollection.category == 'Core Game' || dataCollection.category == 'Core & Expansion') && childrenGame.length > 0){
       sendData.collection.slave = childrenGame.map(({id, ...other}) => id)
     }
-    if (dataCollection.category == 'Expansion' && dataCollection.category == 'Core & Expansion' && parentGame.length > 0){
-      sendData.collection.master = childrenGame.map(({id, ...other}) => id)
+    if ((dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion') && parentGame.length > 0){
+      sendData.collection.master = parentGame.map(({id, ...other}) => id)
     }
+
+    console.log(sendData)
     
     try{      
       let response = await post('/collection', sendData)
@@ -198,7 +200,6 @@
     {/if}
   </div>  
   
-  
   <div id="desc-cover" class="mt-4">
     <div id="desc" class="form-control w-full">
       <label class="label" for="desc">
@@ -206,8 +207,24 @@
       </label>
       <textarea id="desc-input" class="textarea textarea-bordered h-40" placeholder="Collection Description" bind:value={dataCollection.description}/>
     </div>
-    
   </div>
+
+  {#if dataCollection.bgg_group != undefined}
+    <div class="mt-4">
+      <h1 class="text-xl font-bold mb-4" >Badge & Grouping</h1>
+      <div class="flex w-full flex-wrap gap-4">
+        {#each dataCollection.bgg_group as bggGroup}
+          {#if bggGroup.group_type == "boardgamecategory"}
+            <div class="badge badge-primary">{bggGroup.value}</div>
+          {:else if bggGroup.group_type == "boardgamemechanic"}
+            <div class="badge badge-secondary">{bggGroup.value}</div>
+          {:else}
+            <div class="badge badge-accent">{bggGroup.value}</div>
+          {/if}
+        {/each}
+      </div>
+    </div>
+  {/if}
 
   <div class="flex content-center gap-4 border-b-2 border-secondary pt-6 pb-2 mb-4">
     <h1 class="text-2xl font-bold">Add Product for this Collection (optional)</h1>
@@ -276,7 +293,7 @@
             <tbody>
               {#each childrenGame as expansion}
                 <tr>
-                  <td>{expansion.name}</td>
+                  <td>{decodeHTML(expansion.name)}</td>
                   <td>
                     <button class="btn btn-sm btn-error w-full" on:click={() => {
                       DeleteExpansion(expansion.id)
@@ -334,7 +351,7 @@
                         +
                       </button>
                     </td>
-                    <td>{`(${collection.released}) ${collection.name}`}</td>
+                    <td>{`(${collection.released}) ${decodeHTML(collection.name)}`}</td>
                     <td>
                       <button class="btn btn-success btn-sm w-full" on:click={() => AddCore({
                         id: collection.id,
@@ -361,7 +378,7 @@
             <tbody>
               {#each parentGame as core}
                 <tr>
-                  <td >{core.name}</td>
+                  <td >{decodeHTML(core.name)}</td>
                   <td >
                     <button class="btn btn-sm btn-error" on:click={() => {
                       DeleteCore(core.id)

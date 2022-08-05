@@ -12,7 +12,6 @@
   dataCollection.description = decodeHTML(dataCollection.description)
   delete dataCollection.master
   delete dataCollection.slave
-  delete dataCollection.bgg_group
   delete dataCollection.product
 
   let firstInput
@@ -24,8 +23,10 @@
   async function PullDataBgg(bggId){
     let response = await BggSingleItem(bggId)
     dataCollection = {
+      ...dataCollection,
       bgg_id: bggId,
       ...response.boardgame,
+      bgg_group: response.bggGroup
     }
   }
 
@@ -34,7 +35,8 @@
     let sendData = {}
     sendData.collection = {...dataCollection}
     sendData.collection.name = encodeHTML(dataCollection.name)
-    sendData.collection.description = encodeHTML(dataCollection.description)
+    sendData.collection.description = encodeHTML(dataCollection.description || '')
+    console.log(sendData)
     
     try{      
       let response = await patch(`/collection/${dataCollection.id}`, sendData)
@@ -153,8 +155,24 @@
       </label>
       <textarea id="desc-input" class="textarea textarea-bordered h-40" placeholder="Collection Description" bind:value={dataCollection.description}/>
     </div>
-    
   </div>
+
+  {#if dataCollection.bgg_group != undefined}
+    <div class="mt-4">
+      <h1 class="text-xl font-bold mb-4" >Badge & Grouping</h1>
+      <div class="flex w-full flex-wrap gap-4">
+        {#each dataCollection.bgg_group as bggGroup}
+          {#if bggGroup.group_type == "boardgamecategory"}
+            <div class="badge badge-primary">{bggGroup.value}</div>
+          {:else if bggGroup.group_type == "boardgamemechanic"}
+            <div class="badge badge-secondary">{bggGroup.value}</div>
+          {:else}
+            <div class="badge badge-accent">{bggGroup.value}</div>
+          {/if}
+        {/each}
+      </div>
+    </div>
+  {/if}
 
   <div class="flex gap-4 flex-row-reverse mt-6">
     <button aria-label="Confirm" class="btn btn-success w-1/5" on:click={() => PatchDataCollection()}>

@@ -23,6 +23,7 @@
     if (response.status == 200){
       collection = response.data
     }
+    console.log(collection)
   }
   
 </script>
@@ -31,8 +32,7 @@
   <div class="border-b-2 border-accent pb-2 mb-4">
     <h1 class="text-3xl font-bold">{collection.released} - {decodeHTML(collection.name)}</h1>
   </div>
-  <div class="grid grid-cols-12 gap-4">
-    
+  <div class="grid grid-cols-12 gap-4">   
     <!-- Image row span-->
     <div class="col-span-4 row-span-4 row-start-1 col-start-1">
       {#if collection.cover != undefined}
@@ -120,6 +120,23 @@
       {/if}
     </div>
   </div>
+
+  {#if collection.bgg_group != undefined}
+    <div class="mb-8">
+      <h1 class="text-xl font-bold mb-4" >Badge & Grouping</h1>
+      <div class="flex w-full flex-wrap gap-4">
+        {#each collection.bgg_group as bggGroup}
+          {#if bggGroup.group_type == "boardgamecategory"}
+            <div class="badge badge-primary">{bggGroup.value}</div>
+          {:else if bggGroup.group_type == "boardgamemechanic"}
+            <div class="badge badge-secondary">{bggGroup.value}</div>
+          {:else}
+            <div class="badge badge-accent">{bggGroup.value}</div>
+          {/if}
+        {/each}
+      </div>
+    </div>
+  {/if}
 
   <div class="bg-secondary rounded-md py-2 px-4">
     <h2 class="font-bold text-2xl text-secondary-content">Product List</h2>
