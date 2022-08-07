@@ -9,7 +9,7 @@
   import { afterNavigate } from '$app/navigation'
 
   let totalItem = 0
-  let listItem = get(`/collection?limit=10`)
+  let listItem = {data:[]}
   let searching = false
   let searchName
 
@@ -24,22 +24,27 @@
   afterNavigate(() => RefreshData())
   
   async function RefreshData(data){
-    searchName = undefined
     if (data == undefined){
+      searchName = undefined
       let response = await get('/utils/count?collection=1')
       totalItem = await response.data.total_collection
       listItem = await get(`/collection?limit=10`)
+    } else if (searchName != undefined){
+      let skipData = (data.currentPage - 1) * data.itemPerPage
+      listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&q=${searchName}`)
     } else {
       let skipData = (data.currentPage - 1) * data.itemPerPage
-      listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}`) 
+      listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}`)
     }
+    listItem = listItem
   }
 
   async function searchGame(){
     searching = true
     try{
-      listItem = await get(`/collection?limit=1000&q=${searchName}`)
-      totalItem = listItem.data.length
+      listItem = await get(`/collection?limit=10&q=${searchName}`)
+      let response = await get(`/utils/count?collection=1&q=${searchName}`)
+      totalItem = await response.data.total_collection
     } catch (error) {
       toastAlert.error(error.message)
     }
@@ -52,14 +57,6 @@
   <div class="stat w-32">
     <div class="stat-title">Total Items</div>
     <div class="stat-value text-primary">{totalItem}</div>
-    <!-- {#await totalItem}
-      <div class="stat-value text-primary">calculating...</div>
-    {:then value}
-      <div class="stat-value text-primary">{value.data.total_collection}</div>
-    {:catch error}
-      {console.log(error)}
-      <div class="stat-value text-primary">{error}</div>
-    {/await} -->
   </div>
   <div class="w-96">
     <form class="flex gap-2" on:submit|preventDefault={() => searchGame()}>
@@ -88,12 +85,17 @@
 
 <PaginationNav totalItems={totalItem} on:updatePagination={event => RefreshData(event.detail)}/>
 
-
 <div class="grid grid-cols-2 gap-4 pb-8">
-  {#await listItem}
+  {#if listItem.data.length > 0}
+    {#each listItem.data as collection}
+      <CollectionCard data={collection} />
+    {/each}
+  {:else}
     <div class="mx-auto my-6 w-fit">
       <RingLoader size="200" color="#FF3E00" unit="px" duration="2s"/>
     </div>
+  {/if}
+  <!-- {#await listItem}
   {:then collections}
     {#each collections.data as collection}
       <CollectionCard data={collection} />
@@ -101,5 +103,5 @@
   {:catch error}
     {console.log(error)}
     <h2 class="text-error text-xl">{error.message}</h2>
-  {/await}
+  {/await} -->
 </div>

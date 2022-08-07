@@ -1,7 +1,9 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte'
-  export let totalItems
-  let currentPage = 1, totalPages = 1, itemPerPage = 10
+  export let totalItems, defaultItemPerPage = 10
+  let currentPage = 1
+  let totalPages = 1
+  let itemPerPage = defaultItemPerPage
   const dispatch = createEventDispatcher()
 
   function dispatchUpdate(){
