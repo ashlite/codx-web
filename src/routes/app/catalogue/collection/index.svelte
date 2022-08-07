@@ -6,6 +6,7 @@
   import { RingLoader } from 'svelte-loading-spinners'
   import { shortcut } from '$lib/shortcut'
   import { onMount, onDestroy } from 'svelte'
+  import { afterNavigate } from '$app/navigation'
 
   let totalItem = 0
   let listItem = get(`/collection?limit=10`)
@@ -20,9 +21,7 @@
   })
   onDestroy(unsubscribe)
 
-  onMount(() => {
-    RefreshData()
-  })
+  afterNavigate(() => RefreshData())
   
   async function RefreshData(data){
     searchName = undefined

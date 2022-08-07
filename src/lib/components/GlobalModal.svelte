@@ -4,6 +4,7 @@
   import FormEditCollection from './childcomp/FormEditCollection.svelte'
   import FormProductEditor from './childcomp/FormProductEditor.svelte'
   import DeleteConfirmation from './childcomp/DeleteConfirmation.svelte'
+  import FormCollectionConnection from './childcomp/FormCollectionConnection.svelte'
 </script>
 
 <input type="checkbox" id="global-modal" class="modal-toggle" checked={$globalModal}/>
@@ -24,8 +25,8 @@
         <FormEditCollection data={$globalModal.data} />
       {:else if $globalModal.type == 'editProduct'}
         <FormProductEditor data={$globalModal.data} />
-      {:else if $globalModal.type == 'deleteProduct'}
-        <FormProductEditor data={$globalModal.data} />
+      {:else if $globalModal.type == 'connectionEditor'}
+        <FormCollectionConnection data={$globalModal.data} />
       {/if}
     </div>
   </div>

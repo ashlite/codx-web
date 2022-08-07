@@ -5,7 +5,13 @@
 </script>
 
 <div class="indicator">
-  <span class="indicator-item indicator-start badge badge-accent">{data.rank}</span>
+  <div class="indicator-item indicator-start avatar placeholder top-4 left-4">
+    <div class="bg-accent rounded-full w-12">
+      <span class="text-3xl text-accent-content font-bold">
+        {data.rank}
+      </span>
+    </div>
+  </div>
   <div class="card w-80 bg-base-300 shadow-xl">
     <figure class='h-40'>
       {#if data.thumbnail.value === undefined}
@@ -15,7 +21,7 @@
       {/if}
     </figure>
     <div class="card-body">
-      <div class="badge badge-secondary">{data.rank}</div>
+      <div class="badge badge-secondary">{data.yearpublished.value}</div>
       <!-- <div class="flex flex-row gap-4">
         <div class="badge badge-accent">{xmlData.getAttribute('rank')}</div>
       </div> -->

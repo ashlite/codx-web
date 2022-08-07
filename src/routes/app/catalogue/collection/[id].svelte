@@ -1,12 +1,15 @@
 <script>
-  import { get } from '$lib/api'
+  import { get, patch } from '$lib/api'
   import { page } from '$app/stores'
-  import { onMount, onDestroy } from 'svelte'
+  import { onDestroy } from 'svelte'
   import { decodeHTML } from 'entities'
   import { marginCalc, priceFormater } from '$lib/tools'
   import { globalModal, collectionRefresh } from '$lib/store'
+  import { afterNavigate } from '$app/navigation'
+  import CollectionMiniCard from '$lib/components/CollectionMiniCard.svelte'
 
   let collection
+  let subPage = 1
 
   const unsubscribe = collectionRefresh.subscribe(value => {
     if (value){
@@ -15,26 +18,65 @@
     }
   })
   onDestroy(unsubscribe)
-  
-  onMount(() => RefreshData())
+
+  afterNavigate(() => {
+    RefreshData()
+    subPage = 1
+  })
 
   async function RefreshData(){
     let response = await get(`/collection/${$page.params.id}`)
     if (response.status == 200){
       collection = response.data
     }
-    console.log(collection)
+  }
+
+  async function removeConnection(e){
+    console.log(e)
+    let sendData = {
+      collection:{
+        name: collection.name,
+        category: collection.category
+      }
+    }
+
+    if (e.detail.type == 'slave'){
+      sendData.collection.slave = collection.slave.filter(item => item.id != e.detail.addOnId).map(({id, ...other}) => id)
+    } else if (e.detail.type == 'master') {
+      sendData.collection.master = collection.master.filter(item => item.id != e.detail.addOnId).map(({id, ...other}) => id)
+    }
+
+    let response = await patch(`/collection/${$page.params.id}`, sendData)
+    collection = response.data
   }
   
 </script>
 
-{#if collection != undefined}
+<div class="tabs mb-8">
+  {#if subPage == 1}
+    <button class="tab tab-lg tab-bordered tab-active">Collection Data</button> 
+  {:else}
+    <button class="tab tab-lg tab-bordered" on:click={() => subPage = 1}>Collection Data</button>
+  {/if}
+  {#if subPage == 2}
+    <button class="tab tab-lg tab-bordered tab-active">Collection Products</button> 
+  {:else}
+    <button class="tab tab-lg tab-bordered" on:click={() => subPage = 2}>Collection Products</button>
+  {/if}
+  {#if subPage == 3}
+    <button class="tab tab-lg tab-bordered tab-active">Collection Relation</button> 
+  {:else}
+    <button class="tab tab-lg tab-bordered" on:click={() => subPage = 3}>Collection Relation</button>
+  {/if}
+</div>
+
+{#if collection != undefined && subPage == 1}
   <div class="border-b-2 border-accent pb-2 mb-4">
     <h1 class="text-3xl font-bold">{collection.released} - {decodeHTML(collection.name)}</h1>
   </div>
   <div class="grid grid-cols-12 gap-4">   
     <!-- Image row span-->
-    <div class="col-span-4 row-span-4 row-start-1 col-start-1">
+    <div class="col-span-4 row-span-3 row-start-1 col-start-1">
       {#if collection.cover != undefined}
         <img src={collection.cover} alt="Collection Cover" class="object-contain max-h-96" />
       {:else}
@@ -122,7 +164,7 @@
   </div>
 
   {#if collection.bgg_group != undefined}
-    <div class="mb-8">
+    <div class="pb-8">
       <h1 class="text-xl font-bold mb-4" >Badge & Grouping</h1>
       <div class="flex w-full flex-wrap gap-4">
         {#each collection.bgg_group as bggGroup}
@@ -137,7 +179,7 @@
       </div>
     </div>
   {/if}
-
+{:else if subPage == 2}
   <div class="bg-secondary rounded-md py-2 px-4">
     <h2 class="font-bold text-2xl text-secondary-content">Product List</h2>
   </div>
@@ -210,4 +252,27 @@
       </tbody>
     </table>
   </div>
+{:else if subPage == 3}
+  <button class="btn btn-success btn-lg mb-4" on:click={() => globalModal.connectionEditor(collection)}>Add Collection Connection</button>
+  {#if collection.slave.length > 0}
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold mb-4">Expansion Collection</h1>
+      <div class="flex gap-4">
+        {#each collection.slave as item}
+          <CollectionMiniCard data={item} type='slave' on:removeConnection={e => removeConnection(e)}/>
+        {/each}
+      </div>
+    </div>
+  {/if}
+
+  {#if collection.master.length > 0}
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold mb-4">Core Collection</h1>
+      <div class="flex gap-4">
+        {#each collection.master as item}
+          <CollectionMiniCard data={item} type='master' on:removeConnection={e => removeConnection(e)}/>
+        {/each}
+      </div>
+    </div>
+  {/if}
 {/if}

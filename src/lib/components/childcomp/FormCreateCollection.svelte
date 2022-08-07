@@ -280,33 +280,36 @@
     </div>
 
     {#if inputExpansion}
-      <div class="grid grid-cols-12 max-h-80">
-        <div class="col-span-3" >
-          <h1 class="text-xl font-bold text-center">Expansion List</h1>
-          <table class="table table-compact w-full">
-            <thead>
-              <tr>
-                <th class="text-center w-4/5">Name</th> 
-                <th class="text-center w-1/5">Act</th> 
-              </tr>
-            </thead>
-            <tbody>
-              {#each childrenGame as expansion}
+      <div class="flex max-h-80">
+        {#if dataCollection.category == 'Core Game' || dataCollection.category == 'Core & Expansion'}
+          <div class="grow">
+            <h1 class="text-xl font-bold text-center">Expansion List</h1>
+            <table class="table table-compact w-full">
+              <thead>
                 <tr>
-                  <td>{decodeHTML(expansion.name)}</td>
-                  <td>
-                    <button class="btn btn-sm btn-error w-full" on:click={() => {
-                      DeleteExpansion(expansion.id)
-                    }}>
-                      X
-                    </button>
-                  </td>
-                </tr>              
-              {/each}
-            </tbody>
-          </table>
-        </div>
-        <div class="col-span-6 border-x-2 border-secondary px-2" >
+                  <th class="text-center w-4/5">Name</th> 
+                  <th class="text-center w-1/5">Act</th> 
+                </tr>
+              </thead>
+              <tbody>
+                {#each childrenGame as expansion}
+                  <tr>
+                    <td>{decodeHTML(expansion.name)}</td>
+                    <td>
+                      <button class="btn btn-sm btn-error w-full" on:click={() => {
+                        DeleteExpansion(expansion.id)
+                      }}>
+                        X
+                      </button>
+                    </td>
+                  </tr>              
+                {/each}
+              </tbody>
+            </table>
+          </div>
+        {/if}
+        
+        <div class="w-1/2 border-x-2 border-secondary px-2" >
           <form class="grid grid-cols-4 gap-4" on:submit|preventDefault={() => SearchBoardgame()}>
             <input id="game-search" type="text" placeholder="Search game" class="input input-sm col-span-3 input-bordered w-full" bind:value={searchQuery} />
             {#if startSearching}
@@ -330,9 +333,13 @@
           <table class="table table-compact w-full">
             <thead>
               <tr>
-                <th class="text-center w-1/6">Add Exp</th>
-                <th class="text-center w-4/6">Name</th> 
-                <th class="text-center w-1/6">Add Core</th> 
+                {#if dataCollection.category == 'Core Game' || dataCollection.category == 'Core & Expansion'}
+                  <th class="text-center w-1/6">Add Exp</th>
+                {/if}
+                <th class="text-center w-auto">Name</th> 
+                {#if dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion'}
+                  <th class="text-center w-1/6">Add Core</th> 
+                {/if}
               </tr>
             </thead>
             <tbody>
@@ -343,54 +350,60 @@
               {:else} 
                 {#each viewQuery as collection}
                   <tr>
-                    <td>
-                      <button class="btn btn-success btn-sm w-full" on:click={() => AddExpansion({
-                        id: collection.id,
-                        name: `(${collection.released}) ${collection.name}`,
-                      })}>
-                        +
-                      </button>
-                    </td>
+                    {#if dataCollection.category == 'Core Game' || dataCollection.category == 'Core & Expansion'}
+                      <td>
+                        <button class="btn btn-success btn-sm w-full" on:click={() => AddExpansion({
+                          id: collection.id,
+                          name: `(${collection.released}) ${collection.name}`,
+                        })}>
+                          +
+                        </button>
+                      </td>
+                    {/if}
                     <td>{`(${collection.released}) ${decodeHTML(collection.name)}`}</td>
-                    <td>
-                      <button class="btn btn-success btn-sm w-full" on:click={() => AddCore({
-                        id: collection.id,
-                        name: `(${collection.released}) ${collection.name}`,
-                      })}>
-                        +
-                      </button>
-                    </td>
+                    {#if dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion'}
+                      <td>
+                        <button class="btn btn-success btn-sm w-full" on:click={() => AddCore({
+                          id: collection.id,
+                          name: `(${collection.released}) ${collection.name}`,
+                        })}>
+                          +
+                        </button>
+                      </td>
+                    {/if}
                   </tr>
                 {/each}
               {/if}
             </tbody>
           </table>
         </div>
-        <div class="col-span-3" >
-          <h1 class="text-xl font-bold text-center">Core Game List</h1>
-          <table class="table table-compact w-full">
-            <thead>
-              <tr>
-                <th class="text-center w-4/5">Name</th> 
-                <th class="text-center w-1/5">Act</th> 
-              </tr>
-            </thead>
-            <tbody>
-              {#each parentGame as core}
+        {#if dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion'}
+          <div class="grow" >
+            <h1 class="text-xl font-bold text-center">Core Game List</h1>
+            <table class="table table-compact w-full">
+              <thead>
                 <tr>
-                  <td >{decodeHTML(core.name)}</td>
-                  <td >
-                    <button class="btn btn-sm btn-error" on:click={() => {
-                      DeleteCore(core.id)
-                    }}>
-                      X
-                    </button>
-                  </td>
-                </tr>              
-              {/each}
-            </tbody>
-          </table>
-        </div>
+                  <th class="text-center w-4/5">Name</th> 
+                  <th class="text-center w-1/5">Act</th> 
+                </tr>
+              </thead>
+              <tbody>
+                {#each parentGame as core}
+                  <tr>
+                    <td >{decodeHTML(core.name)}</td>
+                    <td >
+                      <button class="btn btn-sm btn-error" on:click={() => {
+                        DeleteCore(core.id)
+                      }}>
+                        X
+                      </button>
+                    </td>
+                  </tr>              
+                {/each}
+              </tbody>
+            </table>
+          </div>
+        {/if}
       </div>
     {/if}
   {/if}
