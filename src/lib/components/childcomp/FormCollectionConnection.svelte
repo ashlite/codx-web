@@ -45,10 +45,14 @@
 
   $: viewQuery = resultQuery
   .filter(item => {
-    return !childrenGame.some(childItem => childItem.id == item.id)
+    if(dataCollection.category != 'Core & Expansion'){
+      return !childrenGame.some(childItem => childItem.id == item.id)
+    }
   })
   .filter(item => {
-    return !parentGame.some(parentItem => parentItem.id == item.id)
+    if(dataCollection.category != 'Core & Expansion'){
+      return !parentGame.some(parentItem => parentItem.id == item.id)
+    }
   })
   .filter(item => item.id != dataCollection.id)
 

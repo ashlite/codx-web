@@ -2,6 +2,8 @@
   export let data
   import BggBtn from "./BggBtn.svelte"
   import {decodeXML} from 'entities'
+
+  console.log(data)
 </script>
 
 <div class="indicator">
@@ -21,7 +23,7 @@
       {/if}
     </figure>
     <div class="card-body">
-      <div class="badge badge-secondary">{data.yearpublished.value}</div>
+      <div class="badge badge-secondary">{data.yearpublished == undefined ? 'NaN' : data.yearpublished.value}</div>
       <!-- <div class="flex flex-row gap-4">
         <div class="badge badge-accent">{xmlData.getAttribute('rank')}</div>
       </div> -->
