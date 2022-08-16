@@ -69,12 +69,15 @@
   .filter(item => {
     if(dataCollection.category != 'Core & Expansion'){
       return !childrenGame.some(childItem => childItem.id == item.id)
-    }
+    } else return item
   })
   .filter(item => {
     if(dataCollection.category == 'Core & Expansion'){
-      return !parentGame.some(childItem => childItem.id == item.id)
-    }
+      return !parentGame.some(parentItem => parentItem.id == item.id)
+    } else return item
+  })
+  .filter(item =>{
+    return (!childrenGame.some(childItem => childItem.id == item.id) && !parentGame.some(parentItem => parentItem.id == item.id)) 
   })
 
   async function PostDataCollection(){
