@@ -28,7 +28,7 @@
       searchName = undefined
       let response = await get('/utils/count?collection=1')
       totalItem = await response.data.total_collection
-      listItem = await get(`/collection?limit=10`)
+      listItem = await get(`/collection?limit=50`)
     } else if (searchName != undefined){
       let skipData = (data.currentPage - 1) * data.itemPerPage
       listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&q=${searchName}`)

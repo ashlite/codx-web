@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte'
-  export let totalItems, defaultItemPerPage = 10
+  export let totalItems, defaultItemPerPage = 50
   let currentPage = 1
   let totalPages = 1
   let itemPerPage = defaultItemPerPage
@@ -41,10 +41,10 @@
   <div class="col-span-3 flex items-center gap-4">
     <h3 class="text-xl">Items per page:</h3>
     <select class="select select-bordered max-w-xs" bind:value={itemPerPage} on:change={() => dispatchUpdate()} >
-      <option value={10}>10</option>
-      <option value={25}>25</option>
       <option value={50}>50</option>
       <option value={100}>100</option>
+      <option value={150}>150</option>
+      <option value={200}>200</option>
     </select>
   </div>
   <div class="col-start-4 col-span-7">

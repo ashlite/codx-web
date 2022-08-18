@@ -45,17 +45,16 @@
 
   $: viewQuery = resultQuery
   .filter(item => {
-    if(dataCollection.category != 'Core & Expansion'){
-      return !childrenGame.some(childItem => childItem.id == item.id)
-    } else return item
-  })
-  .filter(item => {
-    if(dataCollection.category != 'Core & Expansion'){
-      return !parentGame.some(parentItem => parentItem.id == item.id)
-    } else return item
-  })
-  .filter(item =>{
-    return (!childrenGame.some(childItem => childItem.id == item.id) && !parentGame.some(parentItem => parentItem.id == item.id)) 
+    const checkChildren = childrenGame.some(childItem => childItem.id == item.id)
+    const checkParent = parentGame.some(parentItem => parentItem.id == item.id)
+
+    if(dataCollection.category != 'Core & Expansion' && checkChildren){
+      return false
+    } else if(dataCollection.category != 'Core & Expansion' && checkParent){
+      return false
+    } else if (checkChildren && checkParent){
+      return false
+    } else return true
   })
   .filter(item => item.id != dataCollection.id)
 
@@ -175,7 +174,7 @@
         {:else}
           {#each viewQuery as collection}
             <tr>
-              {#if dataCollection.category == 'Core Game' || dataCollection.category == 'Core & Expansion'}
+              {#if (dataCollection.category == 'Core Game' || dataCollection.category == 'Core & Expansion') && !childrenGame.some(childItem => childItem.id == collection.id)}
                 <td>
                   <button class="btn btn-success btn-sm w-full" on:click={() => AddExpansion({
                     id: collection.id,
@@ -186,7 +185,7 @@
                 </td>
               {/if}
               <td>{`(${collection.released}) ${decodeHTML(collection.name)}`}</td>
-              {#if dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion'}
+              {#if (dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion') && !parentGame.some(parentItem => parentItem.id == collection.id)}
                 <td>
                   <button class="btn btn-success btn-sm w-full" on:click={() => AddCore({
                     id: collection.id,
