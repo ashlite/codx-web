@@ -1,5 +1,5 @@
 <script>
-  import { listCollectionCategory, collectionEditorData, toastAlert } from '$lib/store'
+  import { listCollectionCategory, collectionEditorData } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
 
 

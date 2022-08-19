@@ -7,7 +7,7 @@ export const collectionDeleteName = writable('')
 export const listCollection = writable(false)
 export const totalCollection = writable(false)
 export const toggleModalCollectionEditor = writable(false)
-export const collectionRefresh = writable(false) //request refresh ke subscriber
+export const refreshPage = writable(false) // request refresh ke subscriber
 
 //Untuk keperluan Global Modal
 function createModal(){

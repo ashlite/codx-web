@@ -1,6 +1,6 @@
 <script>
   import { get, post } from '$lib/api'
-  import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
+  import { globalModal, toastAlert, refreshPage } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
   import { onMount } from 'svelte'
   export let data
@@ -100,7 +100,7 @@
       let response = await post('/collection', sendData)
       if (response.status == 200){
         toastAlert.success('Success')
-        collectionRefresh.set(true)
+        refreshPage.set(true)
         globalModal.close()
       } else {
         toastAlert.error('Failed to save data')

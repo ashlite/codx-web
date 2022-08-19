@@ -1,5 +1,5 @@
 <script>
-  import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
+  import { globalModal, toastAlert, refreshPage } from '$lib/store'
   import { RingLoader } from 'svelte-loading-spinners'
   import {del} from '$lib/api'
   import { createEventDispatcher } from 'svelte'
@@ -13,7 +13,7 @@
     try {
       await del(`/${data.type}/${data.id}`)
       toastAlert.success('Item deleted')
-      collectionRefresh.set(true)
+      refreshPage.set(true)
     } catch (error) {
       toastAlert.error(error)
     } finally {

@@ -1,5 +1,5 @@
 <script>
-  import { globalModal, collectionRefresh, toastAlert } from '$lib/store'
+  import { globalModal, toastAlert, refreshPage } from '$lib/store'
   import { get, patch } from '$lib/api'
   export let data
 
@@ -76,7 +76,7 @@
       let response = await patch(`/collection/${dataCollection.id}`, sendData)
       if (response.status == 200){
         toastAlert.success('Success')
-        collectionRefresh.set(true)
+        refreshPage.set(true)
         globalModal.close()
       } else {
         toastAlert.error(`Failed to save data (${response.status})`)

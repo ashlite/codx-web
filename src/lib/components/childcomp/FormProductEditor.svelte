@@ -1,6 +1,6 @@
 <script>
   import { get, post, patch } from '$lib/api'
-  import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
+  import { globalModal, toastAlert, refreshPage } from '$lib/store'
   import { onMount } from 'svelte'
   export let data
 
@@ -41,14 +41,14 @@
         let response = await post('/product', sendData)
         if (response.status == 201) {
           toastAlert.success('product created')
-          collectionRefresh.set(true)
+          refreshPage.set(true)
           globalModal.close()
         }
       } else {
         let response = await patch(`/product/${dataProduct.id}`, sendData)
         if (response.status == 200) {
           toastAlert.success('product updated')
-          collectionRefresh.set(true)
+          refreshPage.set(true)
           globalModal.close()
         } 
       }

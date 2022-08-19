@@ -1,6 +1,6 @@
 <script>
   import { get } from '$lib/api'
-  import { globalModal, collectionRefresh, toastAlert } from '$lib/store'
+  import { globalModal, toastAlert, refreshPage } from '$lib/store'
   import CollectionCard from '$lib/components/CollectionCard.svelte'
   import PaginationNav from '$lib/components/PaginationNav.svelte'
   import { RingLoader } from 'svelte-loading-spinners'
@@ -13,10 +13,10 @@
   let searching = false
   let searchName
 
-  const unsubscribe = collectionRefresh.subscribe(value => {
+  const unsubscribe = refreshPage.subscribe(value => {
     if (value){
       RefreshData()
-      collectionRefresh.set(false)
+      refreshPage.set(false)
     }
   })
   onDestroy(unsubscribe)

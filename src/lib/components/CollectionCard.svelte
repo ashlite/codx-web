@@ -19,6 +19,11 @@
       {#if data.released}
         <div class="badge badge-primary">{data.released}</div>
       {/if}
+      {#if data.total_product > 0}
+        <div class="badge badge-success">{data.total_product}</div>
+      {:else}
+        <div class="badge badge-error">0</div>
+      {/if}
     </div>
     <h2 class="text-xl truncate">{data.name}</h2>
     {#if data.category == 'Expansion' || data.category == 'Core Game' || data.category == 'Core & Expansion'}
@@ -44,7 +49,7 @@
         </div>
         <div class="divider divider-horizontal" />
         <div class="">
-          <div class="stat-title text-l">Total Playtime</div>
+          <div class="stat-title text-l">Playtime</div>
           {#if data.min_playtime == undefined}
             <div class="stat-value text-lg text-error">N/A</div>
           {:else if data.min_playtime == data.max_playtime}

@@ -4,17 +4,17 @@
   import { onDestroy } from 'svelte'
   import { decodeHTML } from 'entities'
   import { marginCalc, priceFormater } from '$lib/tools'
-  import { globalModal, collectionRefresh } from '$lib/store'
+  import { globalModal, refreshPage } from '$lib/store'
   import { afterNavigate } from '$app/navigation'
   import CollectionMiniCard from '$lib/components/CollectionMiniCard.svelte'
 
   let collection
   let subPage = 1
 
-  const unsubscribe = collectionRefresh.subscribe(value => {
+  const unsubscribe = refreshPage.subscribe(value => {
     if (value){
       RefreshData()
-      collectionRefresh.set(false)
+      refreshPage.set(false)
     }
   })
   onDestroy(unsubscribe)
