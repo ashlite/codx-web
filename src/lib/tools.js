@@ -1,5 +1,6 @@
 export function priceFormater(price, currency = 'IDR') {
-  return new Intl.NumberFormat('id-ID', {style:'currency', currency: currency}).format(price)
+  const formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: currency}).format(price)
+  return formattedPrice.slice(0, -3)
 }
 
 export function marginCalc(buy, sell, type = 'nominal'){

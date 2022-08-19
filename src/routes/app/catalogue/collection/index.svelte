@@ -5,7 +5,7 @@
   import PaginationNav from '$lib/components/PaginationNav.svelte'
   import { RingLoader } from 'svelte-loading-spinners'
   import { shortcut } from '$lib/shortcut'
-  import { onMount, onDestroy } from 'svelte'
+  import { onDestroy } from 'svelte'
   import { afterNavigate } from '$app/navigation'
 
   let totalItem = 0

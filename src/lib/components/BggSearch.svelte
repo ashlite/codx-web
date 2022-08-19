@@ -26,8 +26,10 @@
         })
         const dataBgg = parser.parse(await response.text(),"text/xml")
         totalResult = dataBgg.items.total
-        if (totalResult > 0) {
+        if (totalResult > 1) {
           bggSearchResult.set(dataBgg.items.item)
+        } else if (totalResult == 1) {
+          bggSearchResult.set([dataBgg.items.item])
         } else {
           bggSearchResult.set([null])
         }

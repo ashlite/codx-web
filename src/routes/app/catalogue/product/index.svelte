@@ -5,9 +5,11 @@
   import { afterNavigate } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
   import SearchBar from '$lib/components/SearchBar.svelte'
+  import EditableInput from '$lib/components/EditableInput.svelte';
   import { marginCalc } from '$lib/tools'
-  import { globalModal, refreshPage } from '$lib/store'
+  import { globalModal, refreshPage, toastAlert } from '$lib/store'
   import { onDestroy } from 'svelte'
+  import {patch} from '$lib/api'
 
   let listProduct = {data:[]}
   let totalItem = 0
@@ -36,6 +38,27 @@
     }
   })
   onDestroy(unsubscribe)
+
+  async function handleEditable(type, data){
+    let response
+    try{
+      if (type == 'buy'){
+        response = await patch(`/product/${data.dataId}/buyprice/${data.newValue}`)  
+      } else if (type == 'sell'){
+        response = await patch(`/product/${data.dataId}/sellprice/${data.newValue}`)
+      }
+    } catch (error){
+      toastAlert.error(error.message)
+    }
+
+    if (response.status == 200){
+      RefreshData()
+      toastAlert.success('Price updated')
+    } else {
+      toastAlert.error('Failed to update price')
+    }
+  } 
+
 </script>
 
 <div class="flex justify-between items-center gap-4">
@@ -76,12 +99,12 @@
                 <div class="text-info">{product.name}</div>
               </div>
             </td>
-            <td>{priceFormater(product.buy_price)}</td>
             <td>
-              <div class="flex flex-col">
-                <div>
-                  {priceFormater(product.sell_price)}
-                </div>
+              <EditableInput value={product.buy_price} dataId={product.id} on:editableSubmit={event => handleEditable('buy', event.detail)}/>
+            </td>
+            <td>
+              <div class="flex flex-col gap-2">
+                <EditableInput value={product.sell_price} dataId={product.id} on:editableSubmit={event => handleEditable('sell', event.detail)}/>
                 {#if marginCalc(product.buy_price, product.sell_price, 'percent') > 25}
                 <div class="badge badge-success font-bold">{marginCalc(product.buy_price, product.sell_price, 'percent')}%</div>
                 {:else if marginCalc(product.buy_price, product.sell_price, 'percent') > 5}
