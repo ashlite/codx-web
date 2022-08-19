@@ -2,8 +2,6 @@
   export let data
   import BggBtn from "./BggBtn.svelte"
   import { globalModal} from '$lib/store'
-  import { goto } from "$app/navigation"
-  import { decodeHTML } from 'entities'
 
 </script>
 
@@ -22,7 +20,7 @@
         <div class="badge badge-primary">{data.released}</div>
       {/if}
     </div>
-    <h2 class="text-xl truncate">{decodeHTML(data.name)}</h2>
+    <h2 class="text-xl truncate">{data.name}</h2>
     {#if data.category == 'Expansion' || data.category == 'Core Game' || data.category == 'Core & Expansion'}
       <div class="flex flex-row h-16 w-full mb-4">
         <div class="">

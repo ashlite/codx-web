@@ -2,7 +2,6 @@
   import { get, post, patch } from '$lib/api'
   import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
   import { onMount } from 'svelte'
-  import { decodeHTML, encodeHTML } from 'entities'
   export let data
 
   let dataProduct

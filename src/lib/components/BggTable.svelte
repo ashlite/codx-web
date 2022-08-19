@@ -1,7 +1,7 @@
 <script>
   export let data
   import BggBtn from "./BggBtn.svelte"
-  import {decodeXML} from 'entities'
+  import {decodeXML, decodeHTML} from 'entities'
 </script>
 
 <div class="max-w-full">
@@ -24,7 +24,7 @@
           {:else}
           <td>{bg.yearpublished.value}</td>
           {/if}
-          <td class="overflow-hidden">{decodeXML(bg.name.value)}</td>
+          <td class="overflow-hidden">{decodeHTML(decodeXML(bg.name.value))}</td>
           <td>
             <BggBtn id={bg.id} type="both"/>
           </td>

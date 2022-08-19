@@ -3,7 +3,6 @@
   import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
   import { onMount } from 'svelte'
-  import { decodeHTML, encodeHTML } from 'entities'
   export let data
   
   let listCollectionCategory = get('/category')
@@ -83,8 +82,8 @@
     toastAlert.warning('Processing...')
     let sendData = {}
     sendData.collection = {...dataCollection}
-    sendData.collection.name = encodeHTML(dataCollection.name)
-    sendData.collection.description = encodeHTML(dataCollection.description||'')
+    sendData.collection.name = dataCollection.name
+    sendData.collection.description = dataCollection.description
     if (inputProduct) {
       sendData.product = {...dataProduct}
     }
@@ -300,7 +299,7 @@
               <tbody>
                 {#each childrenGame as expansion}
                   <tr>
-                    <td>{decodeHTML(expansion.name)}</td>
+                    <td>{expansion.name}</td>
                     <td>
                       <button class="btn btn-sm btn-error w-full" on:click={() => {
                         DeleteExpansion(expansion.id)
@@ -366,7 +365,7 @@
                         </button>
                       </td>
                     {/if}
-                    <td>{`(${collection.released}) ${decodeHTML(collection.name)}`}</td>
+                    <td>{`(${collection.released}) ${collection.name}`}</td>
                     {#if (dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion') && !parentGame.some(parentItem => parentItem.id == collection.id)}
                       <td>
                         <button class="btn btn-success btn-sm w-full" on:click={() => AddCore({
@@ -396,7 +395,7 @@
               <tbody>
                 {#each parentGame as core}
                   <tr>
-                    <td >{decodeHTML(core.name)}</td>
+                    <td >{core.name}</td>
                     <td >
                       <button class="btn btn-sm btn-error" on:click={() => {
                         DeleteCore(core.id)

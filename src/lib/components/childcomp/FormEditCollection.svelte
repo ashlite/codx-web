@@ -3,13 +3,12 @@
   import { globalModal, toastAlert, collectionRefresh } from '$lib/store'
   import { BggSingleItem } from '$lib/bggInteraction'
   import { onMount } from 'svelte'
-  import { decodeHTML, encodeHTML } from 'entities'
   export let data
   
   let listCollectionCategory = get('/category')
   let dataCollection = data.collection
-  dataCollection.name = decodeHTML(dataCollection.name)
-  dataCollection.description = decodeHTML(dataCollection.description)
+  dataCollection.name = dataCollection.name
+  dataCollection.description = dataCollection.description
   delete dataCollection.master
   delete dataCollection.slave
   delete dataCollection.product
@@ -34,8 +33,8 @@
     toastAlert.warning('Processing...')
     let sendData = {}
     sendData.collection = {...dataCollection}
-    sendData.collection.name = encodeHTML(dataCollection.name)
-    sendData.collection.description = encodeHTML(dataCollection.description || '')
+    sendData.collection.name = dataCollection.name
+    sendData.collection.description = dataCollection.description
     console.log(sendData)
     
     try{      

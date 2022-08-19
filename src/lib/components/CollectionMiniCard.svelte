@@ -2,7 +2,6 @@
   import BggBtn from "./BggBtn.svelte"
   import { goto } from "$app/navigation"
   import { createEventDispatcher } from "svelte"
-  import {decodeHTML} from "entities"
   export let data, type
   
   const dispatch = createEventDispatcher()
@@ -25,7 +24,7 @@
   </figure>
   <div class="card-body p-4 ">
     <div class="badge badge-primary">{data.released}</div>
-    <h2 class="text-md font-bold">{decodeHTML(data.name)}</h2>
+    <h2 class="text-md font-bold">{data.name}</h2>
     <div class="card-actions justify-end">
       <button class="btn btn-error" on:click={() => removeConnection()}>
         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
