@@ -19,7 +19,7 @@
 <div>
   {#if editing}
     <form on:submit|preventDefault={() => submitValue()}>
-      <input type="text" class="input input-bordered input-sm max-w-xs" placeholder="Search Game" bind:value={value} />
+      <input autofocus type="text" class="input input-bordered input-sm max-w-xs" placeholder="Search Game" bind:value={value} on:blur={() => editing = false}/>
     </form>
   {:else}
     <div on:click={() => editing = true} class="cursor-pointer underline decoration-dotted decoration-1 underline-offset-2 font-bold">
