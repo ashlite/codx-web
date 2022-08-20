@@ -70,6 +70,7 @@
         </select>
       </div>
       <li><a sveltekit:prefetch href='/app/catalogue/collection' class={$page.url.pathname.includes('/catalogue') ? "active" : ""}>Catalogue</a></li>
+      <li><a sveltekit:prefetch href='/app/crm/customer' class={$page.url.pathname.includes('/crm') ? "active" : ""}>CRM</a></li>
       <li><a sveltekit:prefetch href='/app/inventory' class={$page.url.pathname.includes('/inventory') ? "active" : ""}>Inventory</a></li>
     </ul>
   </div>

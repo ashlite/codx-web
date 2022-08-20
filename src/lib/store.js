@@ -20,7 +20,7 @@ function createModal(){
     collectionFromBgg:(id) => set({title: 'Create New Collection', type: 'createCollection', size:'lg', data: {bggId: id}}),
     deleteConfirmation:(id, name, type) => set({title: 'Delete Confirmation', type: 'deleteConfirmation', size:'sm', data: {id, name, type}}),
     collectionEdit:(collection) => set({title: 'Edit Collection', type: 'editCollection', size:'lg', data: {collection}}),
-    editProduct:(product) => set({title: 'Product Editor', type: 'editProduct', size:'md', data: {product}}),
+    editProduct:(product, collection) => set({title: 'Product Editor', type: 'editProduct', size:'md', data: {product, collection}}),
     connectionEditor:(collection) => set({title: 'Connection Setting', type: 'connectionEditor', size:'lg', data: {collection}}),
   }
 }
