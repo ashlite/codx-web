@@ -13,7 +13,7 @@
   let startSearching = false
 
   if (data.product.id == undefined){
-    dataProduct = {track_inventory: true, }
+    dataProduct = {track_inventory: true, ...data.product}
   } else {
     dataProduct = data.product
     newProduct = false
