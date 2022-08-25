@@ -4,7 +4,7 @@
   import { afterNavigate } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
   import SearchBar from '$lib/components/SearchBar.svelte'
-  import EditableInput from '$lib/components/EditableInput.svelte';
+  import EditableInput from '$lib/components/EditableInput.svelte'
   import { marginCalc } from '$lib/tools'
   import { globalModal, refreshPage, toastAlert } from '$lib/store'
   import { onDestroy } from 'svelte'

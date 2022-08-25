@@ -12,6 +12,9 @@
   let listItem = {data:[]}
   let searching = false
   let searchName
+  let noProduct = false
+
+  $: noProduct, RefreshData()
 
   const unsubscribe = refreshPage.subscribe(value => {
     if (value){
@@ -21,29 +24,33 @@
   })
   onDestroy(unsubscribe)
 
-  afterNavigate(() => RefreshData())
+  // afterNavigate(() => RefreshData())
   
   async function RefreshData(data){
-    if (data == undefined){
-      searchName = undefined
-      let response = await get('/utils/count?collection=1')
-      totalItem = await response.data.total_collection
-      listItem = await get(`/collection?limit=50`)
-    } else if (searchName != undefined){
-      let skipData = (data.currentPage - 1) * data.itemPerPage
-      listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&q=${searchName}`)
-    } else {
-      let skipData = (data.currentPage - 1) * data.itemPerPage
-      listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}`)
+    try{
+      if (data == undefined){
+        searchName = undefined
+        let response = await get(`/utils/count?collection=1&noproduct=${noProduct ? 1 : 0}`)
+        totalItem = await response.data.total_collection
+        listItem = await get(`/collection?limit=50&noproduct=${noProduct ? 1 : 0}`)
+      } else if (searchName != undefined){
+        let skipData = (data.currentPage - 1) * data.itemPerPage
+        listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&q=${searchName}&noproduct=${noProduct ? 1 : 0}`)
+      } else {
+        let skipData = (data.currentPage - 1) * data.itemPerPage
+        listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&noproduct=${noProduct ? 1 : 0}`)
+      }
+      listItem = listItem
+    } catch(error){
+      console.log(error)
     }
-    listItem = listItem
   }
 
   async function searchGame(){
     searching = true
     try{
-      listItem = await get(`/collection?limit=10&q=${searchName}`)
-      let response = await get(`/utils/count?collection=1&q=${searchName}`)
+      listItem = await get(`/collection?limit=10&q=${searchName}&noproduct=${noProduct ? 1 : 0}`)
+      let response = await get(`/utils/count?collection=1&q=${searchName}&noproduct=${noProduct ? 1 : 0}`)
       totalItem = await response.data.total_collection
     } catch (error) {
       toastAlert.error(error.message)
@@ -58,6 +65,12 @@
     <div class="stat-title">Total Items</div>
     <div class="stat-value text-primary">{totalItem}</div>
   </div>
+  <div class="form-control w-30">
+    <label class="flex flex-col gap-2 label cursor-pointer">
+      <span class="stat-title">No Product Only</span> 
+      <input type="checkbox" class="toggle toggle-md" bind:checked={noProduct} />
+    </label>
+  </div>
   <div class="w-96">
     <form class="flex gap-2" on:submit|preventDefault={() => searchGame()}>
       {#if searching}
@@ -69,7 +82,7 @@
       {/if}
     </form>
   </div>
-  <div class="w-72">
+  <div class="w-60">
     {#await listItem}
       <button class="btn btn-primary btn-md btn-disabled w-full loading" />
     {:then collections}

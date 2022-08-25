@@ -4,9 +4,10 @@
   import { onDestroy } from 'svelte'
   import { decodeHTML } from 'entities'
   import { marginCalc, priceFormater } from '$lib/tools'
-  import { globalModal, refreshPage } from '$lib/store'
+  import { globalModal, refreshPage, toastAlert } from '$lib/store'
   import { afterNavigate } from '$app/navigation'
   import CollectionMiniCard from '$lib/components/CollectionMiniCard.svelte'
+  import EditableInput from '$lib/components/EditableInput.svelte'
 
   let collection
   let subPage = 1
@@ -49,6 +50,26 @@
     let response = await patch(`/collection/${$page.params.id}`, sendData)
     collection = response.data
   }
+
+  async function handleEditable(type, data){
+    let response
+    try{
+      if (type == 'buy'){
+        response = await patch(`/product/${data.dataId}/buyprice/${data.newValue}`)  
+      } else if (type == 'sell'){
+        response = await patch(`/product/${data.dataId}/sellprice/${data.newValue}`)
+      }
+    } catch (error){
+      toastAlert.error(error.message)
+    }
+
+    if (response.status == 200){
+      RefreshData()
+      toastAlert.success('Price updated')
+    } else {
+      toastAlert.error('Failed to update price')
+    }
+  } 
   
 </script>
 
@@ -212,8 +233,8 @@
                 </div>
               </td>
               <td>{product.name}</td>
-              <td>{priceFormater(product.buy_price)}</td>
-              <td>{priceFormater(product.sell_price)}</td>
+              <td><EditableInput value={product.buy_price} dataId={product.id} on:editableSubmit={event => handleEditable('buy', event.detail)}/></td>
+              <td><EditableInput value={product.sell_price} dataId={product.id} on:editableSubmit={event => handleEditable('sell', event.detail)}/></td>
               <td>
                 <div>{priceFormater(marginCalc(product.buy_price, product.sell_price, 'nominal'))}</div>
                 {#if marginCalc(product.buy_price, product.sell_price, 'percent') > 25}

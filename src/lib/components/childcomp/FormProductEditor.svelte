@@ -43,19 +43,18 @@
 
   function setCurrentCollection(collection){
     dataCollection = collection
-    dataProduct.collection_id = collection.id
     searchQuery = ''
     resultQuery = []
   }
 
   function removeCollection(){
     dataCollection = {}
-    dataProduct.collection_id = undefined
   }
 
   async function saveData(){
     let sendData = {product:dataProduct}
-    console.log(sendData)
+    sendData.product.collection_id = dataCollection.id
+    
     try{
       if (newProduct){
         let response = await post('/product', sendData)
@@ -122,7 +121,7 @@
     <ul class="menu bg-neutral w-full absolute">
       {#if resultQuery.length > 0}
         {#each resultQuery as collection}
-          <li><button on:click={() => setCurrentCollection(collection)}>{`(${collection.released}) - ${collection.name}`}</button></li>
+          <li><button class="text-neutral-content" on:click={() => setCurrentCollection(collection)}>{`(${collection.released}) - ${collection.name}`}</button></li>
         {/each}
       {/if}
     </ul>
