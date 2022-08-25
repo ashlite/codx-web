@@ -23,8 +23,6 @@
     }
   })
   onDestroy(unsubscribe)
-
-  // afterNavigate(() => RefreshData())
   
   async function RefreshData(data){
     try{

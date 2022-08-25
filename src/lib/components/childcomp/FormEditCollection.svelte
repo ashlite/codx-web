@@ -35,7 +35,6 @@
     sendData.collection = {...dataCollection}
     sendData.collection.name = dataCollection.name
     sendData.collection.description = dataCollection.description
-    console.log(sendData)
     
     try{      
       let response = await patch(`/collection/${dataCollection.id}`, sendData)
