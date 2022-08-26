@@ -24,6 +24,7 @@ function createModal(){
     connectionEditor:(collection) => set({title: 'Connection Setting', type: 'connectionEditor', size:'lg', data: {collection}}),
     editCustomer:(customer) => set({title: 'Customer Editor', type: 'customerEditor', size:'md', data: {customer}}),
     editSupplier:(supplier) => set({title: 'Supplier Editor', type: 'supplierEditor', size:'md', data: {supplier}}),
+    editVenue:(venue) => set({title: 'Venue Editor', type: 'venueEditor', size:'md', data: {venue}}),
   }
 }
 
