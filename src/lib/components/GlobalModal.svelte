@@ -8,6 +8,7 @@
   import FormCustomer from './childcomp/FormCustomerEditor.svelte'
   import FormSupplierEditor from './childcomp/FormSupplierEditor.svelte'
   import FormVenueEditor from './childcomp/FormVenueEditor.svelte'
+  import FormCreatePurchase from './childcomp/FormCreatePurchase.svelte';
   import { shortcut } from '$lib/shortcut'
 </script>
 
@@ -37,6 +38,8 @@
         <FormSupplierEditor data={$globalModal.data} />
       {:else if $globalModal.type == 'venueEditor'}
         <FormVenueEditor data={$globalModal.data} />
+      {:else if $globalModal.type == 'newPurchase'}
+        <FormCreatePurchase />
       {/if}
     </div>
   </div>

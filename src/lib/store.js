@@ -25,6 +25,7 @@ function createModal(){
     editCustomer:(customer) => set({title: 'Customer Editor', type: 'customerEditor', size:'md', data: {customer}}),
     editSupplier:(supplier) => set({title: 'Supplier Editor', type: 'supplierEditor', size:'md', data: {supplier}}),
     editVenue:(venue) => set({title: 'Venue Editor', type: 'venueEditor', size:'md', data: {venue}}),
+    createPurchase:() => set({title: 'Create new Purchase', type: 'newPurchase', size:'md'})
   }
 }
 
