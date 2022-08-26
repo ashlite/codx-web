@@ -7,8 +7,8 @@
   import FormCollectionConnection from './childcomp/FormCollectionConnection.svelte'
   import FormCustomer from './childcomp/FormCustomerEditor.svelte'
   import FormSupplierEditor from './childcomp/FormSupplierEditor.svelte'
-  import FormEditVenue from './childcomp/FormVenueEditor.svelte'
-import FormVenueEditor from './childcomp/FormVenueEditor.svelte'
+  import FormVenueEditor from './childcomp/FormVenueEditor.svelte'
+  import { shortcut } from '$lib/shortcut'
 </script>
 
 <input type="checkbox" id="global-modal" class="modal-toggle" checked={$globalModal}/>
@@ -18,7 +18,7 @@ import FormVenueEditor from './childcomp/FormVenueEditor.svelte'
       {#if $globalModal.title}
         <h3 class="font-bold text-4xl">{$globalModal.title}</h3>
       {/if}
-      <button class="btn btn-sm btn-error" on:click={() => globalModal.close()}>X</button>
+      <button class="btn btn-sm btn-error" use:shortcut={{ code:'Escape' }} on:click={() => globalModal.close()}>X</button>
     </div>
     <div id="modal-body">
       {#if $globalModal.type == 'deleteConfirmation'}
