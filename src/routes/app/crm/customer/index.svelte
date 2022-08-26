@@ -6,7 +6,7 @@
   import SearchBar from '$lib/components/SearchBar.svelte'
   import { globalModal, refreshPage, toastAlert } from '$lib/store'
   import { onDestroy } from 'svelte'
-import AddCollectionModal from '$lib/components/AddCollectionModal.svelte'
+  import { shortcut } from '$lib/shortcut'
 
   let listCustomer = {data:[]}
   // let totalItem = 0
@@ -52,7 +52,11 @@ import AddCollectionModal from '$lib/components/AddCollectionModal.svelte'
     }}/>
   </div>
   <div class="w-60">
-    <button class="btn btn-primary w-full" on:click={() => globalModal.editCustomer()}>Add New Customer</button>
+    <button class="btn btn-primary w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.editCustomer()}>Add New Customer
+      <span class="ml-4">
+        <kbd class="kbd kbd-xs text-base-content">N</kbd>
+      </span>
+    </button>
   </div>
 </div>
 <!-- <PaginationNav totalItems={totalItem} on:updatePagination={event => {

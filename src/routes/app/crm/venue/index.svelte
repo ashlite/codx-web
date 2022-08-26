@@ -4,13 +4,10 @@
   import { afterNavigate } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
   import SearchBar from '$lib/components/SearchBar.svelte'
-  import EditableInput from '$lib/components/EditableInput.svelte';
-  import { marginCalc } from '$lib/tools'
   import { globalModal, refreshPage, toastAlert } from '$lib/store'
   import { onDestroy } from 'svelte'
-  import {patch} from '$lib/api'
-import FormVenueEditor from '$lib/components/childcomp/FormVenueEditor.svelte'
-import AddCollectionModal from '$lib/components/AddCollectionModal.svelte'
+  import { shortcut } from '$lib/shortcut'
+
 
   let listVenue = {data:[]}
   // let totalItem = 0
@@ -56,7 +53,12 @@ import AddCollectionModal from '$lib/components/AddCollectionModal.svelte'
     }}/> -->
   </div>
   <div class="w-60">
-    <button class="btn btn-primary w-full" on:click={() => globalModal.editVenue()}>Add New Venue</button>
+    <button class="btn btn-primary w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.editVenue()}>
+      Add New Venue
+      <span class="ml-4">
+        <kbd class="kbd kbd-xs text-base-content">N</kbd>
+      </span>
+    </button>
   </div>
 </div>
 <!-- <PaginationNav totalItems={totalItem} on:updatePagination={event => {

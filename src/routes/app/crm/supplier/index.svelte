@@ -8,7 +8,7 @@
   import { marginCalc } from '$lib/tools'
   import { globalModal, refreshPage, toastAlert } from '$lib/store'
   import { onDestroy } from 'svelte'
-  import {patch} from '$lib/api'
+  import { shortcut } from '$lib/shortcut'
 
   let listSupplier = {data:[]}
   // let totalItem = 0
@@ -54,7 +54,12 @@
     }}/> -->
   </div>
   <div class="w-60">
-    <button class="btn btn-primary w-full" on:click={() => globalModal.editSupplier()}>Add New Supplier</button>
+    <button class="btn btn-primary w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.editSupplier()}>
+      Add New Supplier
+      <span class="ml-4">
+        <kbd class="kbd kbd-xs text-base-content">N</kbd>
+      </span>
+    </button>
   </div>
 </div>
 <!-- <PaginationNav totalItems={totalItem} on:updatePagination={event => {
