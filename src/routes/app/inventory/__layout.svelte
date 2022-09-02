@@ -1,9 +1,9 @@
 <script context="module">
   export async function load({ url }) {
-    if (url.pathname === '/app/catalogue'){
+    if (url.pathname === '/app/crm'){
       return {
         status: 307,
-        redirect: '/app/catalogue/collection'
+        redirect: '/app/inventory/purchase'
       }
     } else {
       return {}
@@ -14,8 +14,6 @@
 <script>
   import { page } from '$app/stores'
   import { shortcut } from '$lib/shortcut'
-  import ToggleMenuDrawer from '$lib/components/ToggleMenuDrawer.svelte'
-  
 </script>
 
 <div class='min-h-screen min-w-full relative'>
@@ -23,23 +21,20 @@
     <div class="navbar-start">
       <ul class="menu menu-horizontal gap-4 p-0">
         <li>
-          <ToggleMenuDrawer />
-        </li>
-        <li>
-          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit1' }} href="/app/catalogue/collection" class={$page.url.pathname.includes('/collection') ? "active" : ""}>
-            Collection
+          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit1' }} href="/app/inventory/purchase" class={$page.url.pathname.includes('/purchase') ? "active" : ""}>
+            Stock Purchase
             <kbd class="kbd kbd-xs text-base-content">1</kbd>
           </a>
         </li>
         <li>
-          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit2' }} href="/app/catalogue/product" class={$page.url.pathname.includes('/product') ? "active" : ""}>
-            Product
+          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit2' }} href="/app/inventory/report" class={$page.url.pathname.includes('/report') ? "active" : ""}>
+            Inventory Report
             <kbd class="kbd kbd-xs text-base-content">2</kbd>
           </a>
         </li>
         <li>
-          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit3' }} href="/app/catalogue/bgglibrary" class={$page.url.pathname.includes('/bgglibrary') ? "active" : ""}>
-            BoardGameGeek
+          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit3' }} href="/app/inventory/movement" class={$page.url.pathname.includes('/movement') ? "active" : ""}>
+            Inventory Movement
             <kbd class="kbd kbd-xs text-base-content">3</kbd>
           </a>
         </li>

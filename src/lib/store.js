@@ -8,6 +8,7 @@ export const listCollection = writable(false)
 export const totalCollection = writable(false)
 export const toggleModalCollectionEditor = writable(false)
 export const refreshPage = writable(false) // request refresh ke subscriber
+export const toggleMainDrawer = writable(true)
 
 //Untuk keperluan Global Modal
 function createModal(){

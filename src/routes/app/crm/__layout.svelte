@@ -14,12 +14,16 @@
 <script>
   import { page } from '$app/stores'
   import { shortcut } from '$lib/shortcut'
+  import ToggleMenuDrawer from '$lib/components/ToggleMenuDrawer.svelte'
 </script>
 
 <div class='min-h-screen min-w-full relative'>
   <div class="navbar fixed top-0 bg-base-200 z-10">
     <div class="navbar-start">
       <ul class="menu menu-horizontal gap-4 p-0">
+        <li>
+          <ToggleMenuDrawer />
+        </li>
         <li>
           <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit1' }} href="/app/crm/customer" class={$page.url.pathname.includes('/customer') ? "active" : ""}>
             Customer
