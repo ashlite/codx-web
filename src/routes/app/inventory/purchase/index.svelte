@@ -1,10 +1,11 @@
 <script>
-  import PaginationNav from "$lib/components/PaginationNav.svelte"
-  import { shortcut } from "$lib/shortcut"
-  import { globalModal } from "$lib/store"
+  import PaginationNav from "$lib/components/organism/PaginationNav.svelte"
+  import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte";
+  import { shortcut } from "$lib/helper/shortcut"
+  import { globalModal } from "$lib/helper/store"
   import { afterNavigate } from '$app/navigation'
-  import { get } from "$lib/api"
-  import { dateFormater, priceFormater } from '$lib/tools'
+  import { get } from "$lib/helper/api"
+  import { dateFormater, priceFormater } from '$lib/helper/tools'
 
   let listPurchase ={data:[]}
   let itemPerPage = 50
@@ -58,12 +59,7 @@
       </select>
     </div>
     <div class="w-60">
-      <button class="btn btn-primary btn-md w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.createPurchase()}>
-        Create Purchase
-        <span class="ml-4">
-          <kbd class="kbd kbd-xs text-base-content">N</kbd>
-        </span>
-      </button>
+      <BtnAddNew text="Purchase" on:click={() => globalModal.createPurchase()}/>
     </div>
   </div>
   <PaginationNav />

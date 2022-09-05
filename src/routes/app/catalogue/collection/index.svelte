@@ -1,12 +1,14 @@
 <script>
-  import { get } from '$lib/api'
-  import { globalModal, toastAlert, refreshPage } from '$lib/store'
-  import CollectionCard from '$lib/components/CollectionCard.svelte'
-  import PaginationNav from '$lib/components/PaginationNav.svelte'
+  import { get } from '$lib/helper/api'
+  import { globalModal, toastAlert, refreshPage } from '$lib/helper/store'
+  import CollectionCard from '$lib/components/organism/CollectionCard.svelte'
+  import PaginationNav from '$lib/components/organism/PaginationNav.svelte'
   import { RingLoader } from 'svelte-loading-spinners'
-  import { shortcut } from '$lib/shortcut'
+  import { shortcut } from '$lib/helper/shortcut'
   import { onDestroy } from 'svelte'
   import { afterNavigate } from '$app/navigation'
+  import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
+  import SearchBar from '$lib/components/molecule/SearchBar.svelte'
 
   let totalItem = 0
   let listItem = {data:[]}
@@ -44,11 +46,11 @@
     }
   }
 
-  async function searchGame(){
+  async function searchGame(query){
     searching = true
     try{
-      listItem = await get(`/collection?limit=10&q=${searchName}&noproduct=${noProduct ? 1 : 0}`)
-      let response = await get(`/utils/count?collection=1&q=${searchName}&noproduct=${noProduct ? 1 : 0}`)
+      listItem = await get(`/collection?limit=10&q=${query}&noproduct=${noProduct ? 1 : 0}`)
+      let response = await get(`/utils/count?collection=1&q=${query}&noproduct=${noProduct ? 1 : 0}`)
       totalItem = await response.data.total_collection
     } catch (error) {
       toastAlert.error(error.message)
@@ -70,7 +72,8 @@
     </label>
   </div>
   <div class="w-96">
-    <form class="flex gap-2" on:submit|preventDefault={() => searchGame()}>
+    <SearchBar on:searchTrigger={e => searchGame(e.detail.searchQuery)} searchState={searching} />
+    <!-- <form class="flex gap-2" on:submit|preventDefault={() => searchGame()}>
       {#if searching}
         <input type="text" class="input input-bordered input-info w-full" disabled bind:value={searchName}/>
         <button class="btn btn-md btn-info loading" />
@@ -78,19 +81,10 @@
         <input type="text" class="input input-bordered input-info w-full" bind:value={searchName}/>
         <button class="btn btn-md btn-info" type="submit">Search</button>  
       {/if}
-    </form>
+    </form> -->
   </div>
   <div class="w-60">
-    {#await listItem}
-      <button class="btn btn-primary btn-md btn-disabled w-full loading" />
-    {:then collections}
-      <button class="btn btn-primary btn-md w-full" use:shortcut={{alt:true, shift:true, code:'KeyN' }} on:click={() => globalModal.collectionCreate()}>
-          Add New Collection 
-        <span class="ml-4">
-          <kbd class="kbd kbd-xs text-base-content">N</kbd>
-        </span>
-      </button>
-    {/await}
+    <BtnAddNew text='Collection' on:click={() => globalModal.collectionCreate()}/>
   </div>
 </div>
 

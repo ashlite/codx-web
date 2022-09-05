@@ -9,7 +9,7 @@ const axiosReq = axios.create({
 })
 
 export async function post(endpoint, data) {
-  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}` 
   return await axiosReq.post(url, data)
 }
 
@@ -31,4 +31,12 @@ export async function del(endpoint) {
 export async function logout(){
   const url = `${import.meta.env.VITE_BACKEND}/logout`
   return await axiosReq.post(url)
+}
+
+export async function epost(endpoint, data){
+  return await axios.post(endpoint, data)
+}
+
+export async function eget(endpoint){
+  return await axios.get(endpoint)
 }

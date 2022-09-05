@@ -1,8 +1,8 @@
 <script>
-  import { toggleModalCollectionEditor } from '$lib/store'
+  import { toggleModalCollectionEditor } from '$lib/helper/store'
   import { RingLoader } from 'svelte-loading-spinners'
   import { createEventDispatcher } from 'svelte'
-  import { get } from '$lib/api'
+  import { get } from '$lib/helper/api'
 
   let dataCollection = {
     category: 'Core Game',

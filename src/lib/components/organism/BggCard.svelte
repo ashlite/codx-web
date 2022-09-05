@@ -1,6 +1,8 @@
 <script>
   export let data
-  import BggBtn from "./BggBtn.svelte"
+  import BtnExternalLink from '$lib/components/atom/BtnExternalLink.svelte'
+  import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
+  import { globalModal } from "$lib/helper/store"
   import {decodeXML, decodeHTML} from 'entities'
 
   console.log(data)
@@ -31,7 +33,8 @@
         {decodeHTML(decodeXML(data.name.value))}
       </h2>
       <div class="card-actions justify-center">
-        <BggBtn id={data.id} type="both"/>
+        <BtnExternalLink href={`https://boardgamegeek.com/boardgame/${data.id}`} />
+        <BtnAddNew text='Collection' noShortcut on:click={() => globalModal.collectionFromBgg(data.id)} />
       </div>
     </div>
   </div>

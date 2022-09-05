@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte'
-  import { priceFormater } from '$lib/tools'
+  import { priceFormater } from '$lib/helper/tools'
   export let value 
   export let dataId
   

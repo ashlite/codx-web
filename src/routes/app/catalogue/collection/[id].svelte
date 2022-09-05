@@ -1,13 +1,14 @@
 <script>
-  import { get, patch } from '$lib/api'
+  import { get, patch } from '$lib/helper/api'
   import { page } from '$app/stores'
   import { onDestroy } from 'svelte'
   import { decodeHTML } from 'entities'
-  import { marginCalc, priceFormater } from '$lib/tools'
-  import { globalModal, refreshPage, toastAlert } from '$lib/store'
+  import { marginCalc, priceFormater } from '$lib/helper/tools'
+  import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
   import { afterNavigate } from '$app/navigation'
-  import CollectionMiniCard from '$lib/components/CollectionMiniCard.svelte'
-  import EditableInput from '$lib/components/EditableInput.svelte'
+  import CollectionMiniCard from '$lib/components/molecule/CollectionMiniCard.svelte'
+  import EditableInput from '$lib/components/atom/EditableInput.svelte'
+  import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
 
   let collection
   let subPage = 1
@@ -201,8 +202,11 @@
     </div>
   {/if}
 {:else if subPage == 2}
-  <div class="bg-secondary rounded-md py-2 px-4">
-    <h2 class="font-bold text-2xl text-secondary-content">Product List</h2>
+  <div class="flex flex-row gap-4">
+    <div class="bg-secondary rounded-md py-2 px-4 basis-4/5">
+      <h2 class="font-bold text-2xl text-secondary-content">Product List Table</h2>
+    </div>
+    <BtnAddNew text="Product" on:click={() => globalModal.editProduct({collection_id:collection.id}, collection)} />
   </div>
   <div class="">
     <table class="table w-full">
@@ -260,16 +264,6 @@
             </tr>
           {/each}
         {/if}
-        <tr>
-          <td colspan="6">
-            <button class="btn btn-sm btn-success" on:click={() => globalModal.editProduct({collection_id:collection.id}, collection)}>
-              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path xmlns="http://www.w3.org/2000/svg" d="M12 4C12.5523 4 13 4.44772 13 5V11H19C19.5523 11 20 11.4477 20 12C20 12.5523 19.5523 13 19 13H13V19C13 19.5523 12.5523 20 12 20C11.4477 20 11 19.5523 11 19V13H5C4.44772 13 4 12.5523 4 12C4 11.4477 4.44772 11 5 11H11V5C11 4.44772 11.4477 4 12 4Z" fill="#0D0D0D"></path>
-              </svg> 
-              Add new Product
-            </button>
-          </td>
-        </tr>
       </tbody>
     </table>
   </div>

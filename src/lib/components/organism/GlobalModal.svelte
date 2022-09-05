@@ -1,15 +1,15 @@
 <script>
-  import {globalModal} from '$lib/store'
-  import FormCreateCollection from './childcomp/FormCreateCollection.svelte'
-  import FormEditCollection from './childcomp/FormEditCollection.svelte'
-  import FormProductEditor from './childcomp/FormProductEditor.svelte'
-  import DeleteConfirmation from './childcomp/DeleteConfirmation.svelte'
-  import FormCollectionConnection from './childcomp/FormCollectionConnection.svelte'
-  import FormCustomer from './childcomp/FormCustomerEditor.svelte'
-  import FormSupplierEditor from './childcomp/FormSupplierEditor.svelte'
-  import FormVenueEditor from './childcomp/FormVenueEditor.svelte'
-  import FormCreatePurchase from './childcomp/FormCreatePurchase.svelte';
-  import { shortcut } from '$lib/shortcut'
+  import FormCreateCollection from '$lib/components/organism/_globalmodal/FormCreateCollection.svelte'
+  import FormEditCollection from '$lib/components/organism/_globalmodal/FormEditCollection.svelte'
+  import FormProductEditor from '$lib/components/organism/_globalmodal/FormProductEditor.svelte'
+  import DeleteConfirmation from '$lib/components/organism/_globalmodal/DeleteConfirmation.svelte'
+  import FormCollectionConnection from '$lib/components/organism/_globalmodal/FormCollectionConnection.svelte'
+  import FormCustomer from '$lib/components/organism/_globalmodal/FormCustomerEditor.svelte'
+  import FormSupplierEditor from '$lib/components/organism/_globalmodal/FormSupplierEditor.svelte'
+  import FormVenueEditor from '$lib/components/organism/_globalmodal/FormVenueEditor.svelte'
+  import FormCreatePurchase from '$lib/components/organism/_globalmodal/FormCreatePurchase.svelte'
+  import { globalModal } from '$lib/helper/store'
+  import { shortcut } from '$lib/helper/shortcut'
 </script>
 
 <input type="checkbox" id="global-modal" class="modal-toggle" checked={$globalModal}/>

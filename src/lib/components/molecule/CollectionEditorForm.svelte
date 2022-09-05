@@ -1,6 +1,6 @@
 <script>
-  import { listCollectionCategory, collectionEditorData } from '$lib/store'
-  import { BggSingleItem } from '$lib/bggInteraction'
+  import { listCollectionCategory, collectionEditorData } from '$lib/helper/store'
+  import { BggSingleItem } from '$lib/helper/bggInteraction'
 
 
   async function PullDataBgg(bggId){

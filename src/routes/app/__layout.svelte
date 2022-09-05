@@ -18,10 +18,10 @@
 <script>
   export let user
   import { page } from '$app/stores'
-  import ToastAlert from '$lib/components/ToastAlert.svelte'
-  import GlobalModal from '$lib/components/GlobalModal.svelte'
-  import { toggleMainDrawer } from '$lib/store'
-  import { fly, scale } from 'svelte/transition'
+  import ToastAlert from '$lib/components/organism/ToastAlert.svelte'
+  import GlobalModal from '$lib/components/organism/GlobalModal.svelte'
+  import { toggleMainDrawer } from '$lib/helper/store'
+  import { fly } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
 </script>
 
@@ -82,7 +82,7 @@
 
 <div class="flex flex-row flex-nowrap w-screen max-h-screen fixed">
   {#if $toggleMainDrawer}
-  <div id="sidebar" class="indicator" transition:fly="{{delay: 250, duration: 400, x: -400, opacity: 0, easing: quintOut}}">
+  <div id="sidebar" class="indicator" transition:fly="{{delay: 250, duration: 400, x: -200, opacity: 0, easing: quintOut}}">
     <div class="bg-base-300">
       <ul class="menu p-4 overflow-y-auto w-80 bg-base-300 text-base-content">
         <div class="flex flex-row my-4">
@@ -126,7 +126,7 @@
     </div>
   </div>
   {/if}
-  <div id="content" class="flex flex-col items-center justify-center overflow-y-auto grow" transition:scale>
+  <div id="content" class="flex flex-col items-center justify-center overflow-y-auto grow">
     <!-- Page content here -->
     <slot />
   </div>

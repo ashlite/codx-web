@@ -1,5 +1,5 @@
 <script>
-  import { toastAlert } from "$lib/store"
+  import { toastAlert } from "$lib/helper/store"
   import { fade} from 'svelte/transition'
 </script>
 

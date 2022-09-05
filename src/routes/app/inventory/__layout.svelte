@@ -13,36 +13,31 @@
 
 <script>
   import { page } from '$app/stores'
-  import { shortcut } from '$lib/shortcut'
+  import { shortcut } from '$lib/helper/shortcut'
+  import TopNavbar from '$lib/components/molecule/TopNavbar.svelte'
+
+  let navbarData = [
+    {
+      shortcut: 'Digit1',
+      kbd: 1,
+      href: '/app/inventory/purchase',
+      name: 'Stock Purchase'
+    },{
+      shortcut: 'Digit2',
+      kbd: 2,
+      href: '/app/inventory/report',
+      name: 'Inventory Report'
+    },{
+      shortcut: 'Digit3',
+      kbd: 3,
+      href: '/app/inventory/movement',
+      name: 'Inventory Movement'
+    },
+  ]
 </script>
 
 <div class='min-h-screen min-w-full relative'>
-  <div class="navbar fixed top-0 bg-base-200 z-10">
-    <div class="navbar-start">
-      <ul class="menu menu-horizontal gap-4 p-0">
-        <li>
-          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit1' }} href="/app/inventory/purchase" class={$page.url.pathname.includes('/purchase') ? "active" : ""}>
-            Stock Purchase
-            <kbd class="kbd kbd-xs text-base-content">1</kbd>
-          </a>
-        </li>
-        <li>
-          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit2' }} href="/app/inventory/report" class={$page.url.pathname.includes('/report') ? "active" : ""}>
-            Inventory Report
-            <kbd class="kbd kbd-xs text-base-content">2</kbd>
-          </a>
-        </li>
-        <li>
-          <a sveltekit:prefetch use:shortcut={{alt:true, shift:true, code:'Digit3' }} href="/app/inventory/movement" class={$page.url.pathname.includes('/movement') ? "active" : ""}>
-            Inventory Movement
-            <kbd class="kbd kbd-xs text-base-content">3</kbd>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <br>
-  <br>
+  <TopNavbar navData={navbarData}/>
   <div class="relative m-6 z-0">
     <slot />
   </div>

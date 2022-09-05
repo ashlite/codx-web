@@ -1,6 +1,8 @@
 <script>
   export let data
-  import BggBtn from "./BggBtn.svelte"
+  import BtnExternalLink from '$lib/components/atom/BtnExternalLink.svelte'
+  import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
+  import { globalModal } from '$lib/helper/store'
   import {decodeXML, decodeHTML} from 'entities'
 </script>
 
@@ -26,7 +28,10 @@
           {/if}
           <td class="overflow-hidden">{decodeHTML(decodeXML(bg.name.value))}</td>
           <td>
-            <BggBtn id={bg.id} type="both"/>
+            <div class="flex flex-row gap-4">
+              <BtnExternalLink href={`https://boardgamegeek.com/boardgame/${bg.id}`} />
+              <BtnAddNew text='Collection' noShortcut on:click={() => globalModal.collectionFromBgg(bg.id)} />
+            </div>
           </td>
         </tr>
       {/each}

@@ -1,5 +1,5 @@
 <script>
-  import { bggSearchResult } from '$lib/store'
+  import { bggSearchResult } from '$lib/helper/store'
   import { createEventDispatcher } from 'svelte'
   import {XMLParser} from 'fast-xml-parser'
   
