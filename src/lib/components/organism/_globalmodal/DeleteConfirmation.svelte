@@ -11,19 +11,13 @@
 
   async function DeleteItem() {
     deleteProcess = true
-    try {
-      await del(`/${data.type}/${data.id}`)
-      toastAlert.success('Item deleted')
-      refreshPage.set(true)
-    } catch (error) {
-      toastAlert.error(error)
-    } finally {
-      dispatch('message', {
-        text: 'Deleted'
-      })
-      deleteProcess = false
-      globalModal.close()
-    }
+    await del(`/${data.type}/${data.id}`)
+    refreshPage.set(true)
+    dispatch('message', {
+      text: 'Deleted'
+    })
+    deleteProcess = false
+    globalModal.close()
   }
 </script>
 

@@ -84,7 +84,7 @@
         <h1 class="text-xl">Loading...</h1>
       {:then value}
         <select id="category-collection" class="select select-bordered w-full" bind:value={dataCollection.category}>
-          {#each value.data as category}
+          {#each value as category}
             <option value={category.category}>{category.category}</option>
           {/each}
         </select>

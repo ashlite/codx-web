@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookie from 'js-cookie'
+import { toastAlert } from '$lib/helper/store'
 
 const axiosReq = axios.create({
   headers:{
@@ -9,23 +10,69 @@ const axiosReq = axios.create({
 })
 
 export async function post(endpoint, data) {
-  const url = `${import.meta.env.VITE_BACKEND}${endpoint}` 
-  return await axiosReq.post(url, data)
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
+  try{
+    const response = await axiosReq.post(url, data)
+    if (response.status < 400){
+      toastAlert.success('Operation Success')
+      return response
+    } else {
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      return {}
+    } 
+  } catch(error){
+    toastAlert.error(error.message)
+    return {}
+  }
 }
 
 export async function get(endpoint) {
   const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
-  return await axiosReq.get(url)
+  try{
+    const response = await axiosReq.get(url)
+    if (response.status < 400){
+      return response.data
+    } else {
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      return {}
+    }
+  } catch(error){
+    toastAlert.error(error.message)
+    return {}
+  } 
 }
 
 export async function patch(endpoint, data) {
   const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
-  return await axiosReq.patch(url, data)
+  try{
+    const response = await axiosReq.patch(url, data)
+    if (response.status < 400){
+      toastAlert.success('Update Success')
+      return response
+    } else {
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      return {}
+    }
+  } catch(error){
+    toastAlert.error(error.message)
+    return{}
+  } 
 }
 
 export async function del(endpoint) {
   const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
-  return await axiosReq.delete(url)
+  try{
+    const response = await axiosReq.delete(url)
+    if (response.status < 400){
+      toastAlert.success('Item Deleted')
+    } else {
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      return {}
+    }
+  } catch(error){
+    toastAlert.error(error.message)
+    return{}
+  } 
 }
 
 export async function logout(){

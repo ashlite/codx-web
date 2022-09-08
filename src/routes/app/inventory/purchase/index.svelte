@@ -76,8 +76,8 @@
         </tr>
       </thead>
       <tbody>
-        {#if listPurchase.data.length > 0}
-          {#each listPurchase.data as purchase}
+        {#if listPurchase.length > 0}
+          {#each listPurchase as purchase}
             <tr>
               <td><a href={`/app/inventory/purchase/${purchase.id}`} class="cursor-pointer font-bold text-primary underline underline-offset-2" target="_blank">{purchase.id}</a></td>
               <td>

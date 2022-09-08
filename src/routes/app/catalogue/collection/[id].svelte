@@ -27,10 +27,8 @@
   })
 
   async function RefreshData(){
-    let response = await get(`/collection/${$page.params.id}`)
-    if (response.status == 200){
-      collection = response.data
-    }
+    const response = await get(`/collection/${$page.params.id}`)
+    collection = response
   }
 
   async function removeConnection(e){

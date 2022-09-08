@@ -32,12 +32,7 @@
     if (searchQuery.length > 0) {
       startSearching = true
       let response = await get(`/collection?q=${searchQuery}`)
-      if (response.status == 200) {
-        resultQuery = response.data
-      } else {
-        toastAlert.error('failed to get collection')
-      }
-      console.log(resultQuery)
+      resultQuery = response
       startSearching = false
     }
   }

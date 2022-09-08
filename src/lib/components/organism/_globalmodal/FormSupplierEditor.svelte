@@ -11,7 +11,7 @@
   onMount(async () => {
     if (data.supplier != undefined) {
       const response = await get(`/supplier/${data.supplier.id}`)
-      dataSupplier = response.data
+      dataSupplier = response
     }
     firstInput.focus()
   })

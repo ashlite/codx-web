@@ -74,8 +74,8 @@
       </tr>
     </thead>
     <tbody>
-      {#if listCustomer.data.length > 0}
-        {#each listCustomer.data as customer}
+      {#if listCustomer.length > 0}
+        {#each listCustomer as customer}
           <tr>
             <td>
               {customer.name}

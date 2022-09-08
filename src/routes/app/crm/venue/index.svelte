@@ -73,8 +73,8 @@
       </tr>
     </thead>
     <tbody>
-      {#if listVenue.data.length > 0}
-        {#each listVenue.data as venue}
+      {#if listVenue.length > 0}
+        {#each listVenue as venue}
           <tr>
             <td>
               {venue.name}

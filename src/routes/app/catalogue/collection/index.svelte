@@ -11,51 +11,46 @@
   import SearchBar from '$lib/components/molecule/SearchBar.svelte'
 
   let totalItem = 0
-  let listItem = {data:[]}
+  let listItem = []
+  let pagination = { itemPerPage: 50, currentPage: 1 }
   let searching = false
-  let searchName
+  let searchQuery = ''
   let noProduct = false
 
   $: noProduct, RefreshData()
 
-  const unsubscribe = refreshPage.subscribe(value => {
-    if (value){
-      RefreshData()
-      refreshPage.set(false)
-    }
-  })
-  onDestroy(unsubscribe)
+  $: refreshPage && RefreshData()
   
-  async function RefreshData(data){
-    try{
-      if (data == undefined){
-        searchName = undefined
-        let response = await get(`/utils/count?collection=1&noproduct=${noProduct ? 1 : 0}`)
-        totalItem = await response.data.total_collection
-        listItem = await get(`/collection?limit=50&noproduct=${noProduct ? 1 : 0}`)
-      } else if (searchName != undefined){
-        let skipData = (data.currentPage - 1) * data.itemPerPage
-        listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&q=${searchName}&noproduct=${noProduct ? 1 : 0}`)
-      } else {
-        let skipData = (data.currentPage - 1) * data.itemPerPage
-        listItem = await get(`/collection?limit=${data.itemPerPage}&skip=${skipData}&noproduct=${noProduct ? 1 : 0}`)
-      }
-      listItem = listItem
-    } catch(error){
-      console.log(error)
-    }
+  async function RefreshData(){
+    let skipData = (pagination.currentPage - 1) * pagination.itemPerPage
+    let urlParamList = `?limit=${pagination.itemPerPage}&skip=${skipData}&noproduct=${noProduct ? 1 : 0}`
+    let urlParamCount = `&noproduct=${noProduct ? 1 : 0}`
+    if (searchQuery.length > 0) {
+      urlParamList = urlParamList + `&q=${searchQuery}`
+      urlParamCount = urlParamCount + `&q=${searchQuery}`
+    }      
+    
+    const responseItem = await get(`/collection${urlParamList}`)
+    listItem = await Array.isArray(responseItem) ? responseItem : []
+    
+    const responseCount = await get(`/utils/count?collection=1${urlParamCount}`)
+    totalItem = await responseCount.total_collection != undefined ? responseCount.total_collection : 0
+
+    refreshPage.set(false)
+    searchQuery = ''
+    searching = false
   }
 
   async function searchGame(query){
     searching = true
-    try{
-      listItem = await get(`/collection?limit=10&q=${query}&noproduct=${noProduct ? 1 : 0}`)
-      let response = await get(`/utils/count?collection=1&q=${query}&noproduct=${noProduct ? 1 : 0}`)
-      totalItem = await response.data.total_collection
-    } catch (error) {
-      toastAlert.error(error.message)
-    }
-    searching = false
+    searchQuery = query
+    refreshPage.set(true)
+  }
+
+  async function updatePage(limit){
+    pagination.itemPerPage = limit.itemPerPage
+    pagination.currentPage = limit.currentPage
+    refreshPage.set(true)
   }
 
 </script>
@@ -73,26 +68,17 @@
   </div>
   <div class="w-96">
     <SearchBar on:searchTrigger={e => searchGame(e.detail.searchQuery)} searchState={searching} />
-    <!-- <form class="flex gap-2" on:submit|preventDefault={() => searchGame()}>
-      {#if searching}
-        <input type="text" class="input input-bordered input-info w-full" disabled bind:value={searchName}/>
-        <button class="btn btn-md btn-info loading" />
-      {:else}
-        <input type="text" class="input input-bordered input-info w-full" bind:value={searchName}/>
-        <button class="btn btn-md btn-info" type="submit">Search</button>  
-      {/if}
-    </form> -->
   </div>
   <div class="w-60">
     <BtnAddNew text='Collection' on:click={() => globalModal.collectionCreate()}/>
   </div>
 </div>
 
-<PaginationNav totalItems={totalItem} on:updatePagination={event => RefreshData(event.detail)}/>
+<PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)}/>
 
 <div class="grid grid-cols-2 gap-4 pb-8">
-  {#if listItem.data.length > 0}
-    {#each listItem.data as collection}
+  {#if listItem.length > 0}
+    {#each listItem as collection}
       <CollectionCard data={collection} />
     {/each}
   {:else}

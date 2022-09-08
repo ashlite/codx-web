@@ -1,5 +1,5 @@
 <script>
-  import { get } from '$lib/helper/api'
+  import { get, patch } from '$lib/helper/api'
   import PaginationNav from '$lib/components/organism/PaginationNav.svelte'
   import { afterNavigate } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
@@ -9,38 +9,51 @@
   import BtnIcon from '$lib/components/atom/BtnIcon.svelte'
   import BtnGroup from '$lib/components/atom/BtnGroup.svelte'
   import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
+  import CellAction from '$lib/components/molecule/CellAction.svelte';
   import { marginCalc } from '$lib/helper/tools'
   import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
-  import { onDestroy } from 'svelte'
-  import {patch} from '$lib/helper/api'
 
-  let listProduct = {data:[]}
+  let listItem = []
   let totalItem = 0
-  let searchQuery, itemPerPage = 50, currentPage = 1
-
+  let searching = false
+  let searchQuery = ''
+  let pagination = { itemPerPage: 50, currentPage: 1 }
+  
   afterNavigate(() => RefreshData())
 
-  async function RefreshData() {
-    let skipData = (currentPage - 1) * itemPerPage
-    let response
-    if (searchQuery == undefined){
-      response = await get('/utils/count?product=1')
-      listProduct = await get(`/product?limit=${itemPerPage}&skip=${skipData}`)
-    } else {
-      listProduct = await get(`/product?limit=${itemPerPage}&skip=${skipData}&q=${searchQuery}`) 
-    }
+  $: refreshPage && RefreshData()
 
-    totalItem = await response.data.total_product
-    listProduct = listProduct
+  async function RefreshData(){
+    let skipData = (pagination.currentPage - 1) * pagination.itemPerPage
+    let urlParamList = `?limit=${pagination.itemPerPage}&skip=${skipData}`
+    let urlParamCount = ``
+    if (searchQuery.length > 0) {
+      urlParamList = urlParamList + `&q=${searchQuery}`
+      urlParamCount = urlParamCount + `?q=${searchQuery}`
+    }      
+    
+    const responseItem = await get(`/product${urlParamList}`)
+    listItem = await Array.isArray(responseItem) ? responseItem : []
+    
+    const responseCount = await get(`/utils/count?product=1${urlParamCount}`)
+    totalItem = await responseCount.total_product != undefined ? responseCount.total_product : 0
+
+    refreshPage.set(false)
+    searchQuery = ''
+    searching = false
   }
 
-  const unsubscribe = refreshPage.subscribe(value => {
-    if (value){
-      RefreshData()
-      refreshPage.set(false)
-    }
-  })
-  onDestroy(unsubscribe)
+  async function searchProduct(query){
+    searching = true
+    searchQuery = query
+    refreshPage.set(true)
+  }
+
+  async function updatePage(limit){
+    pagination.itemPerPage = limit.itemPerPage
+    pagination.currentPage = limit.currentPage
+    refreshPage.set(true)
+  }
 
   async function handleEditable(type, data){
     let response
@@ -70,21 +83,13 @@
     <div class="stat-value text-primary">{totalItem}</div>
   </div>
   <div class="w-80">
-    <SearchBar on:searchTrigger={event => {
-      searchQuery = event.detail.searchQuery
-      RefreshData()
-    }}/>
+    <SearchBar on:searchTrigger={event => searchProduct(event.detail.searchQuery)} searchState={searching} />
   </div>
   <div class="w-60">
     <BtnAddNew text="Product" on:click={() => globalModal.editProduct({})} />
-    <!-- <button class="btn btn-primary w-full" >Add New Product</button> -->
   </div>
 </div>
-<PaginationNav totalItems={totalItem} on:updatePagination={event => {
-  itemPerPage = event.detail.itemPerPage
-  currentPage = event.detail.currentPage
-  RefreshData()
-}}/>
+<PaginationNav totalItems={totalItem} on:updatePagination={event => updatePage(event.detail)}/>
 
 <div class="overflow-x-auto">
   <table class="table table-compact w-full">
@@ -92,13 +97,14 @@
       <tr> 
         <th class="text-xl">Product Name</th> 
         <th class="text-xl">Buy Price</th> 
-        <th class="text-xl">Sell Price</th> 
+        <th class="text-xl">Sell Price</th>
+        <th class="text-xl">Margin</th>
         <th class="text-xl">Action</th>
       </tr>
     </thead>
     <tbody>
-      {#if listProduct.data.length > 0}
-        {#each listProduct.data as product}
+      {#if listItem.length > 0}
+        {#each listItem as product}
           <tr>
             <td>
               <div class="flex flex-col">
@@ -112,14 +118,16 @@
             <td>
               <div class="flex flex-col gap-2">
                 <EditableInput value={product.sell_price} dataId={product.id} on:editableSubmit={event => handleEditable('sell', event.detail)}/>
+                </div>
+            </td>
+            <td>                
                 <BadgePercentage value={marginCalc(product.buy_price, product.sell_price, 'percent')}/>
-              </div>
             </td>
             <td>
-              <BtnGroup>
-                <BtnIcon icon="uil:edit" iconSize="24" color="warning" size="sm" on:click={() => globalModal.editProduct(product, product.collection)}/>
-                <BtnIcon icon="uil:trash-alt" iconSize="24" color="error" size="sm" on:click={() => globalModal.deleteConfirmation(product.id, product.name, 'product')}/>
-              </BtnGroup>
+              <CellAction edit remove
+                on:edit={() => globalModal.editProduct(product, product.collection)}
+                on:remove={() => globalModal.deleteConfirmation(product.id, `${product.collection.name} - ${product.name}`, 'product')}
+              />
             </td>
           </tr>
         {/each}

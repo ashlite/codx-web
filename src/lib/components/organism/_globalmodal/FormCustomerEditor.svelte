@@ -11,7 +11,7 @@
   onMount(async () => {
     if (data.customer != undefined) {
       const response = await get(`/customer/${data.customer.id}`)
-      dataCustomer = response.data
+      dataCustomer = response
     }
     firstInput.focus()
   })

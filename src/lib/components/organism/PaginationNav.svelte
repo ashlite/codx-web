@@ -10,7 +10,7 @@
   const dispatch = createEventDispatcher()
 
   function dispatchUpdate(){
-    dispatch('updatePagination', {
+    dispatch('changePage', {
       itemPerPage: itemPerPage,
       currentPage: currentPage
     })

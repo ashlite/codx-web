@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte'
   import { RingLoader } from 'svelte-loading-spinners'
-  // import BggSearch from '$lib/components/molecule/BggSearch.svelte'
   import BggCard from '$lib/components/organism/BggCard.svelte'
   import BggTable from '$lib/components/molecule/BggTable.svelte'
   import { bggSearchResult } from '$lib/helper/store'
@@ -10,6 +9,7 @@
   import { eget } from '$lib/helper/api'
   import { toastAlert } from '$lib/helper/store'
   import { afterNavigate } from '$app/navigation'
+  import Status from '$lib/components/atom/Status.svelte'
 
   let bgData = false
   let searching = false
@@ -21,6 +21,7 @@
 
   afterNavigate(() => {
     LoadBggHot()
+    bggSearchResult.set(false)
   })
 
   async function LoadBggHot(){
@@ -54,9 +55,11 @@
   
 </script>
 
-<div class="flex flex-col gap-4 content-center justify-center w-full mb-8">
-  <h2 class="text-3xl">Search Board Game Geek</h2>
-  <SearchBar on:searchTrigger={e => SearchBGG(e.detail.searchQuery)} searchState={searching} />
+<div class = "flex flex-row justify-center w-full mb-8 gap-4">
+  <div class="flex flex-col gap-2 content-center ">
+    <h2 class="text-3xl">Search Board Game Geek</h2>
+    <SearchBar on:searchTrigger={e => SearchBGG(e.detail.searchQuery)} searchState={searching} searchTotal={totalResult}/>
+  </div>
 </div>
 {#if $bggSearchResult}
   <h1 class="pb-8 text-5xl text-center">Search Result</h1>

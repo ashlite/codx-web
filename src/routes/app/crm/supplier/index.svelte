@@ -76,8 +76,8 @@
       </tr>
     </thead>
     <tbody>
-      {#if listSupplier.data.length > 0}
-        {#each listSupplier.data as supplier}
+      {#if listSupplier.length > 0}
+        {#each listSupplier as supplier}
           <tr>
             <td>
               {supplier.supplier_name}

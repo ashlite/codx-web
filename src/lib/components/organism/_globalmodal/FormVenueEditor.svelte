@@ -11,7 +11,7 @@
   onMount(async () => {
     if (data.venue != undefined) {
       const response = await get(`/venue/${data.venue.id}`)
-      dataVenue = response.data
+      dataVenue = response
     }
     firstInput.focus()
   })
