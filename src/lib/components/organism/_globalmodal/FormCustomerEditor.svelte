@@ -1,6 +1,6 @@
 <script>
   import { get, post, patch} from '$lib/helper/api'
-  import { globalModal, toastAlert, refreshPage } from '$lib/helper/store'
+  import { globalModal, refreshPage } from '$lib/helper/store'
   import { onMount } from 'svelte'
   import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte';
   export let data
@@ -18,24 +18,15 @@
 
   async function handleSubmit(){
     let response
-    try {
-      if (dataCustomer.id == undefined) {
-        response = await post(`/customer`, dataCustomer)
-      } else {
-        response = await patch(`/customer/${dataCustomer.id}`, dataCustomer)
-      }
-      
-      if (response.status == 200 || response.status == 201) {
-        toastAlert.success('Success Submiting Customer')
-        refreshPage.set(true)
-        globalModal.close()
-      } else {
-        toastAlert.error('Failed to Save Customer')
-      }
-
-    } catch(error){
-      console.log(error)
-      toastAlert.error(error.message)
+    if (dataCustomer.id == undefined) {
+      response = await post(`/customer`, dataCustomer)
+    } else {
+      response = await patch(`/customer/${dataCustomer.id}`, dataCustomer)
+    }
+    
+    if (Object.keys(response).length > 0){
+      refreshPage.set(true)
+      globalModal.close()
     }
   }
 

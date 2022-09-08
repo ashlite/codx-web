@@ -51,24 +51,16 @@
     let sendData = {product:dataProduct}
     sendData.product.collection_id = dataCollection.id
     
-    try{
-      if (newProduct){
-        let response = await post('/product', sendData)
-        if (response.status == 201) {
-          toastAlert.success('product created')
-          refreshPage.set(true)
-          globalModal.close()
-        }
-      } else {
-        let response = await patch(`/product/${dataProduct.id}`, sendData)
-        if (response.status == 200) {
-          toastAlert.success('product updated')
-          refreshPage.set(true)
-          globalModal.close()
-        } 
-      }
-    } catch (error) {
-      toastAlert.error(error.message)
+    let response
+    if (newProduct){
+      response = await post('/product', sendData)
+    } else {
+      response = await patch(`/product/${dataProduct.id}`, sendData) 
+    }
+
+    if (Object.keys(response).length > 0){
+      refreshPage.set(true)
+      globalModal.close()
     }
   }
   

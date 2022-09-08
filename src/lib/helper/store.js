@@ -84,7 +84,7 @@ export const listCollectionCategory = writable(false)
 // Untuk Keperluan Toast Notification
 function createToast(){
   const _toast = writable([])
-  function send (message, type, duration = 3000){
+  function send (message, type, duration = 1800){
     _toast.update(state => {
       return [...state, {message, type, duration}]
     })

@@ -37,17 +37,10 @@
     sendData.collection.name = dataCollection.name
     sendData.collection.description = dataCollection.description
     
-    try{      
-      let response = await patch(`/collection/${dataCollection.id}`, sendData)
-      if (response.status == 200){
-        toastAlert.success('Success')
-        refreshPage.set(true)
-        globalModal.close()
-      } else {
-        toastAlert.error('Failed to save data')
-      }
-    } catch(err){
-      toastAlert.error(err.message)
+    let response = await patch(`/collection/${dataCollection.id}`, sendData)
+    if (Object.keys(response).length > 0){
+      refreshPage.set(true)
+      globalModal.close()
     }
   }
   

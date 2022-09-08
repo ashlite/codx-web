@@ -18,24 +18,14 @@
 
   async function handleSubmit(){
     let response
-    try {
-      if (dataSupplier.id == undefined) {
-        response = await post(`/supplier`, {supplier: dataSupplier})
-      } else {
-        response = await patch(`/supplier/${dataSupplier.id}`, {supplier: dataSupplier})
-      }
-      
-      if (response.status == 200 || response.status == 201) {
-        toastAlert.success('Success Submiting Supplier')
-        refreshPage.set(true)
-        globalModal.close()
-      } else {
-        toastAlert.error('Failed to Save Supplier')
-      }
-
-    } catch(error){
-      console.log(error)
-      toastAlert.error(error.message)
+    if (dataSupplier.id == undefined) {
+      response = await post(`/supplier`, {supplier: dataSupplier})
+    } else {
+      response = await patch(`/supplier/${dataSupplier.id}`, {supplier: dataSupplier})
+    }
+    if (Object.keys(response).length > 0){
+      refreshPage.set(true)
+      globalModal.close()
     }
   }
 

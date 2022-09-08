@@ -21,17 +21,17 @@
       shortcut: 'Digit1',
       kbd: 1,
       href: '/app/inventory/purchase',
-      name: 'Stock Purchase'
+      name: 'Purchase'
     },{
       shortcut: 'Digit2',
       kbd: 2,
       href: '/app/inventory/report',
-      name: 'Inventory Report'
+      name: 'Report'
     },{
       shortcut: 'Digit3',
       kbd: 3,
       href: '/app/inventory/movement',
-      name: 'Inventory Movement'
+      name: 'Movement'
     },
   ]
 </script>

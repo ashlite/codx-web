@@ -18,24 +18,14 @@
 
   async function handleSubmit(){
     let response
-    try {
-      if (dataVenue.id == undefined) {
-        response = await post(`/venue`, {venue: dataVenue})
-      } else {
-        response = await patch(`/venue/${dataVenue.id}`, {venue: dataVenue})
-      }
-      
-      if (response.status == 200 || response.status == 201) {
-        toastAlert.success('Success Submiting Venue')
-        refreshPage.set(true)
-        globalModal.close()
-      } else {
-        toastAlert.error('Failed to Save Venue')
-      }
-
-    } catch(error){
-      console.log(error)
-      toastAlert.error(error.message)
+    if (dataVenue.id == undefined) {
+      response = await post(`/venue`, {venue: dataVenue})
+    } else {
+      response = await patch(`/venue/${dataVenue.id}`, {venue: dataVenue})
+    }
+    if (Object.keys(response).length > 0){
+      refreshPage.set(true)
+      globalModal.close()
     }
   }
 

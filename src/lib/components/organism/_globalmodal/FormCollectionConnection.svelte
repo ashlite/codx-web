@@ -17,11 +17,7 @@
     if (searchQuery.length > 0) {
       startSearching = true
       let response = await get(`/collection?q=${searchQuery}`)
-      if (response.status == 200) {
-        resultQuery = response
-      } else {
-        toastAlert.error('failed to get collection')
-      }
+      resultQuery = response
       startSearching = false
     }
   }
@@ -74,17 +70,10 @@
       sendData.collection.master = parentGame.map(({id, ...other}) => id)
     }
 
-    try{      
-      let response = await patch(`/collection/${dataCollection.id}`, sendData)
-      if (response.status == 200){
-        toastAlert.success('Success')
-        refreshPage.set(true)
-        globalModal.close()
-      } else {
-        toastAlert.error(`Failed to save data (${response.status})`)
-      }
-    } catch(err){
-      toastAlert.error(err.message)
+    let response = await patch(`/collection/${dataCollection.id}`, sendData)
+    if (Object.keys(response).length > 0){
+      refreshPage.set(true)
+      globalModal.close()
     }
   }
 

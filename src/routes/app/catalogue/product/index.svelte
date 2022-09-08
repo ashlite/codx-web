@@ -21,7 +21,7 @@
   
   afterNavigate(() => RefreshData())
 
-  $: refreshPage && RefreshData()
+  $: $refreshPage && RefreshData()
 
   async function RefreshData(){
     let skipData = (pagination.currentPage - 1) * pagination.itemPerPage

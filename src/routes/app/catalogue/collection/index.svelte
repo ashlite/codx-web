@@ -19,7 +19,7 @@
 
   $: noProduct, RefreshData()
 
-  $: refreshPage && RefreshData()
+  $: $refreshPage && RefreshData()
   
   async function RefreshData(){
     let skipData = (pagination.currentPage - 1) * pagination.itemPerPage
@@ -48,8 +48,7 @@
   }
 
   async function updatePage(limit){
-    pagination.itemPerPage = limit.itemPerPage
-    pagination.currentPage = limit.currentPage
+    pagination = limit
     refreshPage.set(true)
   }
 
@@ -86,13 +85,4 @@
       <RingLoader size="200" color="#FF3E00" unit="px" duration="2s"/>
     </div>
   {/if}
-  <!-- {#await listItem}
-  {:then collections}
-    {#each collections.data as collection}
-      <CollectionCard data={collection} />
-    {/each}
-  {:catch error}
-    {console.log(error)}
-    <h2 class="text-error text-xl">{error.message}</h2>
-  {/await} -->
 </div>
