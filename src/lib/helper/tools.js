@@ -9,7 +9,12 @@ export function marginCalc(buy, sell, type = 'nominal'){
 }
 
 export function dateFormater(date, settings='date'){
-  if (settings == 'date') return new Date(date).toLocaleString('id-ID', {dateStyle:'medium'})
-  else if (settings == 'time') return new Date(date).toLocaleString('id-ID', {timeStyle:'short'})
-  else if (settings == 'datetime') return new Date(date).toLocaleString('id-ID', {dateStyle:'medium', timeStyle:'short'})
+  const formatedDate = new Date(date)
+
+  if (settings == 'date') return new Intl.DateTimeFormat('id-ID', {dateStyle:'medium'}).format(formatedDate)
+  else if (settings == 'time') return new Intl.DateTimeFormat('id-ID', {timeStyle:'short'}).format(formatedDate)
+  else if (settings == 'datetime') return new Intl.DateTimeFormat('id-ID', {dateStyle:'medium', timeStyle:'short'}).format(formatedDate)
+  else if (settings == 'isoDateTime') return new Date(date).toISOString()
+  else if (settings == 'monthly') return new Intl.DateTimeFormat('id-ID',{month: 'long', year:'numeric'}).format(formatedDate)
+  else if (settings == 'month') return new Intl.DateTimeFormat('id-ID',{month: 'long'}).format(formatedDate)
 }

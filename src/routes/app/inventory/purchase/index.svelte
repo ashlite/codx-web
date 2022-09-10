@@ -1,31 +1,29 @@
 <script>
   import PaginationNav from "$lib/components/organism/PaginationNav.svelte"
   import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte";
-  import { shortcut } from "$lib/helper/shortcut"
+  import { refreshPage } from '$lib/helper/store'
   import { globalModal } from "$lib/helper/store"
   import { afterNavigate } from '$app/navigation'
   import { get } from "$lib/helper/api"
   import { dateFormater, priceFormater } from '$lib/helper/tools'
+  import DatePicker from "$lib/components/organism/DatePicker.svelte"
 
-  let listPurchase ={data:[]}
+  let listPurchase = []
   let itemPerPage = 50
   let currentPage = 1
+  let totalItem = 0
   let searchQuery
+
+  $: $refreshPage && RefreshData()
 
   afterNavigate(() => RefreshData())
   
   async function RefreshData() {
     let skipData = (currentPage - 1) * itemPerPage
-    // let response
-    // if (searchQuery == undefined){
-      // response = await get('/utils/count?product=1')
-      listPurchase = await get(`/purchase/header?limit=${itemPerPage}&skip=${skipData}`)
-    // } else {
-    //   listPurchase = await get(`/purchase/header?limit=${itemPerPage}&skip=${skipData}&q=${searchQuery}`) 
-    // }
-    console.log(listPurchase)
-    // totalItem = await response.data.total_product
-    listPurchase = listPurchase
+    listPurchase = await get(`/purchase/header?limit=${itemPerPage}&skip=${skipData}`)
+    let response = await get(`/utils/count?headerpurchase=1`)
+    totalItem = response.total_purchase
+    refreshPage.set(false)
   }
   
 </script>
@@ -34,20 +32,9 @@
   <div class="flex flex-row justify-between items-center gap-4 mb-2">
     <div class="stat w-32">
       <div class="stat-title">Total Items</div>
-      <div class="stat-value text-primary">100</div>
+      <div class="stat-value text-primary">{totalItem}</div>
     </div>
-    <div class="dropdown w-full w-60">
-      <button class="btn gap-2 w-full btn-md">
-        Date Selector
-      </button>
-      <!-- dropdown content -->
-      <div class="dropdown-content card card-compact w-64 p-2 shadow bg-primary text-primary-content">
-        <div class="card-body">
-          <h3 class="card-title">Card title!</h3>
-          <p>you can use any element as a dropdown.</p>
-        </div>
-      </div>
-    </div>
+    <DatePicker noRange on:pickerSubmit/>
     <div class="form-control w-full max-w-xs">
       <label class="label" for="purchase_status">
         <span class="label-text">Purchase Status</span>
@@ -62,7 +49,7 @@
       <BtnAddNew text="Purchase" on:click={() => globalModal.createPurchase()}/>
     </div>
   </div>
-  <PaginationNav />
+  <PaginationNav totalItems={totalItem} />
 
   <div class="overflow-x-auto overflow-y-clip">
     <table class="table w-full">

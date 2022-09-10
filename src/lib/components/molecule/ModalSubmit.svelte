@@ -18,5 +18,5 @@
   {#if form}
     <BtnSuper color="warning" icon="uil:file-slash" text="Reset" iconSize="40" type="reset" />
   {/if}
-  <BtnSuper color="error" on:click={() => globalModal.close()} icon="uil:cancel" text="Cancel" iconSize="40" />
+  <BtnSuper type="button" color="error" on:click={() => globalModal.close()} icon="uil:cancel" text="Cancel" iconSize="40" />
 </div>

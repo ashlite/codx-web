@@ -6,7 +6,7 @@
   export let iconSize = 24
   export let iconWidth
   export let iconHeight
-  export let type=''
+  export let type='button'
 </script>
 
 <button class={`btn btn-${size} btn-${color}`} on:click type={type}>
