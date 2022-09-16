@@ -66,7 +66,9 @@
     
     <div class="card-actions justify-end">
       <BtnSuper href={`/app/catalogue/collection/${data.id}`} color="success" icon="uil:file-alt" />
-      <BtnSuper href={`https://boardgamegeek.com/boardgame/${data.bgg_id}`} color="info" icon="uil:external-link-alt" />
+      {#if data.bgg_id}
+        <BtnSuper href={`https://boardgamegeek.com/boardgame/${data.bgg_id}`} color="info" icon="uil:external-link-alt" />
+      {/if}
       <BtnSuper color="error" icon="uil:trash-alt" on:click={() => globalModal.deleteConfirmation(data.id, data.name, 'collection')}/>
     </div>
   </div>

@@ -27,6 +27,7 @@ function createModal(){
     editSupplier:(supplier) => set({title: 'Supplier Editor', type: 'supplierEditor', size:'md', data: {supplier}}),
     editVenue:(venue) => set({title: 'Venue Editor', type: 'venueEditor', size:'md', data: {venue}}),
     createPurchase:() => set({title: 'Create new Purchase', type: 'newPurchase', size:'md'}),
+    editPurchase:(data) => set({title: 'Edit Purchase', type: 'newPurchase', size:'md', data: {...data}}),
     cancelConfirmation:(id) => set({title: 'Cancel Confirmation', type: 'cancelConfirmation', size:'sm', data: {id}}),
     editForex:(forex) => set({title: 'Edit Forex', type: 'forexEditor', size:'sm', data: {...forex, edit:true}}),
     createForex:() => set({title: 'Create Forex', type: 'forexEditor', size:'sm', data: {}}),

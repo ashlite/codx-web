@@ -7,8 +7,8 @@
   import DatePicker from '$lib/components/organism/DatePicker.svelte';
   import { dateFormater } from '$lib/helper/tools';
   export let data
-  
-  let dataPurchase = { }
+
+  let dataPurchase = data == undefined ? {} : data
   let listForex = []
   let firstInput
   let searchQuery
@@ -20,7 +20,12 @@
   })
 
   async function handleSubmit(){
-    let response = await post('/purchase/header', dataPurchase)
+    let response
+    if (dataPurchase.id == undefined){
+      response = await post('/purchase/header', dataPurchase)
+    } else {
+      response = await patch(`/purchase/header/${dataPurchase.id}`, dataPurchase)
+    }
     if (response){
       refreshPage.set(true)
       globalModal.close()
@@ -55,7 +60,7 @@
         <label class="label" for="supplier-id">
           <span class="label-text">Date</span>
         </label>
-        <DatePicker noMonthly noRange on:pickerSubmit={e => dataPurchase.header_date = dateFormater(e.detail[0], 'isoDateTime')}/>
+        <DatePicker defaultDate={dataPurchase.header_date} noMonthly noRange on:pickerSubmit={e => dataPurchase.header_date = dateFormater(e.detail[0], 'isoDateTime')}/>
       </div>
       <div id="purchase-note" class="form-control w-full col-span-6">
         <label class="label" for="purchase-note">

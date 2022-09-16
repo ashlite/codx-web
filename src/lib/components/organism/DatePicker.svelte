@@ -11,8 +11,9 @@
   export let noDaily = false
   export let noRange = false
   export let noMonthly = false
+  export let defaultDate = false
   
-  let buttonText = 'DATE SELECTOR'
+  let buttonText = defaultDate ? `Date: ${dateFormater(defaultDate)}` : 'DATE SELECTOR'
   let today = new Date()
   let mode
   let inputDate

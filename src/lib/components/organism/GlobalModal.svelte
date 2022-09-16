@@ -41,7 +41,7 @@
       {:else if $globalModal.type == 'venueEditor'}
         <FormVenueEditor data={$globalModal.data} />
       {:else if $globalModal.type == 'newPurchase'}
-        <FormCreatePurchase />
+        <FormCreatePurchase data={$globalModal.data} />
       {:else if $globalModal.type == 'cancelConfirmation'}
         <CancelConfirmation data={$globalModal.data}/>
       {:else if $globalModal.type == 'forexEditor'}

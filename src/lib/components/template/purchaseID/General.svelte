@@ -14,6 +14,7 @@
 
   function editHeader(){
     if (data.canceled) toastAlert.error('Purchase already canceled, can not be edit/update anymore')
+    else globalModal.editPurchase(data)
   }
 
   async function uploadFile(e){
