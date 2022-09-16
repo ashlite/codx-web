@@ -16,6 +16,7 @@
   export let outline = false
   export let square = false
   export let block = false
+  export let href
 </script>
 
 {#if state == 'loading'}
@@ -23,32 +24,60 @@
   <button class={`btn btn-${size} btn-${color} ${full && 'w-full'} ${grow && 'grow'} ${square && 'btn-square'} ${block && 'btn-block'} btn-disabled loading`} />
 
 {:else if shortcut == undefined}
-  
-  <button class={`btn btn-${size} btn-${color} ${full && 'w-full'} gap-2 ${grow && 'grow'} ${outline && 'btn-outline'} $${square && 'btn-square'} ${block && 'btn-block'}`} on:click type={type}>
+  {#if href}
+    <a href={href} class={`btn btn-${size} btn-${color} ${full && 'w-full'} gap-2 ${grow && 'grow'} ${outline && 'btn-outline'} $${square && 'btn-square'} ${block && 'btn-block'}`} type={type}>
+      {#if icon}
+        <Icon 
+        icon={icon} 
+        width={iconWidth == undefined ? iconSize : iconWidth} 
+        height={iconHeight == undefined ? iconSize : iconHeight} />
+      {/if}
+      {text ? text : ''}
+    </a>
+  {:else}
+    <button class={`btn btn-${size} btn-${color} ${full && 'w-full'} gap-2 ${grow && 'grow'} ${outline && 'btn-outline'} $${square && 'btn-square'} ${block && 'btn-block'}`} on:click type={type}>
+      {#if icon}
+        <Icon 
+        icon={icon} 
+        width={iconWidth == undefined ? iconSize : iconWidth} 
+        height={iconHeight == undefined ? iconSize : iconHeight} />
+      {/if}
+      {text ? text : ''}
+    </button>
+  {/if}
+
+{:else}
+  {#if href}
+    <a href={href} target="_blank"
+      class={`btn btn-${size} btn-${color} ${full && 'w-full'} gap-2 ${grow && 'grow'} ${outline && 'btn-outline'} ${square && 'btn-square'} ${block && 'btn-block'}`}
+      type={type}
+      use:shortcut={{alt:true, shift:true, code:'KeyN' }}
+    >
     {#if icon}
       <Icon 
       icon={icon} 
       width={iconWidth == undefined ? iconSize : iconWidth} 
       height={iconHeight == undefined ? iconSize : iconHeight} />
     {/if}
-    {text}
-  </button>
-
-{:else}
-
-  <button 
-    class={`btn btn-${size} btn-${color} ${full && 'w-full'} gap-2 ${grow && 'grow'} ${outline && 'btn-outline'} ${square && 'btn-square'} ${block && 'btn-block'}`}
-    on:click 
-    type={type}
-    use:shortcut={{alt:true, shift:true, code:'KeyN' }}
-  >
-  {#if icon}
-    <Icon 
-    icon={icon} 
-    width={iconWidth == undefined ? iconSize : iconWidth} 
-    height={iconHeight == undefined ? iconSize : iconHeight} />
+      {text ? text : ''}
+      <kbd class="kbd kbd-xs text-base-content">{kbd}</kbd>
+    </a>
+  {:else}
+    <button 
+      class={`btn btn-${size} btn-${color} ${full && 'w-full'} gap-2 ${grow && 'grow'} ${outline && 'btn-outline'} ${square && 'btn-square'} ${block && 'btn-block'}`}
+      on:click 
+      type={type}
+      use:shortcut={{alt:true, shift:true, code:'KeyN' }}
+    >
+    {#if icon}
+      <Icon 
+      icon={icon} 
+      width={iconWidth == undefined ? iconSize : iconWidth} 
+      height={iconHeight == undefined ? iconSize : iconHeight} />
+    {/if}
+      {text ? text : ''}
+      <kbd class="kbd kbd-xs text-base-content">{kbd}</kbd>
+    </button>
   {/if}
-    <kbd class="kbd kbd-xs text-base-content">{kbd}</kbd>
-  </button>
 
 {/if}

@@ -9,10 +9,10 @@ const axiosReq = axios.create({
   withCredentials: true
 })
 
-export async function post(endpoint, data) {
+export async function post(endpoint, data, option) {
   const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
   try{
-    const response = await axiosReq.post(url, data)
+    const response = await axiosReq.post(url, data, option)
     if (response.status < 400){
       toastAlert.success('Operation Success')
       return response
@@ -32,6 +32,22 @@ export async function get(endpoint) {
     const response = await axiosReq.get(url)
     if (response.status < 400){
       return response.data
+    } else {
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      return {}
+    }
+  } catch(error){
+    toastAlert.error(error.message)
+    return {}
+  } 
+}
+
+export async function download(endpoint) {
+  const url = `${import.meta.env.VITE_BACKEND}${endpoint}`
+  try{
+    const response = await axiosReq.get(url, {responseType: 'arraybuffer'})
+    if (response.status < 400){
+      return response
     } else {
       toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
       return {}

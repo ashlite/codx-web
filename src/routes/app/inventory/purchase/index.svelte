@@ -1,6 +1,6 @@
 <script>
   import PaginationNav from "$lib/components/organism/PaginationNav.svelte"
-  import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte";
+  import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte"
   import { refreshPage } from '$lib/helper/store'
   import { globalModal } from "$lib/helper/store"
   import { afterNavigate } from '$app/navigation'
@@ -25,17 +25,16 @@
     totalItem = response.total_purchase
     refreshPage.set(false)
   }
+
+  function openPurchase(id){
+    window.open(`/app/inventory/purchase/${id}`, '_blank')
+  }
   
 </script>
 
 <div class="w-full min-h-screen pb-4 px-4">
   <div class="flex flex-row justify-between items-center gap-4 mb-2">
-    <div class="stat w-32">
-      <div class="stat-title">Total Items</div>
-      <div class="stat-value text-primary">{totalItem}</div>
-    </div>
-    <DatePicker noRange on:pickerSubmit/>
-    <div class="form-control w-full max-w-xs">
+    <div class="form-control w-60 max-w-xs">
       <label class="label" for="purchase_status">
         <span class="label-text">Purchase Status</span>
       </label>
@@ -45,9 +44,18 @@
         <option>Finish</option>
       </select>
     </div>
-    <div class="w-60">
-      <BtnAddNew text="Purchase" on:click={() => globalModal.createPurchase()}/>
+    <div class="form-control w-60 max-w-xs">
+      <label class="label" for="purchase_status">
+        <span class="label-text">Supplier</span>
+      </label>
+      <select id="purchase-status" class="select select-bordered select-sm">
+        <option selected>All Status</option>
+        <option>In Progress</option>
+        <option>Finish</option>
+      </select>
     </div>
+    <DatePicker noRange on:pickerSubmit/>
+    <BtnAddNew text="Purchase" on:click={() => globalModal.createPurchase()}/>
   </div>
   <PaginationNav totalItems={totalItem} />
 
@@ -55,9 +63,8 @@
     <table class="table w-full">
       <thead>
         <tr>
-          <th>Id</th>
+          <th>Details</th>
           <th>Date</th>
-          <th>Supplier</th>
           <th>Total Item</th>
           <th>Approval</th>
         </tr>
@@ -65,23 +72,17 @@
       <tbody>
         {#if listPurchase.length > 0}
           {#each listPurchase as purchase}
-            <tr>
-              <td><a href={`/app/inventory/purchase/${purchase.id}`} class="cursor-pointer font-bold text-primary underline underline-offset-2" target="_blank">{purchase.id}</a></td>
+            <tr class="hover cursor-pointer" on:click={() => openPurchase(purchase.id)}>
+              <td>
+                <div class="flex flex-col">
+                  <p><span class="font-bold text-info">ID: </span>{purchase.id}</p>
+                  <p><span class="font-bold text-info">Supplier: </span>{purchase.supplier.supplier_name}</p>
+                </div>
+              </td>
               <td>
                 <div class="flex flex-col">
                   <div><span class="font-bold text-info">Created: </span>{dateFormater(purchase.header_date, 'date')}</div>
                   <div><span class="font-bold text-warning">Finish: </span>{purchase.finish_date ? purchase.finish_date : 'In progress'}</div>
-                </div>
-              </td>
-              <td>
-                <div class="dropdown dropdown-hover dropdown-right dropdown-end">
-                  <label tabindex="0" for="" class="" >{purchase.supplier.supplier_name}</label>
-                  <div tabindex="0" class="dropdown-content card compact w-64 shadow bg-info text-info-content">
-                    <div class="card-body">
-                      <h3 class="card-title">{purchase.supplier.supplier_name}</h3>
-                      <p>{`(${purchase.supplier.country}) - ${purchase.supplier.email}`}</p>
-                    </div>
-                  </div>
                 </div>
               </td>
               <td>
@@ -103,9 +104,8 @@
       </tbody>
       <tfoot>
         <tr>
-          <th>Id</th>
+          <th>Details</th>
           <th>Date</th>
-          <th>Supplier</th>
           <th>Total Item</th>
           <th>Approval</th>
         </tr>

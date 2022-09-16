@@ -6,8 +6,6 @@
   import SearchBar from '$lib/components/molecule/SearchBar.svelte'
   import EditableInput from '$lib/components/atom/EditableInput.svelte'
   import BadgePercentage from '$lib/components/atom/BadgePercentage.svelte'
-  import BtnIcon from '$lib/components/atom/BtnIcon.svelte'
-  import BtnGroup from '$lib/components/atom/BtnGroup.svelte'
   import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
   import CellAction from '$lib/components/molecule/CellAction.svelte';
   import { marginCalc } from '$lib/helper/tools'
@@ -29,7 +27,7 @@
     let urlParamCount = ``
     if (searchQuery.length > 0) {
       urlParamList = urlParamList + `&q=${searchQuery}`
-      urlParamCount = urlParamCount + `?q=${searchQuery}`
+      urlParamCount = urlParamCount + `&q=${searchQuery}`
     }      
     
     const responseItem = await get(`/product${urlParamList}`)
@@ -50,6 +48,7 @@
   }
 
   async function updatePage(limit){
+    console.log(limit)
     pagination.itemPerPage = limit.itemPerPage
     pagination.currentPage = limit.currentPage
     refreshPage.set(true)
@@ -89,7 +88,7 @@
     <BtnAddNew text="Product" on:click={() => globalModal.editProduct({})} />
   </div>
 </div>
-<PaginationNav totalItems={totalItem} on:updatePagination={event => updatePage(event.detail)}/>
+<PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)}/>
 
 <div class="overflow-x-auto">
   <table class="table table-compact w-full">

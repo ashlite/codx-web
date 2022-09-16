@@ -1,13 +1,15 @@
 <script>
-  import FormCreateCollection from '$lib/components/organism/_globalmodal/FormCreateCollection.svelte'
-  import FormEditCollection from '$lib/components/organism/_globalmodal/FormEditCollection.svelte'
-  import FormProductEditor from '$lib/components/organism/_globalmodal/FormProductEditor.svelte'
-  import DeleteConfirmation from '$lib/components/organism/_globalmodal/DeleteConfirmation.svelte'
-  import FormCollectionConnection from '$lib/components/organism/_globalmodal/FormCollectionConnection.svelte'
-  import FormCustomer from '$lib/components/organism/_globalmodal/FormCustomerEditor.svelte'
-  import FormSupplierEditor from '$lib/components/organism/_globalmodal/FormSupplierEditor.svelte'
-  import FormVenueEditor from '$lib/components/organism/_globalmodal/FormVenueEditor.svelte'
-  import FormCreatePurchase from '$lib/components/organism/_globalmodal/FormCreatePurchase.svelte'
+  import FormCreateCollection from '$lib/components/template/_globalmodal/FormCreateCollection.svelte'
+  import FormEditCollection from '$lib/components/template/_globalmodal/FormEditCollection.svelte'
+  import FormProductEditor from '$lib/components/template/_globalmodal/FormProductEditor.svelte'
+  import DeleteConfirmation from '$lib/components/template/_globalmodal/DeleteConfirmation.svelte'
+  import FormCollectionConnection from '$lib/components/template/_globalmodal/FormCollectionConnection.svelte'
+  import FormCustomer from '$lib/components/template/_globalmodal/FormCustomerEditor.svelte'
+  import FormSupplierEditor from '$lib/components/template/_globalmodal/FormSupplierEditor.svelte'
+  import FormVenueEditor from '$lib/components/template/_globalmodal/FormVenueEditor.svelte'
+  import FormCreatePurchase from '$lib/components/template/_globalmodal/FormCreatePurchase.svelte'
+  import CancelConfirmation from '$lib/components/template/_globalmodal/CancelConfirmation.svelte'
+  import FormForex from '$lib/components/template/_globalmodal/FormForex.svelte'
   import { globalModal } from '$lib/helper/store'
   import { shortcut } from '$lib/helper/shortcut'
 </script>
@@ -40,6 +42,10 @@
         <FormVenueEditor data={$globalModal.data} />
       {:else if $globalModal.type == 'newPurchase'}
         <FormCreatePurchase />
+      {:else if $globalModal.type == 'cancelConfirmation'}
+        <CancelConfirmation data={$globalModal.data}/>
+      {:else if $globalModal.type == 'forexEditor'}
+        <FormForex data={$globalModal.data} />
       {/if}
     </div>
   </div>
