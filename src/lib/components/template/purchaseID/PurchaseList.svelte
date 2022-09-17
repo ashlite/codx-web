@@ -10,7 +10,22 @@
   import EditableInput from "$lib/components/atom/EditableInput.svelte";
 
   export let data
-  let fileInput
+
+  let sumData = summaryPurchase()
+
+  function summaryPurchase(){
+    let totalQty = 0
+    let totalProduct = 0
+    let totalIdrBuy = 0
+    let totalForexBuy = 0
+    data.list_item.forEach(item => {
+      totalProduct++
+      totalQty += item.ordered_qty
+      totalIdrBuy += item.ordered_qty * item.idr_buy_price
+      totalForexBuy += item.ordered_qty * item.forex_buy
+    });
+    return {totalQty, totalProduct, totalIdrBuy, totalForexBuy}
+  }
 
 </script>
 
@@ -22,18 +37,18 @@
         <th rowspan="2" class="text-xl text-center">Product</th>
         <th rowspan="2" class="text-xl text-center">Qty</th>
         {#if data.forex_symbol != undefined}
-          <th colspan="2" class="text-center">{data.forex_symbol}</th>
+          <th colspan="2" class="text-xl text-center">{data.forex_symbol}</th>
         {/if}
-        <th colspan="2" class="text-center">{data.forex_symbol != undefined ? `IDR = ${data.idr_buy_rate}` : `IDR`}</th>
+        <th colspan="2" class="text-xl text-center">{data.forex_symbol != undefined ? `IDR = ${data.idr_buy_rate}` : `IDR`}</th>
         <th rowspan="2"></th>
       </tr>
       <tr>
         {#if data.forex_symbol != undefined}
-          <th class="text-center">Single</th>
-          <th class="text-center">Total</th>
+          <th class="text-xl text-center">Single</th>
+          <th class="text-xl text-center">Total</th>
         {/if}
-        <th class="text-center">Single</th>
-        <th class="text-center">Total</th>
+        <th class="text-xl text-center">Single</th>
+        <th class="text-xl text-center">Total</th>
       </tr>
     </thead>
     <tbody>
@@ -56,17 +71,17 @@
             {item.ordered_qty}
           </td>
           {#if data.forex_symbol != undefined}
-            <td>
+            <td class="text-right">
               {priceFormater(item.forex_buy, 'USD')}
             </td>
-            <td>
+            <td class="text-right">
               {priceFormater(item.forex_buy * item.ordered_qty, 'USD')}
             </td>
           {/if}
-          <td>
+          <td class="text-right">
             {priceFormater(item.idr_buy_price)}
           </td>
-          <td>
+          <td class="text-right">
             {priceFormater(item.idr_buy_price * item.ordered_qty)}
           </td>
           <td>
@@ -75,13 +90,27 @@
         </tr>
       {/each}
       <tr>
-        <td colspan="100%">
-          <BtnSuper icon="uil:plus" text="Add Item" color="primary" block/>
+        <td class="text-info font-bold text-2xl text-right">SUMMARY</td>
+        <td class="text-info font-bold text-xl">{sumData.totalQty}</td>
+        {#if data.forex_symbol != undefined}
+          <td class="text-info font-bold text-xl text-right" colspan="2">
+            {priceFormater(sumData.totalForexBuy, 'USD')}
+          </td>
+        {/if}
+        <td class="text-info font-bold text-xl text-right" colspan="2">
+          {priceFormater(sumData.totalIdrBuy)}
         </td>
       </tr>
       <tr>
         <td colspan="100%">
-          <BtnSuper text="Add New Collection with Item" color="secondary" block />
+          <div class="flex flex-row gap-4 justify-end">
+            <div class="w-1/4">
+              <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct()} />
+            </div>
+            <div class="w-2/5">
+              <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block />
+            </div>
+          </div>
         </td>
       </tr>
     </tbody>

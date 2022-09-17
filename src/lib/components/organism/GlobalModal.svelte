@@ -10,6 +10,7 @@
   import FormCreatePurchase from '$lib/components/template/_globalmodal/FormCreatePurchase.svelte'
   import CancelConfirmation from '$lib/components/template/_globalmodal/CancelConfirmation.svelte'
   import FormForex from '$lib/components/template/_globalmodal/FormForex.svelte'
+  import FormAddPurchaseProduct from '$lib/components/template/_globalmodal/FormAddPurchaseProduct.svelte'
   import { globalModal } from '$lib/helper/store'
   import { shortcut } from '$lib/helper/shortcut'
 </script>
@@ -46,6 +47,8 @@
         <CancelConfirmation data={$globalModal.data}/>
       {:else if $globalModal.type == 'forexEditor'}
         <FormForex data={$globalModal.data} />
+      {:else if $globalModal.type == 'addPurchaseProduct'}
+        <FormAddPurchaseProduct />
       {/if}
     </div>
   </div>

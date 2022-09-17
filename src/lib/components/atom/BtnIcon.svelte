@@ -4,10 +4,10 @@
   export let color = 'neutral'
   export let icon = 'uil:smile-wink'
   export let iconSize = 24
-  export let iconWidth
-  export let iconHeight
+  export let iconWidth = undefined
+  export let iconHeight = undefined
   export let type='button'
-  export let href
+  export let href = undefined
 </script>
 
 {#if href}

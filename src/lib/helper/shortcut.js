@@ -1,6 +1,7 @@
 export const shortcut = (node, params) => {
   let handler;
-  const removeHandler = () => window.removeEventListener('keydown', handler), setHandler = () => {
+  const removeHandler = () => window.removeEventListener('keydown', handler)
+  const setHandler = () => {
       removeHandler();
       if (!params)
           return;
