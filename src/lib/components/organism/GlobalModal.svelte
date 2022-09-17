@@ -48,7 +48,7 @@
       {:else if $globalModal.type == 'forexEditor'}
         <FormForex data={$globalModal.data} />
       {:else if $globalModal.type == 'addPurchaseProduct'}
-        <FormAddPurchaseProduct />
+        <FormAddPurchaseProduct data={$globalModal.data}/>
       {/if}
     </div>
   </div>

@@ -13,6 +13,8 @@
 
   let sumData = summaryPurchase()
 
+  $: data.list_item.length, sumData = summaryPurchase()
+
   function summaryPurchase(){
     let totalQty = 0
     let totalProduct = 0
@@ -30,7 +32,7 @@
 </script>
 
 <div class="overflow-x-auto">
-  <table class="table w-full">
+  <table class="table w-full table-compact">
     <!-- head -->
     <thead>
       <tr>
@@ -105,7 +107,7 @@
         <td colspan="100%">
           <div class="flex flex-row gap-4 justify-end">
             <div class="w-1/4">
-              <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct()} />
+              <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct(data.idr_buy_rate, data.id)} />
             </div>
             <div class="w-2/5">
               <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block />

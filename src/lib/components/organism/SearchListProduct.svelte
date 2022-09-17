@@ -1,10 +1,10 @@
 <script>
   import SearchList from "$lib/components/molecule/SearchList.svelte";
   import BtnSuper from '$lib/components/atom/BtnSuper.svelte'
-  import createEventDispatcher from 'svelte'
-  import { get } from ""
+  import { get } from '$lib/helper/api'
 
   export let selectedProduct = {}
+  console.log(selectedProduct)
   let searchState = false
   let resultQuery = []
   let resultList = []
@@ -21,6 +21,7 @@
 
   function handleSelect(index){
     selectedProduct = resultQuery[index]
+    console.log(selectedProduct)
   }
 
   function unlinkProduct(){
@@ -28,14 +29,14 @@
   }
 </script>
 
-{#if selectedProduct != undefined}
-  <SearchList 
+{#if selectedProduct.name == undefined}
+  <SearchList first
     sideText="Product:"
     searchState={searchState}
-    resultQuery={resultList}
+    bind:resultList={resultList}
     on:querySubmit={e => handleSearch(e.detail)}
     on:selectSubmit={e => handleSelect(e.detail)}
   />
 {:else}
-  <BtnSuper text={`(${selectedProduct.name}) ${selectedProduct.collection.name}`} on:click={() => unlinkProduct()} />
+  <BtnSuper block text={`(${selectedProduct.name}) ${selectedProduct.collection.name}`} on:click={() => unlinkProduct()} />
 {/if}

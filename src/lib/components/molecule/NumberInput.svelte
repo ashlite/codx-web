@@ -1,15 +1,13 @@
 <script>
-  export let labelTR
-  export let labelTL 
+  export let labelTR = false
+  export let labelTL = false
   export let placeholder=''
-  export let limit = 0
   export let value = ''
-
-  $: remainingLimit = limit - value.length
-
-  function calcLimit(){
-
-  }
+  export let disabled = false
+  export let required = false
+  export let decimal = false
+  export let min = 0
+  export let skipFocus = false
 </script>
 
 <div class="form-control w-full">
@@ -19,5 +17,14 @@
       <span class="label-text-alt">{labelTR ? labelTR : ''}</span>
     </label>
   {/if}
-  <input type="number" placeholder={placeholder} class={`input input-bordered w-full`} maxlength={limit} on:input={() => calcLimit()} bind:value={value} />
+  <input 
+    type="number" 
+    placeholder={placeholder} 
+    class={`input input-bordered w-full ${disabled && 'btn-disabled'}`} 
+    bind:value={value} 
+    required={required} 
+    step={decimal ? .01 : 1}
+    min={min}
+    tabindex={skipFocus ? -1 : 0}
+  />
 </div>
