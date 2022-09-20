@@ -21,7 +21,7 @@ export async function post(endpoint, data, option) {
       return {}
     } 
   } catch(error){
-    toastAlert.error(error.detail)
+    toastAlert.error(error.response.data.detail)
     return {}
   }
 }
@@ -37,7 +37,7 @@ export async function get(endpoint) {
       return {}
     }
   } catch(error){
-    toastAlert.error(error.message)
+    toastAlert.error(error.response.data.detail)
     return {}
   } 
 }
@@ -53,7 +53,7 @@ export async function download(endpoint) {
       return {}
     }
   } catch(error){
-    toastAlert.error(error.message)
+    toastAlert.error(error.response.data.detail)
     return {}
   } 
 }
@@ -70,7 +70,7 @@ export async function patch(endpoint, data) {
       return {}
     }
   } catch(error){
-    toastAlert.error(error.message)
+    toastAlert.error(error.response.data.detail)
     return{}
   } 
 }
