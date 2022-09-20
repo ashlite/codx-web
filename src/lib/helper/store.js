@@ -32,6 +32,7 @@ function createModal(){
     editPurchase:(data) => set({title: 'Edit Purchase', type: 'newPurchase', size:'md', data: {...data}}),
     cancelConfirmation:(id) => set({title: 'Cancel Confirmation', type: 'cancelConfirmation', size:'sm', data: {id}}),
     addPurchaseProduct:(idrBuyRate, headerId) => set({title: 'Add Product to Purchase', type: 'addPurchaseProduct', size:'md', data:{idrBuyRate, headerId}}),
+    addPurchaseNewCollection:(headerId, idrBuyRate = 0) => set({title: 'Add New Collection With This Purchase', type: 'createCollection', size:'lg', data: {headerId: headerId, idrBuyRate: idrBuyRate}}),
   }
 }
 

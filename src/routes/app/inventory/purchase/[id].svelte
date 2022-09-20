@@ -6,6 +6,7 @@
   import { afterNavigate } from '$app/navigation';
   import { refreshPage } from '$lib/helper/store';
 	import PurchaseList from '$lib/components/template/purchaseID/PurchaseList.svelte';
+  import PurchaseApproval from '$lib/components/molecule/PuchaseApproval.svelte'
 
   const options = ['General', 'Invoice', 'Pricing', 'Inventory', 'Finance', 'Custom']
   let option = 0
@@ -27,11 +28,12 @@
 </div>
 
 {#await purchaseData then data}
-  <div>
+  <div class="gap-y-4">
     {#if option == 0}
       <General data={data}/>
     {:else if option == 1}
-      <PurchaseList data={data}/>
+      <PurchaseApproval type=1 headerId={data.id} data={data.approval_purchase.find(item => item.approval_type == 1)}/>
+      <PurchaseList data={data} />
     {:else}
       <h1>Work in Progress</h1>
     {/if}

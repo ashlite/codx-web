@@ -4,23 +4,34 @@
   import { BggSingleItem } from '$lib/helper/bggInteraction'
   import { onMount } from 'svelte'
   import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte'
-  export let data
+  import NumberInput from '$lib/components/molecule/NumberInput.svelte'
+  import TextInput from '$lib/components/molecule/TextInput.svelte'
+  import SearchBar from '$lib/components/molecule/SearchBar.svelte'
+	import { priceFormater } from '$lib/helper/tools';
+  export let data = {
+    headerId:0,
+    idrBuyRate:0,
+    bggId:0
+  }
   
   let listCollectionCategory = get('/category')
   let dataCollection = {category: 'Core Game'}
   let dataProduct = {name:'retail', track_inventory:true}
+  let dataProductPurchase = {is_new: true}
   let parentGame = []
   let childrenGame = []
   let searchQuery = ''
   let resultQuery = []
   let startSearching = false
-  let inputProduct = false
+  let inputProduct = data.headerId > 0 ? true : false
   let inputExpansion = false
-  let firstInput
+  // let firstInput
+
+  $: forexToIdr = dataProductPurchase.forex_buy * data.idrBuyRate
 
   onMount(() => {
-    firstInput.focus()
-    if (data.bggId != undefined && data.bggId > 0){
+    // firstInput.focus()
+    if (data.bggId > 0){
       PullDataBgg(data.bggId)
     }
   })
@@ -94,10 +105,13 @@
     if ((dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion') && parentGame.length > 0){
       sendData.collection.master = parentGame.map(({id, ...other}) => id)
     }
-
-    console.log(sendData)
-    
     let response = await post('/collection', sendData)
+    console.log(response)
+    if (data.headerId > 0){
+      dataProductPurchase.product_id = response.product.id
+      if (data.idrBuyRate > 0) dataProductPurchase.idr_buy_price = forexToIdr
+      await post(`/purchase/items/${data.headerId}`, dataProductPurchase)
+    }
     if (Object.keys(response).length > 0){
       refreshPage.set(true)
       globalModal.close()
@@ -110,7 +124,7 @@
 <div class="pb-20">
   <div class="grid grid-cols-12 gap-4">
     <div id="collection-image" class="col-span-4 row-span-4 flex place-content-center max-h-96">
-      {#if dataCollection.cover != undefined}
+      {#if dataCollection.cover != undefined && dataCollection.cover != ''}
         <img src={dataCollection.cover} alt="Collection Cover" class="object-contain" />
       {:else}
         <img src="https://dummyimage.com/1000x1000/edb200/ffffff&text=NO+IMG" alt="No Img Fallback" class="object-contain"/>
@@ -121,14 +135,7 @@
         <span class="label-text">ID from BGG</span>
         <span class="label-text-alt">(please use this only if the item have BGG page)</span>
       </label>
-      <div class="grid grid-cols-3 gap-4">
-        <input bind:this={firstInput} id="nama-collection" type="number" placeholder="Type here" class="input col-span-2 input-bordered w-full" bind:value={dataCollection.bgg_id} />
-        <button class="btn btn-info col-start-3" on:click={() => PullDataBgg(dataCollection.bgg_id)}>
-          <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path xmlns="http://www.w3.org/2000/svg" d="M10 4C6.68629 4 4 6.68629 4 10C4 13.3137 6.68629 16 10 16C13.3137 16 16 13.3137 16 10C16 6.68629 13.3137 4 10 4ZM2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10C18 11.8487 17.3729 13.551 16.3199 14.9056L21.7071 20.2929C22.0976 20.6834 22.0976 21.3166 21.7071 21.7071C21.3166 22.0976 20.6834 22.0976 20.2929 21.7071L14.9056 16.3199C13.551 17.3729 11.8487 18 10 18C5.58172 18 2 14.4183 2 10Z" fill="#0D0D0D"></path>
-          </svg>
-        </button>
-      </div>
+      <SearchBar on:searchTrigger={() => PullDataBgg(dataCollection.bgg_id)} bind:searchQuery={dataCollection.bgg_id}/>
     </div>
     <div id="category-collection" class="form-control w-full col-span-4">
       <label class="label" for="category-collection">
@@ -145,39 +152,31 @@
       {/await}
     </div>
     <div id="name-collection" class="form-control w-full col-span-8">
-      <label class="label" for="nama-collection">
-        <span class="label-text">Collection Name<span class="text-error font-bold">*</span></span>
-      </label>
-      <input id="nama-collection" type="text" placeholder="Type here" class="input input-bordered w-full" bind:value={dataCollection.name} required/>
+      <TextInput labelTL="Collection Name" bind:value={dataCollection.name} required/>
     </div>
     <div id="released-collection" class="form-control w-full col-span-2">
-      <label class="label" for="released-collection">
-        <span class="label-text">Year Published</span>
-      </label>
-      <input id="released-collection" type="number" class="input input-bordered w-full" bind:value={dataCollection.released}/>
+      <NumberInput labelTL="Year Published" bind:value={dataCollection.released} />
     </div>
     <div id="cover" class="form-control w-full col-span-6">
-      <label class="label" for="cover">
-        <span class="label-text">Image Link (Must use http/https CDN format)</span>
-      </label>
-      <input id="cover-input" type="text" class="input input-bordered w-full" bind:value={dataCollection.cover}/>
+      <TextInput labelTL="Image Link (Must use http/https CDN format)" bind:value={dataCollection.cover} />
     </div>
     {#if dataCollection.category == 'Core Game' || dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion'}
       <div id="age-players-playtime" class="grid grid-cols-12 gap-4 mt-4 col-span-8">
         <div id="min-age" class="form-control w-full col-span-2">
-          <label class="label" for="min-age">
-            <span class="label-text">Minimal Age</span>
-          </label>
-          <input id="min-age-input" type="number" class="input input-bordered w-full" bind:value={dataCollection.min_age}/>
+          <NumberInput labelTL="Minimal Age" bind:value={dataCollection.min_age} />
         </div>
         <div id="players" class="form-control w-full col-span-4 border-l-2 border-secondary pl-2">
           <label class="label" for="players">
             <span class="label-text">Recomended Players</span>
           </label>
           <div class="grid grid-cols-7">
-            <input id="min-player" type="number" class="input input-bordered w-full col-span-3" bind:value={dataCollection.min_player}/>
+            <div class="w-full col-span-3">
+              <NumberInput bind:value={dataCollection.min_player} />
+            </div>
             <div class="font-bold text-4xl text-center">-</div>
-            <input id="max-player" type="number" class="input input-bordered w-full col-span-3" bind:value={dataCollection.max_player}/>
+            <div class="w-full col-span-3">
+              <NumberInput bind:value={dataCollection.max_player} />
+            </div>
           </div>
         </div>
         <div id="playtime" class="form-control w-full col-span-4 border-l-2 border-secondary pl-2">
@@ -185,16 +184,17 @@
             <span class="label-text">Recomended Playtime (Minutes)</span>
           </label>
           <div class="grid grid-cols-7">
-            <input id="min-playtime" type="number" class="input input-bordered w-full col-span-3" bind:value={dataCollection.min_playtime}/>
+            <div class="w-full col-span-3">
+              <NumberInput bind:value={dataCollection.min_playtime} />
+            </div>
             <div class="font-bold text-4xl text-center">-</div>
-            <input id="max-playtime" type="number" class="input input-bordered w-full col-span-3" bind:value={dataCollection.max_playtime}/>
+            <div class="w-full col-span-3">
+              <NumberInput bind:value={dataCollection.max_playtime} />
+            </div>
           </div>
         </div>
         <div id="difficulties" class="form-control w-full col-span-2 border-l-2 border-secondary pl-2">
-          <label class="label" for="difficulties">
-            <span class="label-text">Difficulties</span>
-          </label>
-          <input id="difficulties-input" type="number" step="0.01" max="5" min="1" class="input input-bordered w-full" bind:value={dataCollection.game_difficulties}/>
+          <NumberInput min=1 max=5 decimal labelTL="Difficulties" bind:value={dataCollection.game_difficulties} />
         </div>
       </div>
     {/if}
@@ -227,24 +227,21 @@
   {/if}
 
   <div class="flex content-center gap-4 border-b-2 border-secondary pt-6 pb-2 mb-4">
-    <h1 class="text-2xl font-bold">Add Product for this Collection (optional)</h1>
-    <input type="checkbox" class="toggle toggle-accent toggle-lg" bind:checked={inputProduct} />
+    <h1 class="text-2xl font-bold">Add Product for this Collection</h1>
+    <input 
+      type="checkbox" 
+      class="toggle toggle-accent toggle-lg" 
+      bind:checked={inputProduct} 
+      disabled={data.headerId > 0 ? true : false} />
   </div>
 
   {#if inputProduct}
     <div id="product" class="grid grid-cols-12 gap-4">
-      <div id="name-product" class="form-control w-full col-span-6">
-        <label class="label" for="name-product">
-          <span class="label-text">Product Name<span class="text-error font-bold">*</span></span>
-          <span class="label-text-alt">Just leave it empty if you don't want to add product</span>
-        </label>
-        <input id="name-product-input" type="text" placeholder="Type here" class="input input-bordered w-full" bind:value={dataProduct.name} required/>
+      <div id="name-product" class="w-full col-span-6">
+        <TextInput labelTL="Product Name" bind:value={dataProduct.name} required/>
       </div>
-      <div id="barcode-product" class="form-control w-full col-span-4">
-        <label class="label" for="barcode-product">
-          <span class="label-text">Barcode</span>
-        </label>
-        <input id="barcode-product-input" type="text" class="input input-bordered w-full" bind:value={dataProduct.barcode}/>
+      <div id="barcode-product" class="w-full col-span-4">
+        <TextInput labelTL="Barcode" bind:value={dataProduct.barcode} />
       </div>
       <div class="form-control w-full col-span-2">
         <label class="label cursor-pointer" for="">
@@ -259,14 +256,19 @@
         <textarea id="notes-product-input" class="textarea textarea-bordered h-36" placeholder="Product Description" bind:value={dataProduct.notes}/>
       </div>
       <div class="col-span-6">
-        <label class="label" for="buy-price">
-          <span class="label-text">Buy Price</span>
-        </label>
-        <input id="buy-price" type="number" class="input input-bordered w-full" bind:value={dataProduct.buy_price}/>
-        <label class="label" for="sell-price">
-          <span class="label-text">Sell Price</span>
-        </label>
-        <input id="sell-price" type="number" class="input input-bordered w-full" bind:value={dataProduct.sell_price}/>
+        {#if data.headerId > 0 && data.idrBuyRate > 0}
+          <NumberInput labelTL="Ordered Qty" bind:value={dataProductPurchase.ordered_qty} />
+          <NumberInput labelTL="Forex Price" labelTR={`rate: ${data.idrBuyRate}`} bind:value={dataProductPurchase.forex_buy} />
+          <div class="font-bold text-info">
+            IDR Price: {priceFormater(forexToIdr)}
+          </div>
+        {:else if data.headerId > 0}
+          <NumberInput labelTL="Ordered Qty" bind:value={dataProductPurchase.ordered_qty} />
+          <NumberInput labelTL="Buy Price" bind:value={dataProductPurchase.idr_buy_price} />
+        {:else}
+          <NumberInput labelTL="Buy Price" bind:value={dataProduct.buy_price} />
+          <NumberInput labelTL="Sell Price" bind:value={dataProduct.sell_price} />
+        {/if}
       </div>
     </div>
   {/if}
@@ -275,7 +277,7 @@
   {#if dataCollection.category == 'Core Game' || dataCollection.category == 'Expansion' || dataCollection.category == 'Core & Expansion'}
     
     <div class="flex content-center gap-4 border-b-2 border-secondary pt-6 pb-2 mb-4">
-      <h1 class="text-2xl font-bold">Add Expansion Connection(optional)</h1>
+      <h1 class="text-2xl font-bold">Add Expansion Connection</h1>
       <input type="checkbox" class="toggle toggle-accent toggle-lg" bind:checked={inputExpansion} />
     </div>
 

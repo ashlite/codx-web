@@ -1,6 +1,11 @@
 export function priceFormater(price, currency = 'IDR') {
-  const formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: currency}).format(price)
-  return formattedPrice.slice(0, -3)
+  let formattedPrice
+  if (currency == 'IDR'){
+    formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: currency, minimumFractionDigits: 0, maximumFractionDigits: 0}).format(price)
+  } else {
+    formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: currency, currencyDisplay: 'narrowSymbol', minimumFractionDigits: 2, maximumFractionDigits: 2}).format(price)
+  }
+  return formattedPrice
 }
 
 export function marginCalc(buy, sell, type = 'nominal'){

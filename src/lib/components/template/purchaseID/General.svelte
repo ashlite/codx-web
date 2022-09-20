@@ -33,7 +33,10 @@
   }
 </script>
 
-<h1 class="text-xl font-bold mr-4 text-right">Date: {data.header_date && dateFormater(data.header_date)}</h1>
+<div class="flex flex-row justify-between">
+  <div class="text-xl font-bold">Create by {`${data.creator && data.creator.first_name} ${data.creator && data.creator.last_name}`}</div>
+  <div class="text-xl font-bold mr-4 text-right">Date: {data.header_date && dateFormater(data.header_date)}</div>
+</div>
 <div class="flex flex-row my-4 justify-between content-center gap-4">
   <SupplierCard data={data.supplier}/>
   <div class="w-1/3 bg-base-300 text-base-content p-4 rounded-2xl shadow-xl">

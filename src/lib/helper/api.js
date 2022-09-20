@@ -15,13 +15,13 @@ export async function post(endpoint, data, option) {
     const response = await axiosReq.post(url, data, option)
     if (response.status < 400){
       toastAlert.success('Operation Success')
-      return response
+      return response.data
     } else {
       toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
       return {}
     } 
   } catch(error){
-    toastAlert.error(error.message)
+    toastAlert.error(error.detail)
     return {}
   }
 }
@@ -86,7 +86,7 @@ export async function del(endpoint) {
       return {}
     }
   } catch(error){
-    toastAlert.error(error.message)
+    toastAlert.error(error.response.data.detail)
     return{}
   } 
 }

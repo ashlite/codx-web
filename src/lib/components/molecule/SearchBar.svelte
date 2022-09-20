@@ -4,9 +4,9 @@
   import { shortcut } from '$lib/helper/shortcut';
   export let searchState = false
   export let searchTotal
+  export let searchQuery = ''
 
   const dispatch = createEventDispatcher()
-  let searchQuery = ''
 
   function dispatchSearch(){
     dispatch('searchTrigger', {

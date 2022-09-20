@@ -6,13 +6,15 @@
   import { priceFormater } from '$lib/helper/tools';
   import { post } from '$lib/helper/api'
 	import { globalModal, refreshPage } from '$lib/helper/store';
+  import Toggle from '$lib/components/atom/Toggle.svelte';
 
-  export let data //idr buy rate
+  export let data
   console.log(data)
   let product = {}
   let forexPrice
   let orderedQty = 0
   let idrPrice = 0
+  let newCollection = false
 
   $: forexToIdr = forexPrice * data.idrBuyRate
   $: if (product.id > 0){
@@ -24,10 +26,11 @@
     const requestBody = {
       product_id: product.id,
       ordered_qty: orderedQty,
-      is_new: false
+      is_new: newCollection
     }
-    requestBody.forex_buy = data.idr_buy_rate != undefined ? forexPrice : null
-    requestBody.idr_buy_price = idrPrice > 0 && data.idr_buy_rate == undefined ? idrPrice : forexToIdr
+    requestBody.forex_buy = data.idrBuyRate != undefined ? forexPrice : null
+    requestBody.idr_buy_price = idrPrice > 0 && data.idrBuyRate == undefined ? idrPrice : forexToIdr
+    console.log(requestBody)
     const response = await post(`/purchase/items/${data.headerId}`, requestBody)
     if (response) {
       globalModal.close()
@@ -53,6 +56,7 @@
       <NumberInput labelTL="Forex Buy Price" skipFocus disabled decimal/>
       <NumberInput labelTL="IDR Buy Price" bind:value={ idrPrice } required disabled={data != undefined}/>
     {/if}
+    <Toggle label="Is this new Collection:" bind:checked={newCollection} />
   </div>
   <ModalSubmit form />
 </form>

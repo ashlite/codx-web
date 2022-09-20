@@ -7,6 +7,7 @@
   export let required = false
   export let decimal = false
   export let min = 0
+  export let max = 'infinite'
   export let skipFocus = false
 </script>
 
@@ -25,6 +26,7 @@
     required={required} 
     step={decimal ? .01 : 1}
     min={min}
+    max={max}
     tabindex={skipFocus ? -1 : 0}
   />
 </div>

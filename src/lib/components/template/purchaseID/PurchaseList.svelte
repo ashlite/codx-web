@@ -3,14 +3,14 @@
   import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
   import { priceFormater, dateFormater } from "$lib/helper/tools"
   import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
-  import { post } from '$lib/helper/api'
+  import { post, del } from '$lib/helper/api'
   import Status from "$lib/components/atom/Status.svelte";
   import FileCard from "$lib/components/molecule/FileCard.svelte";
   import CellAction from "$lib/components/molecule/CellAction.svelte";
   import EditableInput from "$lib/components/atom/EditableInput.svelte";
 
   export let data
-
+  let approve = false
   let sumData = summaryPurchase()
 
   $: data.list_item.length, sumData = summaryPurchase()
@@ -27,6 +27,11 @@
       totalForexBuy += item.ordered_qty * item.forex_buy
     });
     return {totalQty, totalProduct, totalIdrBuy, totalForexBuy}
+  }
+
+  async function removePurchaseItem(listId){
+    await del(`/purchase/items/${data.id}/${listId}`)
+    refreshPage.set(true)
   }
 
 </script>
@@ -87,12 +92,12 @@
             {priceFormater(item.idr_buy_price * item.ordered_qty)}
           </td>
           <td>
-            <CellAction remove/>
+            <CellAction remove on:remove={() => removePurchaseItem(item.id)}/>
           </td>
         </tr>
       {/each}
       <tr>
-        <td class="text-info font-bold text-2xl text-right">SUMMARY</td>
+        <td class="text-info font-bold text-2xl text-right">PURCHASE SUMMARY</td>
         <td class="text-info font-bold text-xl">{sumData.totalQty}</td>
         {#if data.forex_symbol != undefined}
           <td class="text-info font-bold text-xl text-right" colspan="2">
@@ -110,7 +115,7 @@
               <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct(data.idr_buy_rate, data.id)} />
             </div>
             <div class="w-2/5">
-              <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block />
+              <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block on:click={() => globalModal.addPurchaseNewCollection(data.id, data.idr_buy_rate)} />
             </div>
           </div>
         </td>
