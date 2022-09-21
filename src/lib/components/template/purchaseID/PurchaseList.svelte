@@ -1,16 +1,11 @@
 <script>
-  import SupplierCard from "$lib/components/molecule/SupplierCard.svelte"
   import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
-  import { priceFormater, dateFormater } from "$lib/helper/tools"
-  import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
-  import { post, del } from '$lib/helper/api'
-  import Status from "$lib/components/atom/Status.svelte";
-  import FileCard from "$lib/components/molecule/FileCard.svelte";
+  import { priceFormater } from "$lib/helper/tools"
+  import { globalModal, refreshPage } from '$lib/helper/store'
+  import { del } from '$lib/helper/api'
   import CellAction from "$lib/components/molecule/CellAction.svelte";
-  import EditableInput from "$lib/components/atom/EditableInput.svelte";
 
   export let data
-  let approve = false
   let sumData = summaryPurchase()
 
   $: data.list_item.length, sumData = summaryPurchase()
@@ -36,30 +31,24 @@
 
 </script>
 
-<div class="overflow-x-auto">
-  <table class="table w-full table-compact">
+<div class="overflow-x-auto pb-8">
+  <table class="table w-full table-fixed">
     <!-- head -->
     <thead>
       <tr>
-        <th rowspan="2" class="text-xl text-center">Product</th>
-        <th rowspan="2" class="text-xl text-center">Qty</th>
-        {#if data.forex_symbol != undefined}
-          <th colspan="2" class="text-xl text-center">{data.forex_symbol}</th>
+        <th class="text-xl text-center w-7/12">Product</th>
+        <th class="text-xl text-center w-1/12">Qty</th>
+        {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
+          <th class="text-xl text-center w-1/12">{data.forex_symbol}</th>
+          <th class="text-xl text-center w-2/12">{data.forex_symbol != undefined ? `IDR = ${data.idr_buy_rate}` : `IDR`}</th>
+        {:else}
+          <th class="text-xl text-center w-3/12">IDR</th>
         {/if}
-        <th colspan="2" class="text-xl text-center">{data.forex_symbol != undefined ? `IDR = ${data.idr_buy_rate}` : `IDR`}</th>
-        <th rowspan="2"></th>
-      </tr>
-      <tr>
-        {#if data.forex_symbol != undefined}
-          <th class="text-xl text-center">Single</th>
-          <th class="text-xl text-center">Total</th>
-        {/if}
-        <th class="text-xl text-center">Single</th>
-        <th class="text-xl text-center">Total</th>
+        <th class="w-1/12"></th>
       </tr>
     </thead>
     <tbody>
-      {#each data.list_item as item}
+      {#each data.list_item.sort((a,b) => a.id - b.id) as item}
         <tr>
           <td>
             <div class="flex flex-row gap-2">
@@ -68,30 +57,29 @@
                   <img src={item.product.product_image != undefined ? item.product.product_image : item.product.collection.cover} alt="Product"/>
                 </div>
               </div>
-              <div class="flex flex-col">
-                <div class="text-xl font-bold">{item.product.collection.name}</div>
-                <div class="text-info">{item.product.name}</div>
+              <div class="flex flex-col overflow-x-clip">
+                {#if item.is_new}
+                  <div class="badge badge-md badge-accent font-bold text-accent-content">NEW ITEMS</div>
+                {/if}
+                <div class="text-xl font-bold text-ellipsis">{item.product.collection.name}</div>
+                <div class="text-info text-ellipsis">{item.product.name}</div>
               </div>
             </div>
           </td>
-          <td class="tex-center text-xl">
+          <td class="text-center text-xl">
             {item.ordered_qty}
           </td>
-          {#if data.forex_symbol != undefined}
+          {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
             <td class="text-right">
-              {priceFormater(item.forex_buy, 'USD')}
-            </td>
-            <td class="text-right">
-              {priceFormater(item.forex_buy * item.ordered_qty, 'USD')}
+              <div>{priceFormater(item.forex_buy, 'USD')}</div>
+              <div class="text-info">{priceFormater(item.forex_buy * item.ordered_qty, 'USD')}</div>
             </td>
           {/if}
           <td class="text-right">
-            {priceFormater(item.idr_buy_price)}
+            <div>{priceFormater(item.idr_buy_price)}</div>
+            <div class="text-info">{priceFormater(item.idr_buy_price * item.ordered_qty)}</div>
           </td>
-          <td class="text-right">
-            {priceFormater(item.idr_buy_price * item.ordered_qty)}
-          </td>
-          <td>
+          <td class="justify-end">
             <CellAction remove on:remove={() => removePurchaseItem(item.id)}/>
           </td>
         </tr>
@@ -99,27 +87,24 @@
       <tr>
         <td class="text-info font-bold text-2xl text-right">PURCHASE SUMMARY</td>
         <td class="text-info font-bold text-xl">{sumData.totalQty}</td>
-        {#if data.forex_symbol != undefined}
-          <td class="text-info font-bold text-xl text-right" colspan="2">
+        {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
+          <td class="text-info font-bold text-xl text-right">
             {priceFormater(sumData.totalForexBuy, 'USD')}
           </td>
         {/if}
-        <td class="text-info font-bold text-xl text-right" colspan="2">
+        <td class="text-info font-bold text-xl text-right">
           {priceFormater(sumData.totalIdrBuy)}
         </td>
-      </tr>
-      <tr>
-        <td colspan="100%">
-          <div class="flex flex-row gap-4 justify-end">
-            <div class="w-1/4">
-              <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct(data.idr_buy_rate, data.id)} />
-            </div>
-            <div class="w-2/5">
-              <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block on:click={() => globalModal.addPurchaseNewCollection(data.id, data.idr_buy_rate)} />
-            </div>
-          </div>
-        </td>
+        <td></td>
       </tr>
     </tbody>
   </table>
+  <div class="flex flex-row gap-4 justify-end">
+    <div class="w-1/4">
+      <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct(data.idr_buy_rate, data.id)} />
+    </div>
+    <div class="w-2/5">
+      <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block on:click={() => globalModal.addPurchaseNewCollection(data.id, data.idr_buy_rate)} />
+    </div>
+  </div>
 </div>

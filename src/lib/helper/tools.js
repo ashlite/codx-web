@@ -1,7 +1,7 @@
 export function priceFormater(price, currency = 'IDR') {
   let formattedPrice
   if (currency == 'IDR'){
-    formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: currency, minimumFractionDigits: 0, maximumFractionDigits: 0}).format(price)
+    formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: 'IDR', currencyDisplay: 'narrowSymbol', minimumFractionDigits: 0, maximumFractionDigits: 0}).format(price)
   } else {
     formattedPrice = new Intl.NumberFormat('id-ID', {style:'currency', currency: currency, currencyDisplay: 'narrowSymbol', minimumFractionDigits: 2, maximumFractionDigits: 2}).format(price)
   }

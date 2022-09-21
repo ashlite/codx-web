@@ -18,7 +18,7 @@
 
   $: forexToIdr = forexPrice * data.idrBuyRate
   $: if (product.id > 0){
-    idrPrice = product.buy_price
+    // idrPrice = product.buy_price
     forexToIdr = product.buy_price
   } 
 
@@ -44,7 +44,7 @@
   <div class="grid grid-cols-2 gap-4">
     <NumberInput labelTL="productId" skipFocus disabled required bind:value={product.id}/>
     <NumberInput labelTL="Ordered Qty" bind:value={ orderedQty } required/>
-    {#if data != undefined}
+    {#if data.idrBuyRate != undefined}
       <NumberInput labelTL="Forex Buy Price" decimal bind:value={ forexPrice }/>
       <div class="flex flex-col self-center">
         <div class="font-bold">
@@ -53,8 +53,7 @@
         <div class="text-info font-bold text-3xl">{priceFormater(forexToIdr)}</div>
       </div>
     {:else}
-      <NumberInput labelTL="Forex Buy Price" skipFocus disabled decimal/>
-      <NumberInput labelTL="IDR Buy Price" bind:value={ idrPrice } required disabled={data != undefined}/>
+      <NumberInput labelTL="IDR Buy Price" bind:value={ idrPrice } required/>
     {/if}
     <Toggle label="Is this new Collection:" bind:checked={newCollection} />
   </div>

@@ -10,6 +10,7 @@
   export let data = undefined // object approval purchase
   export let type
   export let headerId = 0 // purchase header id
+  export let subText = 'Please approve this section if finish.'
   const dispatch = createEventDispatcher()
   let noteInput = false
   let approvalNote = ''
@@ -38,7 +39,7 @@
         <Icon icon="uil:file-lock-alt" width="30" height="30" />
         <div>
           <h3 class="font-bold">Not Aprrove</h3>
-          <div class="text-xs">Please approve this section if finish.</div>
+          <div class="text-xs">{subText}</div>
         </div>
       </div>
       <div class="flex-none">

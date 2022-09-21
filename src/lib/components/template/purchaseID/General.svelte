@@ -51,7 +51,18 @@
   </div>
 </div>
 
-<h1 class="text-2xl font-bold">Approval Status</h1>
+<h1 class="text-2xl font-bold text-secondary">Purchase Notes</h1>
+<div class="flex flex-row gap-4">
+  {#if data.purchase_notes != undefined}
+    <div class="text-xl">
+      {data.purchase_notes}
+    </div>
+  {:else}
+    <h1 class="text-xl">None</h1>
+  {/if}
+</div>
+
+<h1 class="text-2xl font-bold mt-4 text-secondary">Approval Status</h1>
 <div class="flex flex-row gap-4">
   {#if data.approval_purchase && data.approval_purchase.length > 0}
     {#each data.approval_purchase as approval}
@@ -67,7 +78,7 @@
   {/if}
 </div>
 
-<h1 class="text-2xl font-bold mt-4">Purchase Document</h1>
+<h1 class="text-2xl font-bold mt-4 text-secondary">Purchase Document</h1>
 {#if data.list_doc != undefined && data.list_doc.length > 0}
   <div class="flex flex-row gap-4">
     {#each data.list_doc as fileData}
