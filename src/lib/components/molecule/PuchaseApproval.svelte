@@ -6,6 +6,7 @@
   import { refreshPage } from "$lib/helper/store";
   import { post, del } from '$lib/helper/api'
   import { toastAlert } from '$lib/helper/store'
+	import { dateFormater } from "$lib/helper/tools";
 
   export let data = undefined // object approval purchase
   export let type
@@ -21,6 +22,7 @@
         notes: approvalNote,
         approval_type: type
       }
+      console.log(requestBody)
       await post(`/purchase/approval/${headerId}`, requestBody)
       refreshPage.set(true)
       noteInput = false
@@ -67,7 +69,7 @@
       <div>
         <h3 class="font-bold">{`Approve by: ${data.user.first_name} ${data.user.last_name} (${data.user.email})`}</h3>
         <div class="text-xs">
-          <span class="font-bold">Date: </span> {data.created_at} - 
+          <span class="font-bold">Date: </span> {dateFormater(data.created_at)} - 
           <span class="font-bold">Notes: </span> {data.notes}
         </div>
       </div>

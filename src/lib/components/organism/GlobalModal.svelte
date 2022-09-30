@@ -11,6 +11,8 @@
   import CancelConfirmation from '$lib/components/template/_globalmodal/CancelConfirmation.svelte'
   import FormForex from '$lib/components/template/_globalmodal/FormForex.svelte'
   import FormAddPurchaseProduct from '$lib/components/template/_globalmodal/FormAddPurchaseProduct.svelte'
+  import CreateHeaderMovement from '$lib/components/template/_globalmodal/CreateHeaderMovement.svelte'
+  import AddMovement from '$lib/components/template/_globalmodal/AddMovement.svelte'
   import { globalModal } from '$lib/helper/store'
   import { shortcut } from '$lib/helper/shortcut'
 </script>
@@ -49,6 +51,10 @@
         <FormForex data={$globalModal.data} />
       {:else if $globalModal.type == 'addPurchaseProduct'}
         <FormAddPurchaseProduct data={$globalModal.data}/>
+      {:else if $globalModal.type == 'addHeaderMovement'}
+        <CreateHeaderMovement data={$globalModal.data} />
+      {:else if $globalModal.type == 'addMovement'}
+        <AddMovement data={$globalModal.data} />
       {/if}
     </div>
   </div>

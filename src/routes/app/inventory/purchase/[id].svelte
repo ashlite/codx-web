@@ -9,6 +9,7 @@
   import PurchaseApproval from '$lib/components/molecule/PuchaseApproval.svelte'
   import CustomList from '$lib/components/template/purchaseID/CustomList.svelte';
   import PricingList from '$lib/components/template/purchaseID/PricingList.svelte';
+  import InventoryList from '$lib/components/template/purchaseID/InventoryList.svelte';
 
   const options = ['General', 'Invoice', 'Pricing', 'Inventory', 'Finance', 'Custom']
   let option = 0
@@ -22,6 +23,7 @@
     purchaseData = await get(`/purchase/header/${$page.params.id}`)
     refreshPage.set(false)
   }
+
 </script>
 
 <div class="mb-4">
@@ -43,11 +45,19 @@
       <PurchaseApproval 
         type=2 
         headerId={data.id}
-        subText="BEWARE: if approved, will update all selling price in this list to a new price." 
+        subText="BEWARE: if approved, will update all selling price in this list to a new price. If New Price is 0, then the price in the system will not change." 
         data={data.approval_purchase.find(item => item.approval_type == 2)}/>
       <PricingList data={data} />
+    {:else if option == 3}
+      <InventoryList data={data}/>
+    {:else if option == 4}
+      <PurchaseApproval 
+        type=4 
+        headerId={data.id}
+        subText="BEWARE: if approved, you can't add or remove fees from this purchase." 
+        data={data.approval_purchase.find(item => item.approval_type == 4)}/>
     {:else if option == 5}
-      {#if data.forex_symbol == undefined}
+      {#if data.forex_symbol == undefined || data.forex_symbol == 'IDR'}
         <h1 class="text-error text-3xl font-bold">There is no need for custom invoice</h1>
       {:else}
         <CustomList data={data}/>

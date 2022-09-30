@@ -12,8 +12,9 @@
   export let noRange = false
   export let noMonthly = false
   export let defaultDate = false
+  export let defaultMonth = false
   
-  let buttonText = defaultDate ? `Date: ${dateFormater(defaultDate)}` : 'DATE SELECTOR'
+  let buttonText = defaultDate ? `Date: ${dateFormater(defaultDate)}` : defaultMonth ? `Monthly: ${dateFormater(defaultMonth, 'monthly')}` : 'DATE SELECTOR'
   let today = new Date()
   let mode
   let inputDate
@@ -76,12 +77,12 @@
   }
 
   function submitMonth(id){
-    inputDate.setMonth(id)
-    inputDate.setDate(1)
+    inputDate.setMonth(id, 1)
+    inputDate.setHours(0,0,0,0)
     inputDate2 = new Date(inputDate)
-    inputDate.setMonth(id + 1, 0)
+    inputDate2.setMonth(id + 1, 0)
     buttonText = `Monthly: ${dateFormater(inputDate, 'monthly')}`
-    forward([inputDate.toDateString(), inputDate2.toDateString()])
+    forward({min: inputDate, max: inputDate2})
   }
 
   function submitDate(date){

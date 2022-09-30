@@ -19,7 +19,7 @@ export function dateFormater(date, settings='date'){
   if (settings == 'date') return new Intl.DateTimeFormat('id-ID', {dateStyle:'medium'}).format(formatedDate)
   else if (settings == 'time') return new Intl.DateTimeFormat('id-ID', {timeStyle:'short'}).format(formatedDate)
   else if (settings == 'datetime') return new Intl.DateTimeFormat('id-ID', {dateStyle:'medium', timeStyle:'short'}).format(formatedDate)
-  else if (settings == 'isoDateTime') return new Date(date).toISOString()
+  else if (settings == 'isoDateTime') return formatedDate.toISOString()
   else if (settings == 'monthly') return new Intl.DateTimeFormat('id-ID',{month: 'long', year:'numeric'}).format(formatedDate)
   else if (settings == 'month') return new Intl.DateTimeFormat('id-ID',{month: 'long'}).format(formatedDate)
 }

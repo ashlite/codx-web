@@ -7,6 +7,7 @@
 
   export let data
   let sumData = summaryPurchase()
+  console.log(data)
 
   $: data.list_item.length, sumData = summaryPurchase()
 
@@ -102,9 +103,6 @@
   <div class="flex flex-row gap-4 justify-end">
     <div class="w-1/4">
       <BtnSuper icon="uil:plus" text="Product" color="primary" key="KeyN" kbd="N" block on:click={() => globalModal.addPurchaseProduct(data.idr_buy_rate, data.id)} />
-    </div>
-    <div class="w-2/5">
-      <BtnSuper icon="uil:plus" text="Collection with Product" color="secondary" key="KeyC" kbd="C" block on:click={() => globalModal.addPurchaseNewCollection(data.id, data.idr_buy_rate)} />
     </div>
   </div>
 </div>

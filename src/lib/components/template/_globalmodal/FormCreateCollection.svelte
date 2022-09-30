@@ -8,11 +8,7 @@
   import TextInput from '$lib/components/molecule/TextInput.svelte'
   import SearchBar from '$lib/components/molecule/SearchBar.svelte'
 	import { priceFormater } from '$lib/helper/tools';
-  export let data = {
-    headerId:0,
-    idrBuyRate:0,
-    bggId:0
-  }
+  export let data = {}
   
   let listCollectionCategory = get('/category')
   let dataCollection = {category: 'Core Game'}
@@ -91,7 +87,6 @@
   })
 
   async function PostDataCollection(){
-    toastAlert.warning('Processing...')
     let sendData = {}
     sendData.collection = {...dataCollection}
     sendData.collection.name = dataCollection.name
@@ -106,12 +101,6 @@
       sendData.collection.master = parentGame.map(({id, ...other}) => id)
     }
     let response = await post('/collection', sendData)
-    console.log(response)
-    if (data.headerId > 0){
-      dataProductPurchase.product_id = response.product.id
-      if (data.idrBuyRate > 0) dataProductPurchase.idr_buy_price = forexToIdr
-      await post(`/purchase/items/${data.headerId}`, dataProductPurchase)
-    }
     if (Object.keys(response).length > 0){
       refreshPage.set(true)
       globalModal.close()
@@ -256,19 +245,8 @@
         <textarea id="notes-product-input" class="textarea textarea-bordered h-36" placeholder="Product Description" bind:value={dataProduct.notes}/>
       </div>
       <div class="col-span-6">
-        {#if data.headerId > 0 && data.idrBuyRate > 0}
-          <NumberInput labelTL="Ordered Qty" bind:value={dataProductPurchase.ordered_qty} />
-          <NumberInput labelTL="Forex Price" labelTR={`rate: ${data.idrBuyRate}`} bind:value={dataProductPurchase.forex_buy} />
-          <div class="font-bold text-info">
-            IDR Price: {priceFormater(forexToIdr)}
-          </div>
-        {:else if data.headerId > 0}
-          <NumberInput labelTL="Ordered Qty" bind:value={dataProductPurchase.ordered_qty} />
-          <NumberInput labelTL="Buy Price" bind:value={dataProductPurchase.idr_buy_price} />
-        {:else}
-          <NumberInput labelTL="Buy Price" bind:value={dataProduct.buy_price} />
-          <NumberInput labelTL="Sell Price" bind:value={dataProduct.sell_price} />
-        {/if}
+        <NumberInput labelTL="Buy Price" bind:value={dataProduct.buy_price} />
+        <NumberInput labelTL="Sell Price" bind:value={dataProduct.sell_price} />
       </div>
     </div>
   {/if}

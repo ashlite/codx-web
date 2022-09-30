@@ -95,6 +95,7 @@
     <thead>
       <tr> 
         <th class="text-xl">Product Name</th> 
+        <th class="text-xl">Stock</th>
         <th class="text-xl">Buy Price</th> 
         <th class="text-xl">Sell Price</th>
         <th class="text-xl">Margin</th>
@@ -110,6 +111,9 @@
                 <div class="font-bold">{product.collection.name}</div>
                 <div class="text-info">{product.name}</div>
               </div>
+            </td>
+            <td class="text-center">
+              <div class="font-bold">{product.total_stock}</div>
             </td>
             <td>
               <EditableInput value={product.buy_price} dataId={product.id} on:editableSubmit={event => handleEditable('buy', event.detail)}/>

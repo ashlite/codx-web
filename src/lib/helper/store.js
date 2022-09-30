@@ -16,7 +16,6 @@ function createModal(){
   return{
     subscribe,
     close:() => set(false),
-    open:(title) => set({title: title}),
     collectionCreate:() => set({title: 'Create New Collection', type: 'createCollection', size:'lg'}),
     collectionFromBgg:(id) => set({title: 'Create New Collection', type: 'createCollection', size:'lg', data: {bggId: id}}),
     deleteConfirmation:(id, name, type) => set({title: 'Delete Confirmation', type: 'deleteConfirmation', size:'sm', data: {id, name, type}}),
@@ -33,6 +32,8 @@ function createModal(){
     cancelConfirmation:(id) => set({title: 'Cancel Confirmation', type: 'cancelConfirmation', size:'sm', data: {id}}),
     addPurchaseProduct:(idrBuyRate, headerId) => set({title: 'Add Product to Purchase', type: 'addPurchaseProduct', size:'md', data:{idrBuyRate, headerId}}),
     addPurchaseNewCollection:(headerId, idrBuyRate = 0) => set({title: 'Add New Collection With This Purchase', type: 'createCollection', size:'lg', data: {headerId: headerId, idrBuyRate: idrBuyRate}}),
+    createHeaderMovement:(purchaseId) => set({title: 'Create Header Movement', type: 'addHeaderMovement', size:'sm', data:{header_purchase_id: purchaseId}}),
+    addMovement:() => set({title: 'Add Product Movement', type: 'addMovement', size:'sm'})
   }
 }
 

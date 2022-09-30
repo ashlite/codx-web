@@ -1,8 +1,8 @@
 <script>
   import { shortcut } from '$lib/helper/shortcut'
   import Icon from '@iconify/svelte'
-  export let text
-  export let state
+  export let text = ''
+  export let state = ''
   export let noShortcut = false
 
 </script>

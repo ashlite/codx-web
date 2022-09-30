@@ -5,6 +5,7 @@
   export let data
   let customPercent = 55
   let sumData = summaryPurchase()
+  console.log(data)
 
   $: customPercent, sumData = summaryPurchase()
 

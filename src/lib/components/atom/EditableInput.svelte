@@ -18,10 +18,10 @@
   }
 </script>
 
-<div>
+<div class="w-full">
   {#if editing}
     <form on:submit|preventDefault={() => submitValue()}>
-      <input autofocus type="text" class="input input-bordered input-sm max-w-xs" bind:value={value} on:blur={() => editing = false}/>
+      <input autofocus type="text" class="input input-bordered input-sm w-full" bind:value={value} on:blur={() => editing = false}/>
     </form>
   {:else}
     <div on:click={() => editing = true} class="cursor-pointer underline decoration-dotted decoration-1 underline-offset-2 font-bold">

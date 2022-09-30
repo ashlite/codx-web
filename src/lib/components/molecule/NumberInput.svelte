@@ -2,7 +2,7 @@
   export let labelTR = false
   export let labelTL = false
   export let placeholder=''
-  export let value = ''
+  export let value = 0
   export let disabled = false
   export let required = false
   export let decimal = false
