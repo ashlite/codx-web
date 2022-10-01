@@ -19,7 +19,7 @@
   export let data
   let purchaseMatch = []
   let movementMatch = []
-  console.log(data)
+  
   onMount(calculateInventoryMatch)
 
   function openHeaderMovement(id){
@@ -160,6 +160,7 @@
     </tbody>
     <tfoot>
       <tr>
+        <th>ID</th>
         <th>Date</th>
         <th>Venue</th>
         <th>Status</th>

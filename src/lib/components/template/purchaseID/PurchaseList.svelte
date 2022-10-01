@@ -7,7 +7,6 @@
 
   export let data
   let sumData = summaryPurchase()
-  console.log(data)
 
   $: data.list_item.length, sumData = summaryPurchase()
 
@@ -72,8 +71,8 @@
           </td>
           {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
             <td class="text-right">
-              <div>{priceFormater(item.forex_buy, 'USD')}</div>
-              <div class="text-info">{priceFormater(item.forex_buy * item.ordered_qty, 'USD')}</div>
+              <div>{priceFormater(item.forex_buy, data.forex_symbol)}</div>
+              <div class="text-info">{priceFormater(item.forex_buy * item.ordered_qty, data.forex_symbol)}</div>
             </td>
           {/if}
           <td class="text-right">
@@ -90,7 +89,7 @@
         <td class="text-info font-bold text-xl">{sumData.totalQty}</td>
         {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
           <td class="text-info font-bold text-xl text-right">
-            {priceFormater(sumData.totalForexBuy, 'USD')}
+            {priceFormater(sumData.totalForexBuy, data.forex_symbol)}
           </td>
         {/if}
         <td class="text-info font-bold text-xl text-right">

@@ -5,7 +5,6 @@
   import { globalModal } from "$lib/helper/store"
   import {decodeXML, decodeHTML} from 'entities'
 
-  console.log(data)
 </script>
 
 <div class="indicator">

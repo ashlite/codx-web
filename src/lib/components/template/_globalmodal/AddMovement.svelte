@@ -2,13 +2,8 @@
   import SearchListProduct from '$lib/components/organism/SearchListProduct.svelte';
   import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte'
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
-  import TextArea from '$lib/components/molecule/TextArea.svelte';
-  import { priceFormater } from '$lib/helper/tools';
-  import { post, get } from '$lib/helper/api'
+  import { post} from '$lib/helper/api'
 	import { globalModal, refreshPage, toastAlert } from '$lib/helper/store';
-  import Toggle from '$lib/components/atom/Toggle.svelte';
-	import { onMount } from 'svelte';
-	import { list } from 'postcss';
   import { page } from '$app/stores';
 
   export let data = {}

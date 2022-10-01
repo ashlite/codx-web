@@ -44,7 +44,6 @@
       withCredentials: true
     })
     let responseJson = await responseXdocToken.json()
-    console.log(responseJson)
     if (responseXdocToken.status === 200){
       if (responseJson.forwardBody.user_level > 0) {
         const claims = jose.decodeJwt(responseJson.forwardBody.access_token)

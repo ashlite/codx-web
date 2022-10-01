@@ -9,6 +9,7 @@ export const totalCollection = writable(false)
 export const toggleModalCollectionEditor = writable(false)
 export const refreshPage = writable(false) // request refresh ke subscriber
 export const toggleMainDrawer = writable(true)
+export const forexPricingRate = writable(0)
 
 //Untuk keperluan Global Modal
 function createModal(){
@@ -33,7 +34,8 @@ function createModal(){
     addPurchaseProduct:(idrBuyRate, headerId) => set({title: 'Add Product to Purchase', type: 'addPurchaseProduct', size:'md', data:{idrBuyRate, headerId}}),
     addPurchaseNewCollection:(headerId, idrBuyRate = 0) => set({title: 'Add New Collection With This Purchase', type: 'createCollection', size:'lg', data: {headerId: headerId, idrBuyRate: idrBuyRate}}),
     createHeaderMovement:(purchaseId) => set({title: 'Create Header Movement', type: 'addHeaderMovement', size:'sm', data:{header_purchase_id: purchaseId}}),
-    addMovement:() => set({title: 'Add Product Movement', type: 'addMovement', size:'sm'})
+    addMovement:() => set({title: 'Add Product Movement', type: 'addMovement', size:'sm'}),
+    addCashflow:(headerPurchaseId) => set({title: 'Add Cashflow', type: 'addCashflow', size:'md', data:{headerPurchaseId: headerPurchaseId}}),
   }
 }
 

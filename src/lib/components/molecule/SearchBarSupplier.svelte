@@ -18,7 +18,7 @@
     resultQuery = await get(`/supplier?q=${query}`) 
   }
 
-  $:resultQuery, console.log(resultQuery)
+  $:resultQuery
 
 </script>
 

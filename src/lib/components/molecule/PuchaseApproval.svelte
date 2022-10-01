@@ -22,7 +22,6 @@
         notes: approvalNote,
         approval_type: type
       }
-      console.log(requestBody)
       await post(`/purchase/approval/${headerId}`, requestBody)
       refreshPage.set(true)
       noteInput = false

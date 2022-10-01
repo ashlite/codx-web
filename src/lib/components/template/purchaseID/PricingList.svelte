@@ -1,14 +1,13 @@
 <script>
   import { priceFormater, marginCalc } from "$lib/helper/tools"
-  import { refreshPage } from '$lib/helper/store'
+  import { refreshPage, forexPricingRate } from '$lib/helper/store'
   import { patch } from '$lib/helper/api'
   import EditableInput from "$lib/components/atom/EditableInput.svelte";
-	import TextInput from "$lib/components/molecule/TextInput.svelte";
 	import BadgePercentage from "$lib/components/atom/BadgePercentage.svelte";
+	import NumberInput from "$lib/components/molecule/NumberInput.svelte";
 
   export let data
   let sumData = summaryPurchase()
-  console.log(data)
   
   $: data.list_item.length, sumData = summaryPurchase()
 
@@ -47,15 +46,12 @@
 <div class="flex flex-row justify-between mb-4 gap-4 content-center">
   <div class="w-1/2 ">
     {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
-      <TextInput 
+      <NumberInput 
         labelTL = "Forex Rate for MSRP"
-        bind:value={data.idr_sell_rate}
+        bind:value={$forexPricingRate}
       />
     {/if}
   </div>
-  <!-- <div class="w-1/2 self-end flex flex-row-reverse">
-    <BtnSuper text="Match System Price" color="secondary" on:click={() => matchPrice()} />
-  </div> -->
 </div>
 
 <div class="overflow-x-auto pb-8">
@@ -97,15 +93,15 @@
             <td class="text-left">
               <EditableInput 
                 bind:value={item.forex_sell} 
-                currency="USD" 
+                currency={data.forex_symbol} 
                 frontLabel="MSRP"
                 dataId={item.id}
                 on:editableSubmit={e => updateMSRP(e.detail.dataId, e.detail.newValue)}  
               />
               <div>
-                <span class="text-info">IDR: </span> {priceFormater(item.forex_sell * data.idr_sell_rate)}
+                <span class="text-info">IDR: </span> {priceFormater(item.forex_sell * $forexPricingRate)}
               </div>
-              <BadgePercentage value={marginCalc(item.idr_buy_price, item.forex_sell * data.idr_sell_rate, 'percent')} />
+              <BadgePercentage value={marginCalc(item.idr_buy_price, item.forex_sell * $forexPricingRate, 'percent')} />
             </td>
           {/if}
           <td class="text-right">

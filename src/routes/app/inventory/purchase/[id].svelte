@@ -4,20 +4,24 @@
   import General from "$lib/components/template/purchaseID/General.svelte"
   import { page } from '$app/stores'
   import { afterNavigate } from '$app/navigation';
-  import { refreshPage } from '$lib/helper/store';
+  import { refreshPage, forexPricingRate } from '$lib/helper/store';
 	import PurchaseList from '$lib/components/template/purchaseID/PurchaseList.svelte';
   import PurchaseApproval from '$lib/components/molecule/PuchaseApproval.svelte'
   import CustomList from '$lib/components/template/purchaseID/CustomList.svelte';
   import PricingList from '$lib/components/template/purchaseID/PricingList.svelte';
   import InventoryList from '$lib/components/template/purchaseID/InventoryList.svelte';
+  import Finance from '$lib/components/template/purchaseID/Finance.svelte';
 
-  const options = ['General', 'Invoice', 'Pricing', 'Inventory', 'Finance', 'Custom']
+  const options = ['General', 'Invoice', 'Pricing', 'Inventory', 'Finance', 'Publishing', 'Custom']
   let option = 0
   let purchaseData = {}
 
   $: $refreshPage && RefreshData()
   
-  afterNavigate(() => RefreshData())
+  afterNavigate(async () => {
+    await RefreshData()
+    forexPricingRate.set(purchaseData.idr_sell_rate)
+  })
 
   async function RefreshData(){
     purchaseData = await get(`/purchase/header/${$page.params.id}`)
@@ -56,7 +60,8 @@
         headerId={data.id}
         subText="BEWARE: if approved, you can't add or remove fees from this purchase." 
         data={data.approval_purchase.find(item => item.approval_type == 4)}/>
-    {:else if option == 5}
+      <Finance data={data}/>
+    {:else if option == 6}
       {#if data.forex_symbol == undefined || data.forex_symbol == 'IDR'}
         <h1 class="text-error text-3xl font-bold">There is no need for custom invoice</h1>
       {:else}

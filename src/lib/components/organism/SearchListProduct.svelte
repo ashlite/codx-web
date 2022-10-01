@@ -4,7 +4,6 @@
   import { get } from '$lib/helper/api'
 
   export let selectedProduct = {}
-  console.log(selectedProduct)
   let searchState = false
   let resultQuery = []
   let resultList = []
@@ -21,7 +20,6 @@
 
   function handleSelect(index){
     selectedProduct = resultQuery[index]
-    console.log(selectedProduct)
   }
 
   function unlinkProduct(){

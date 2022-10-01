@@ -5,7 +5,6 @@
   export let data
   let customPercent = 55
   let sumData = summaryPurchase()
-  console.log(data)
 
   $: customPercent, sumData = summaryPurchase()
 
@@ -67,16 +66,16 @@
             {item.ordered_qty}
           </td>
           <td class="text-right">
-            {priceFormater(item.forex_buy, 'USD')}
+            {priceFormater(item.forex_buy, data.forex_symbol)}
           </td>
           <td class="text-right">
-            {priceFormater(item.forex_buy * item.ordered_qty, 'USD')}
+            {priceFormater(item.forex_buy * item.ordered_qty, data.forex_symbol)}
           </td>
           <td class="text-right">
-            {priceFormater(Math.floor(item.forex_buy * 100 * customPercent / 100)/100, 'USD')}
+            {priceFormater(Math.floor(item.forex_buy * 100 * customPercent / 100)/100, data.forex_symbol)}
           </td>
           <td class="text-right">
-            {priceFormater(Math.floor(item.forex_buy * 100 * customPercent / 100) * item.ordered_qty / 100, 'USD')}
+            {priceFormater(Math.floor(item.forex_buy * 100 * customPercent / 100) * item.ordered_qty / 100, data.forex_symbol)}
           </td>
         </tr>
       {/each}

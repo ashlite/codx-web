@@ -13,7 +13,7 @@
     idr_sell_rate:0
   }
 
-  onMount(() => console.log(data))
+  // onMount(() => console.log(data))
 
   async function handleSubmit(){
     let response

@@ -32,7 +32,6 @@
   }
 
   async function removeConnection(e){
-    console.log(e)
     let sendData = {
       collection:{
         name: collection.name,

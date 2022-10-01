@@ -48,7 +48,6 @@
   }
 
   async function updatePage(limit){
-    console.log(limit)
     pagination.itemPerPage = limit.itemPerPage
     pagination.currentPage = limit.currentPage
     refreshPage.set(true)

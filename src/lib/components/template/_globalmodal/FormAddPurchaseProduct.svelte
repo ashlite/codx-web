@@ -9,7 +9,6 @@
   import Toggle from '$lib/components/atom/Toggle.svelte';
 
   export let data
-  console.log(data)
   let product = {}
   let forexPrice
   let orderedQty = 0
@@ -30,7 +29,6 @@
     }
     requestBody.forex_buy = data.idrBuyRate != undefined ? forexPrice : null
     requestBody.idr_buy_price = idrPrice > 0 && data.idrBuyRate == undefined ? idrPrice : forexToIdr
-    console.log(requestBody)
     const response = await post(`/purchase/items/${data.headerId}`, requestBody)
     if (response) {
       globalModal.close()
