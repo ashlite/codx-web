@@ -4,25 +4,36 @@
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
   import TextArea from '$lib/components/molecule/TextArea.svelte';
   import { dateFormater, priceFormater } from '$lib/helper/tools';
-  import { post, get } from '$lib/helper/api'
-	import { globalModal, refreshPage, toastAlert } from '$lib/helper/store';
+  import { post, get, patch } from '$lib/helper/api'
+	import { forexPricingRate, globalModal, refreshPage, toastAlert } from '$lib/helper/store';
   import Toggle from '$lib/components/atom/Toggle.svelte';
 	import { onMount } from 'svelte';
 	import { list } from 'postcss';
   import { page } from '$app/stores';
 	import DatePicker from '$lib/components/organism/DatePicker.svelte';
 
-  export let data = {headerPurchaseId:0}
+  export let data = { headerPurchaseId:0 }
   let requestBody = {}
   let listForex = []
   let listType = []
-  let qty = 0
+  let defaultDate = Date.now()
 
   $: if(requestBody.forex_symbol != 'IDR') requestBody.flow_amount = requestBody.forex_amount * requestBody.forex_rate
 
   onMount(async () => {
     listForex = await get(`/forex`)
     listType = await get('/cashflow/type')
+
+    if (data.id != undefined) {
+      defaultDate = new Date(data.created_at)
+      if (data.forex_symbol != undefined) {
+        requestBody = {...data}
+      } else {
+        requestBody.notes = data.notes
+        requestBody.flow_amount = data.flow_amount
+        requestBody.type_id = data.type_id
+      }
+    }
   })
 
   function setForex(){
@@ -35,23 +46,32 @@
   }
 
   async function handleSubmit(){
-    if (qty > 0 && product.id > 0) {
-      const requestBody = {
-        product_id: product.id,
-        qty: qty
-      }
-      const response = await post(`/inventory/header/${$page.params.id}/movement`, requestBody)
+    if (requestBody.forex_symbol == 'IDR') {
+      delete requestBody.forex_symbol
+      delete requestBody.forex_amount
+      delete requestBody.forex_rate
+    }
+    if (data.headerPurchaseId > 0) requestBody.header_purchase_id = data.headerPurchaseId
+    
+    if (data.id == undefined){
+      const response = await post(`/cashflow/`, requestBody)
       if (response) {
         globalModal.close()
         refreshPage.set(true)
       }
-    } else toastAlert.error('qty must be greater than 0')
+    } else {
+      const response = await patch(`/cashflow/${data.id}`, requestBody)
+      if (response) {
+        globalModal.close()
+        refreshPage.set(true)
+      }
+    }
   }
 </script>
 
 <form on:submit|preventDefault={() => handleSubmit()}>
   <div class="col-span-6" id="dateInput">
-    <DatePicker noMonthly noRange on:pickerSubmit={e => requestBody.create_at = dateFormater(e.detail[0], 'isoDateTime')}/>
+    <DatePicker noMonthly noRange defaultDate={defaultDate} on:pickerSubmit={e => requestBody.created_at = dateFormater(e.detail[0], 'isoDateTime')}/>
   </div>
   <div class="grid grid-cols-6 gap-4">
     <div id="forex-symbol" class="form-control w-full col-span-2">
@@ -61,7 +81,9 @@
       <select id="forex-symbol" class="select select-bordered w-full max-w-xs" bind:value={requestBody.forex_symbol} on:change={() => setForex()}>
         <option selected value="IDR">IDR (default)</option>
         {#each listForex as forex}
-          <option value={forex.forex_symbol}>{forex.forex_symbol}</option>
+          <option value={forex.forex_symbol}>
+            {forex.forex_symbol}
+          </option>
         {/each}
       </select>
     </div>
@@ -77,10 +99,15 @@
     <div class="col-span-3">
       <label class="label" for="forex-symbol">
         <span class="label-text">Flow Type</span>
+        <span class="label-text-alt">red = negative</span>
       </label>
       <select id="forex-symbol" class="select select-bordered w-full" bind:value={requestBody.type_id} required>
         {#each listType as type}
-          <option value={type.id}>{type.flow_type}</option>
+          {#if type.is_negative}
+            <option value={type.id} class="text-error">- {type.flow_type}</option>
+          {:else}
+            <option value={type.id} class="text-success">+ {type.flow_type}</option>
+          {/if}
         {/each}
       </select>
     </div>

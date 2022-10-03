@@ -37,7 +37,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr class='text-secondary'>
+        <td>
+          Total Selling value
+        </td>
+        <td>{priceFormater(invoiceAmount.sellForex, data.forex_symbol)}</td>
+        <td>{priceFormater(invoiceAmount.sellIdr)}</td>
+        <td>Calculated</td>
+      </tr>
+      <tr class='text-secondary'>
         <td>
           Total Amount of Purchased Items
         </td>
@@ -47,18 +55,18 @@
       </tr>
       <tr>
         <td>
-          Total Selling value
+          Total Modifier
         </td>
-        <td>{priceFormater(invoiceAmount.sellForex, data.forex_symbol)}</td>
-        <td>{priceFormater(invoiceAmount.sellIdr)}</td>
-        <td>Calculated</td>
+        <td></td>
+        <td></td>
+        <td></td>
       </tr>
       <tr>
         <td>
           Net Margin with %
         </td>
         <td>{priceFormater(invoiceAmount.sellForex - invoiceAmount.buyForex, data.forex_symbol)}</td>
-        <td>{priceFormater(invoiceAmount.sellIdr - invoiceAmount.buyForex)}</td>
+        <td>{priceFormater(invoiceAmount.sellIdr - invoiceAmount.buyIdr)}</td>
         <td><BadgePercentage value={Math.round((invoiceAmount.sellIdr - invoiceAmount.buyIdr)/invoiceAmount.sellIdr*100)} /></td>
       </tr>
     </tbody>

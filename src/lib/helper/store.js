@@ -36,6 +36,7 @@ function createModal(){
     createHeaderMovement:(purchaseId) => set({title: 'Create Header Movement', type: 'addHeaderMovement', size:'sm', data:{header_purchase_id: purchaseId}}),
     addMovement:() => set({title: 'Add Product Movement', type: 'addMovement', size:'sm'}),
     addCashflow:(headerPurchaseId) => set({title: 'Add Cashflow', type: 'addCashflow', size:'md', data:{headerPurchaseId: headerPurchaseId}}),
+    editCashflow:(oldData) => set({title: 'Edit Cashflow', type: 'addCashflow', size:'md', data:{...oldData, headerPurchaseId:0}}),
   }
 }
 

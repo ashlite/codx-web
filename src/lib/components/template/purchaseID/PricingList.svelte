@@ -5,6 +5,8 @@
   import EditableInput from "$lib/components/atom/EditableInput.svelte";
 	import BadgePercentage from "$lib/components/atom/BadgePercentage.svelte";
 	import NumberInput from "$lib/components/molecule/NumberInput.svelte";
+	import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
+  import PriceAnnouncement from "$lib/helper/discord";
 
   export let data
   let sumData = summaryPurchase()
@@ -51,6 +53,9 @@
         bind:value={$forexPricingRate}
       />
     {/if}
+  </div>
+  <div class="w-1/2 pt-4">
+    <BtnSuper text="Send to Discord" icon="uil:discord" size="lg" on:click={() => PriceAnnouncement(data.list_item)} />
   </div>
 </div>
 

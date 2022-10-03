@@ -23,7 +23,7 @@
   let month
   let totalDate
 
-  onMount(resetDate)
+  onMount(() => resetDate())
 
   const listMonth = [
     {id:0, name: 'Januari'},
@@ -81,12 +81,14 @@
     inputDate.setHours(0,0,0,0)
     inputDate2 = new Date(inputDate)
     inputDate2.setMonth(id + 1, 0)
+    inputDate2.setHours(23,59,59,999)
     buttonText = `Monthly: ${dateFormater(inputDate, 'monthly')}`
     forward({min: inputDate, max: inputDate2})
   }
 
   function submitDate(date){
     inputDate.setDate(date)
+    inputDate.setHours(0,0,0,0)
     buttonText = `Date: ${dateFormater(inputDate)}`
     forward([inputDate.toDateString(), inputDate.toDateString()])
     
