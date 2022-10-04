@@ -68,7 +68,7 @@
     {#each data.approval_purchase as approval}
       <Status
         title={approval.approval_type == 1 ? 'Invoice' : approval.approval_type == 2 ? 'Pricing' : approval.approval_type == 3 ? 'Inventory' : approval.approval_type == 4 && 'Finance'}
-        value="David"
+        value={approval.user.first_name}
         valueColor="success"
         detail={dateFormater(approval.created_at)}
       />
