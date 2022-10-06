@@ -17,11 +17,11 @@ export async function post(endpoint, data, option) {
       toastAlert.success('Operation Success')
       return response.data
     } else {
-      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`, 5000)
       return {}
     } 
   } catch(error){
-    toastAlert.error(JSON.stringify(error.response.data.detail))
+    toastAlert.error(JSON.stringify(error.response.data.detail), 5000)
     return {}
   }
 }
@@ -33,11 +33,11 @@ export async function get(endpoint) {
     if (response.status < 400){
       return response.data
     } else {
-      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`, 5000)
       return {}
     }
   } catch(error){
-    toastAlert.error(JSON.stringify(error.response.data.detail))
+    toastAlert.error(JSON.stringify(error.response.data.detail), 5000)
     return {}
   } 
 }
@@ -49,11 +49,11 @@ export async function download(endpoint) {
     if (response.status < 400){
       return response
     } else {
-      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`, 5000)
       return {}
     }
   } catch(error){
-    toastAlert.error(JSON.stringify(error.response.data.detail))
+    toastAlert.error(JSON.stringify(error.response.data.detail), 5000)
     return {}
   } 
 }
@@ -66,11 +66,11 @@ export async function patch(endpoint, data) {
       toastAlert.success('Update Success')
       return response
     } else {
-      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`, 5000)
       return {}
     }
   } catch(error){
-    toastAlert.error(JSON.stringify(error.response.data.detail))
+    toastAlert.error(JSON.stringify(error.response.data.detail), 5000)
     return{}
   } 
 }
@@ -82,11 +82,11 @@ export async function del(endpoint) {
     if (response.status < 400){
       toastAlert.success('Item Deleted')
     } else {
-      toastAlert.error(`Error Status: ${response.status}. ${response.data}`)
+      toastAlert.error(`Error Status: ${response.status}. ${response.data}`, 5000)
       return {}
     }
   } catch(error){
-    toastAlert.error(JSON.stringify(error.response.data.detail))
+    toastAlert.error(JSON.stringify(error.response.data.detail), 5000)
     return{}
   } 
 }

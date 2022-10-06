@@ -1,12 +1,11 @@
 <script>
   import { priceFormater, marginCalc } from "$lib/helper/tools"
-  import { refreshPage, forexPricingRate } from '$lib/helper/store'
-  import { patch } from '$lib/helper/api'
+  import { refreshPage, forexPricingRate, toastAlert } from '$lib/helper/store'
+  import { patch, post } from '$lib/helper/api'
   import EditableInput from "$lib/components/atom/EditableInput.svelte";
 	import BadgePercentage from "$lib/components/atom/BadgePercentage.svelte";
 	import NumberInput from "$lib/components/molecule/NumberInput.svelte";
 	import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
-  import PriceAnnouncement from "$lib/helper/discord";
 
   export let data
   let sumData = summaryPurchase()
@@ -43,6 +42,11 @@
     refreshPage.set(true)
   }
 
+  async function sendDiscord() {
+    const response = await post(`/purchase/announce/${data.id}`)
+    if (response) toastAlert.success('Send successfully to discord, please check it there.')
+  }
+
 </script>
 
 <div class="flex flex-row justify-between mb-4 gap-4 content-center">
@@ -55,7 +59,7 @@
     {/if}
   </div>
   <div class="w-1/2 pt-4">
-    <BtnSuper text="Send to Discord" icon="uil:discord" size="lg" on:click={() => PriceAnnouncement(data.list_item)} />
+    <BtnSuper text="Send to Discord" icon="uil:discord" size="lg" on:click={() => sendDiscord()} />
   </div>
 </div>
 
