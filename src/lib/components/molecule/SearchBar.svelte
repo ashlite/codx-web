@@ -3,7 +3,7 @@
   import Icon from '@iconify/svelte'
   import { shortcut } from '$lib/helper/shortcut';
   export let searchState = false
-  export let searchTotal
+  export let searchTotal = undefined
   export let searchQuery = ''
 
   const dispatch = createEventDispatcher()

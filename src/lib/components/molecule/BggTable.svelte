@@ -18,23 +18,31 @@
       </tr>
     </thead>
     <tbody>
-      {#each data as bg}
-        <tr>
-          <td>{bg.id}</td>
-          {#if bg.yearpublished === undefined}
-          <td>--</td>
-          {:else}
-          <td>{bg.yearpublished.value}</td>
-          {/if}
-          <td class="overflow-hidden">{decodeHTML(decodeXML(bg.name.value))}</td>
-          <td>
-            <div class="flex flex-row gap-4">
-              <BtnExternalLink href={`https://boardgamegeek.com/boardgame/${bg.id}`} />
-              <BtnAddNew text='Collection' noShortcut on:click={() => globalModal.collectionFromBgg(bg.id)} />
-            </div>
-          </td>
-        </tr>
-      {/each}
+      {#if data.length > 0}
+        {#each data as bg}
+          <tr>
+            <td>{bg.id}</td>
+            {#if bg.yearpublished === undefined}
+            <td>--</td>
+            {:else}
+            <td>{bg.yearpublished.value}</td>
+            {/if}
+            <td class="overflow-hidden">{decodeHTML(decodeXML(bg.name.value))}</td>
+            <td>
+              <div class="flex flex-row gap-4">
+                <BtnExternalLink href={`https://boardgamegeek.com/boardgame/${bg.id}`} />
+                <BtnAddNew text='Collection' noShortcut on:click={() => globalModal.collectionFromBgg(bg.id)} />
+              </div>
+            </td>
+          </tr>
+        {/each}
+      {:else}
+          <tr>
+            <td colspan="4">
+              No Result found, use another query.
+            </td>
+          </tr>
+      {/if}
     </tbody>
   </table>
 </div>

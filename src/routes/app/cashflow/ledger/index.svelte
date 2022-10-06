@@ -7,6 +7,7 @@
 	import { afterNavigate } from "$app/navigation";
 	import { get } from "$lib/helper/api";
 	import { dateFormater, priceFormater } from "$lib/helper/tools";
+	import Id from "../../catalogue/collection/[id].svelte";
 
   const globalDate = new Date()
   let listLedger = []
@@ -17,7 +18,7 @@
 
   afterNavigate(RefreshData)
 
-  $: refreshPage && RefreshData()
+  $: $refreshPage && RefreshData()
 
   function updateRange(data){
     dateRange = data
@@ -55,12 +56,15 @@
         {#each listLedger as ledger}
           <tr>
             <td class="text-center">{dateFormater(ledger.created_at)}</td>
-            <td class="text-center">{ledger.type.flow_type}</td>
+            <td class="text-center tooltip cursor-help tooltip-accent" data-tip={ledger.notes}>{ledger.type.flow_type}</td>
             <td class="text-right">
               {ledger.forex_symbol != undefined ? priceFormater(ledger.forex_amount, ledger.forex_symbol) : 0}
             </td>
             <td class="text-right">{priceFormater(ledger.flow_amount)}</td>
-            <td><CellAction edit remove on:remove on:edit={() => globalModal.editCashflow(ledger)} /></td>
+            <td><CellAction edit remove 
+              on:remove={() => globalModal.deleteConfirmation(ledger.id, `cashflow id ${ledger.id}`, 'cashflow')} 
+              on:edit={() => globalModal.editCashflow(ledger)} />
+            </td>
           </tr>
         {/each}
       </tbody>

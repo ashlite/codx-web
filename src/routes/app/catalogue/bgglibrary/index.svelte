@@ -37,13 +37,14 @@
       try {
         const response = await eget(`https://boardgamegeek.com/xmlapi2/search?type=boardgame,boardgameexpansion&query=${stripQuery}`)
         const dataBgg = parser.parse(await response.data)
+        console.log(dataBgg)
         totalResult = dataBgg.items.total
         if (totalResult > 1) {
           bggSearchResult.set(dataBgg.items.item)
         } else if (totalResult == 1) {
           bggSearchResult.set([dataBgg.items.item])
         } else {
-          bggSearchResult.set([null])
+          bggSearchResult.set([])
         }
       } catch (error) {
         toastAlert.error(error.message)

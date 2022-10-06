@@ -76,13 +76,13 @@
 <PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)}/>
 
 <div class="grid grid-cols-2 gap-4 pb-8">
-  {#if listItem.length > 0}
-    {#each listItem as collection}
-      <CollectionCard data={collection} />
-    {/each}
-  {:else}
+  {#if searching}
     <div class="mx-auto my-6 w-fit">
       <RingLoader size="200" color="#FF3E00" unit="px" duration="2s"/>
     </div>
+  {:else}
+    {#each listItem as collection}
+      <CollectionCard data={collection} />
+    {/each}
   {/if}
 </div>
