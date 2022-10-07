@@ -87,9 +87,8 @@
               {customer.mobile}
             </td>
             <td>
-              <CellAction edit remove
+              <CellAction edit
                 on:edit={() => globalModal.editCustomer(customer)}
-                on:remove={() => globalModal.deleteConfirmation(customer.id, customer.name, 'customer')}
               />
             </td>
           </tr>

@@ -74,7 +74,7 @@
       />
     {/each}
   {:else}
-    <h1 class="text-xl">Purchase Not having approval at all.</h1>
+    <h1 class="text-xl">Purchase not having approval at all.</h1>
   {/if}
 </div>
 
@@ -86,7 +86,7 @@
     {/each}
   </div>
 {:else}
-  <h1 class="text-xl">Purchase Not having any file uploaded.</h1>
+  <h1 class="text-xl">Purchase not having any file uploaded.</h1>
 {/if}
 
 <div class="flex flex-row my-4 justify-end gap-4">

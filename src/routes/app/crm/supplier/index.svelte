@@ -89,9 +89,8 @@
               {supplier.email}
             </td>
             <td>
-              <CellAction info edit remove
+              <CellAction edit
                 on:edit={() => globalModal.editSupplier(supplier)}
-                on:remove={() => globalModal.deleteConfirmation(supplier.id, supplier.supplier_name, 'supplier')}
               />
             </td>
           </tr>

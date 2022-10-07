@@ -42,7 +42,7 @@
       <PurchaseApproval 
         type=1 
         headerId={data.id}
-        subText="BEWARE: if approved, will update automatically all buy price of the listed product. The new price will be average from new price and older price based on quantity." 
+        subText="BEWARE: if approved, will update automatically all buy price of the listed product. The new price will be average from new price and older price based on quantity. General can't be change, but you can still upload file." 
         data={data.approval_purchase.find(item => item.approval_type == 1)}/>
       <PurchaseList data={data} />
     {:else if option == 2}

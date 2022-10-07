@@ -80,9 +80,8 @@
               {venue.name}
             </td>
             <td>
-              <CellAction info edit remove
+              <CellAction edit
                 on:edit={() => globalModal.editVenue(venue)}
-                on:remove={() => globalModal.deleteConfirmation(venue.id, venue.name, 'venue')}
               />
             </td>
           </tr>

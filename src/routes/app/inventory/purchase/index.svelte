@@ -11,8 +11,6 @@
   let listPurchase = []
   let itemPerPage = 50
   let currentPage = 1
-  let totalItem = 0
-  let searchQuery
 
   $: $refreshPage && RefreshData()
 
@@ -21,8 +19,6 @@
   async function RefreshData() {
     let skipData = (currentPage - 1) * itemPerPage
     listPurchase = await get(`/purchase/header?limit=${itemPerPage}&skip=${skipData}`)
-    let response = await get(`/utils/count?headerpurchase=1`)
-    totalItem = response.total_purchase
     refreshPage.set(false)
   }
 
@@ -57,7 +53,6 @@
     <DatePicker noRange on:pickerSubmit/>
     <BtnAddNew text="Purchase" on:click={() => globalModal.createPurchase()}/>
   </div>
-  <PaginationNav totalItems={totalItem} />
 
   <div class="overflow-x-auto overflow-y-clip">
     <table class="table w-full">
@@ -92,9 +87,9 @@
                 </div>
               </td>
               <td>
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-2">
                   {#each purchase.approval_purchase as approval}
-                    <div class="badge">{approval.id}</div>
+                    <div class="badge badge-success">{approval.approval_type == 1 ? 'invoice' : approval.approval_type == 2 ? 'pricing' : approval.approval_type == 3 ? 'inventory' : 'finance'}</div>
                   {/each}
                 </div>
               </td>
