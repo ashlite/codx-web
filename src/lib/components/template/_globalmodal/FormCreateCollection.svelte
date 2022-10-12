@@ -1,19 +1,19 @@
 <script>
   import { get, post } from '$lib/helper/api'
-  import { globalModal, toastAlert, refreshPage } from '$lib/helper/store'
+  import { globalModal, refreshPage } from '$lib/helper/store'
   import { BggSingleItem } from '$lib/helper/bggInteraction'
   import { onMount } from 'svelte'
   import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte'
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
   import TextInput from '$lib/components/molecule/TextInput.svelte'
-  import SearchBar from '$lib/components/molecule/SearchBar.svelte'
-	import { priceFormater } from '$lib/helper/tools';
+  import SearchBarBggId from '$lib/components/molecule/SearchBarBggId.svelte'
+	// import { priceFormater } from '$lib/helper/tools';
   export let data = {}
   
   let listCollectionCategory = get('/category')
-  let dataCollection = {category: 'Core Game'}
+  let dataCollection = {category: 'Core Game', bgg_id: 0}
   let dataProduct = {name:'retail', track_inventory:true}
-  let dataProductPurchase = {is_new: true}
+  // let dataProductPurchase = {is_new: true}
   let parentGame = []
   let childrenGame = []
   let searchQuery = ''
@@ -23,7 +23,7 @@
   let inputExpansion = false
   // let firstInput
 
-  $: forexToIdr = dataProductPurchase.forex_buy * data.idrBuyRate
+  // $: forexToIdr = dataProductPurchase.forex_buy * data.idrBuyRate
 
   onMount(() => {
     // firstInput.focus()
@@ -86,6 +86,9 @@
 
   async function PostDataCollection(){
     let sendData = {}
+    dataCollection.bgg_id == 0 && delete dataCollection.bgg_id
+    dataCollection.cover == '' && delete dataCollection.cover
+    dataCollection.description == '' && delete dataCollection.description
     sendData.collection = {...dataCollection}
     sendData.collection.name = dataCollection.name
     sendData.collection.description = dataCollection.description
@@ -100,8 +103,8 @@
     }
     let response = await post('/collection', sendData)
     if (Object.keys(response).length > 0){
-      refreshPage.set(true)
       globalModal.close()
+      refreshPage.set(true)
     }
       
   }
@@ -122,7 +125,7 @@
         <span class="label-text">ID from BGG</span>
         <span class="label-text-alt">(please use this only if the item have BGG page)</span>
       </label>
-      <SearchBar on:searchTrigger={() => PullDataBgg(dataCollection.bgg_id)} bind:searchQuery={dataCollection.bgg_id}/>
+      <SearchBarBggId on:searchTrigger={() => PullDataBgg(dataCollection.bgg_id)} bind:searchQuery={dataCollection.bgg_id}/>
     </div>
     <div id="category-collection" class="form-control w-full col-span-4">
       <label class="label" for="category-collection">
