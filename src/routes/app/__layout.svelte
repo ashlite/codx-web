@@ -72,6 +72,7 @@
         <li><a sveltekit:prefetch href='/app/inventory' class={$page.url.pathname.includes('/inventory') ? "active" : ""}>Inventory</a></li>
         <li><a sveltekit:prefetch href='/app/cashflow' class={$page.url.pathname.includes('/cashflow') ? "active" : ""}>Cashflow</a></li>
         <li><a sveltekit:prefetch href='/app/setting' class={$page.url.pathname.includes('/setting') ? "active" : ""}>Setting</a></li>
+        <li><a sveltekit:prefetch href='/app/access' class={$page.url.pathname.includes('/access') ? "active" : ""}>User & Access</a></li>
       </ul>
     </div>
   </div>

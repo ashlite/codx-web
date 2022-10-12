@@ -1,13 +1,11 @@
 <script>
   import DatePicker from "$lib/components/organism/DatePicker.svelte";
-  import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
   import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte";
   import CellAction from "$lib/components/molecule/CellAction.svelte";
   import { globalModal, refreshPage} from "$lib/helper/store"
 	import { afterNavigate } from "$app/navigation";
 	import { get } from "$lib/helper/api";
 	import { dateFormater, priceFormater } from "$lib/helper/tools";
-	import Id from "../../catalogue/collection/[id].svelte";
 
   const globalDate = new Date()
   let listLedger = []
