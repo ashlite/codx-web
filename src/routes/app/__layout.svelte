@@ -23,6 +23,17 @@
   import { toggleMainDrawer } from '$lib/helper/store'
   import { fly } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
+	import { onMount } from 'svelte';
+  import Cookies from 'js-cookie'
+  
+  let access = undefined
+  let level = undefined
+  onMount(() => {
+    access = JSON.parse(localStorage.access)
+    level = localStorage.level
+
+    if (level < 1) Cookies.remove('codx_token')
+  })
 </script>
 
 <ToastAlert />
@@ -67,12 +78,26 @@
             <option value="autumn">Autumn</option>
           </select>
         </div>
-        <li><a sveltekit:prefetch href='/app/catalogue/collection' class={$page.url.pathname.includes('/catalogue') ? "active" : ""}>Catalogue</a></li>
-        <li><a sveltekit:prefetch href='/app/crm/customer' class={$page.url.pathname.includes('/crm') ? "active" : ""}>CRM</a></li>
-        <li><a sveltekit:prefetch href='/app/inventory' class={$page.url.pathname.includes('/inventory') ? "active" : ""}>Inventory</a></li>
-        <li><a sveltekit:prefetch href='/app/cashflow' class={$page.url.pathname.includes('/cashflow') ? "active" : ""}>Cashflow</a></li>
-        <li><a sveltekit:prefetch href='/app/setting' class={$page.url.pathname.includes('/setting') ? "active" : ""}>Setting</a></li>
-        <li><a sveltekit:prefetch href='/app/access' class={$page.url.pathname.includes('/access') ? "active" : ""}>User & Access</a></li>
+        {#if access != undefined && level != undefined}
+          {#if access.catalogue.root || level >= 20}
+            <li><a sveltekit:prefetch href='/app/catalogue/collection' class={$page.url.pathname.includes('/catalogue') ? "active" : ""}>Catalogue</a></li>
+          {/if}
+          {#if access.crm.root || level >= 20}
+            <li><a sveltekit:prefetch href='/app/crm/customer' class={$page.url.pathname.includes('/crm') ? "active" : ""}>CRM</a></li>
+          {/if}
+          {#if access.inventory.root || level >= 20}
+            <li><a sveltekit:prefetch href='/app/inventory' class={$page.url.pathname.includes('/inventory') ? "active" : ""}>Inventory</a></li>
+          {/if}
+          {#if access.cashflow.root || level >= 20}
+            <li><a sveltekit:prefetch href='/app/cashflow' class={$page.url.pathname.includes('/cashflow') ? "active" : ""}>Cashflow</a></li>
+          {/if}
+          {#if access.setting.root || level >= 20}
+            <li><a sveltekit:prefetch href='/app/setting' class={$page.url.pathname.includes('/setting') ? "active" : ""}>Setting</a></li>
+          {/if}
+          {#if access.access.root || level == 30}
+            <li><a sveltekit:prefetch href='/app/access' class={$page.url.pathname.includes('/access') ? "active" : ""}>User & Access</a></li>
+          {/if}
+        {/if}
       </ul>
     </div>
   </div>

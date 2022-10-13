@@ -1,11 +1,18 @@
 <script>
   import { globalModal, refreshPage} from "$lib/helper/store"
-	import { afterNavigate } from "$app/navigation"
+	import { afterNavigate, goto } from "$app/navigation"
   import { dateFormater } from '$lib/helper/tools'
   import { get } from '$lib/helper/api'
+	import { onMount } from "svelte";
 
   let listUser = []
 
+  onMount(() => {
+    const access = JSON.parse(localStorage.access)
+    const level = localStorage.level
+    if (!access.catalogue.root && level < 30) goto('/unauthorized')
+  })
+  
   afterNavigate(RefreshData)
 
   $: $refreshPage && RefreshData()

@@ -15,6 +15,8 @@
   import { page } from '$app/stores'
   import { shortcut } from '$lib/helper/shortcut'
   import TopNavbar from '$lib/components/molecule/TopNavbar.svelte'
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
   let navbarData = [
     {
@@ -34,6 +36,12 @@
       name: 'Movement'
     },
   ]
+
+  onMount(() => {
+    const access = JSON.parse(localStorage.access)
+    const level = localStorage.level
+    if (!access.inventory.root && level < 20) goto('/unauthorized')
+  })
 </script>
 
 <div class='min-h-screen min-w-full relative'>

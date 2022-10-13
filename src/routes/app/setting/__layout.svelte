@@ -12,7 +12,9 @@
 </script>
 
 <script>
+	import { goto } from '$app/navigation';
   import TopNavbar from '$lib/components/molecule/TopNavbar.svelte'
+	import { onMount } from 'svelte';
 
   let navbarData = [
     {
@@ -27,6 +29,12 @@
       name: 'Forex'
     }
   ]
+
+  onMount(() => {
+    const access = JSON.parse(localStorage.access)
+    const level = localStorage.level
+    if (!access.setting.root && level < 20) goto('/unauthorized')
+  })
 </script>
 
 <div class='min-h-screen min-w-full relative'>

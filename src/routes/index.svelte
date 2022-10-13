@@ -44,8 +44,11 @@
       withCredentials: true
     })
     let responseJson = await responseXdocToken.json()
+    console.log(responseJson)
     if (responseXdocToken.status === 200){
       if (responseJson.forwardBody.user_level > 0) {
+        localStorage.access = JSON.stringify(responseJson.forwardBody.access)
+        localStorage.level = responseJson.forwardBody.user_level
         const claims = jose.decodeJwt(responseJson.forwardBody.access_token)
         $session.user = {
           name: claims.name,

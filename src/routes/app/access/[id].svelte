@@ -1,6 +1,6 @@
 <script>
   import { refreshPage} from "$lib/helper/store"
-	import { afterNavigate } from "$app/navigation"
+	import { afterNavigate, goto } from "$app/navigation"
   import { dateFormater } from '$lib/helper/tools'
   import TextInput from "$lib/components/molecule/TextInput.svelte"
   import NumberInput from "$lib/components/molecule/NumberInput.svelte"
@@ -8,9 +8,16 @@
   import { get, patch } from '$lib/helper/api'
   import BtnSuper from '$lib/components/atom/BtnSuper.svelte'
   import AccessEditor from '$lib/components/template/_access/AccessEditor.svelte'
+	import { onMount } from "svelte";
 
   let user = false
   let access = false
+
+  onMount(() => {
+    const access = JSON.parse(localStorage.access)
+    const level = localStorage.level
+    if (!access.catalogue.root && level < 30) goto('/unauthorized')
+  })
 
   afterNavigate(RefreshData)
 

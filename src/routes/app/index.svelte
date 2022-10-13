@@ -1,10 +1,1 @@
-<script context="module">
-  /** @type {import('./__types/[slug]').Load} */
-  export async function load({ params, fetch, session, stuff }) {
-
-    return {
-      status: 307,
-      redirect: '/app/catalogue/collection'
-    }
-  }
-</script>
+<h1 class="text-3xl font-bold mt-8 text-primary">Please select module in the sidebar</h1>
