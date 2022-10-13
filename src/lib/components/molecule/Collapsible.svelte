@@ -3,7 +3,7 @@
   export let color = 'primary'
 </script>
 
-<div class="collapse rounded-md">
+<div class="collapse rounded-md collapse-arrow">
   <input type="checkbox" /> 
   <div 
     class={`collapse-title bg-${color} text-${color}-content font-bold`}

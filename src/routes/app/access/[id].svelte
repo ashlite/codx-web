@@ -7,6 +7,7 @@
   import { page } from '$app/stores'
   import { get, patch } from '$lib/helper/api'
   import BtnSuper from '$lib/components/atom/BtnSuper.svelte'
+  import AccessEditor from '$lib/components/template/_access/AccessEditor.svelte'
 
   let user = false
   let access = false
@@ -33,6 +34,13 @@
 
   async function resetAccess(){
     await patch(`/users/access/${$page.params.id}?reset_access=1`, {})
+    refreshPage.set(true)
+  }
+
+  async function saveAccess(){
+    access.inventory.purchase.approval = JSON.parse('['+access.inventory.purchase.approval+']')
+    console.log(access)
+    await patch(`/users/access/${$page.params.id}`, {user_access:access})
     refreshPage.set(true)
   }
 
@@ -73,9 +81,12 @@
   
   <div class="divider"></div>
   <h1 class="text-3xl font-bold text-primary mb-4">Privilage Access</h1>
-  <BtnSuper text="Set Default Access to user" color="accent" on:click={() => resetAccess()}/>
+  <div class="flex flex-row gap-4">
+    <BtnSuper text="Set Default Access to user" color="accent" on:click={() => resetAccess()}/>
+    <BtnSuper text="Save Access" color="success" on:click={() => saveAccess()}/>
+  </div>
   {#if access}
-    <h2 class="mt-2">User privilage access is set</h2>
+    <AccessEditor bind:access={access} />
   {:else}
     <h2 class="mt-2">User privilage access is not set. Please Set Default Access.</h2>
   {/if}
