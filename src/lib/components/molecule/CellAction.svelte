@@ -5,6 +5,7 @@
   export let info = false
   export let edit = false
   export let remove = false
+  export let file = false
 
   const dispatch = createEventDispatcher()
 
@@ -22,5 +23,8 @@
   {/if}
   {#if remove}
     <BtnIcon size="sm" color="error" icon="uil:trash-alt" on:click={() => forward('remove')}/>
+  {/if}
+  {#if file}
+    <BtnIcon size="sm" color="accent" icon="uil:file-alt" on:click={() => forward('file')}/>
   {/if}
 </BtnGroup>

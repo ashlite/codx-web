@@ -1,27 +1,17 @@
 <script>
-  import PaginationNav from "$lib/components/organism/PaginationNav.svelte"
   import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte"
   import { refreshPage, globalModal } from '$lib/helper/store'
   import { afterNavigate } from '$app/navigation'
   import { get } from "$lib/helper/api"
-  import { dateFormater, priceFormater } from '$lib/helper/tools'
-  import DatePicker from "$lib/components/organism/DatePicker.svelte"
-	import CellAction from "$lib/components/molecule/CellAction.svelte";
+  import { dateFormater } from '$lib/helper/tools'
+  import MonthPicker from "$lib/components/organism/MonthPicker.svelte"
 
   let listHeader = []
   let listType = []
   let listVenue = []
-  let itemPerPage = 50
-  let currentPage = 1
-  let totalItem = 0
-  let searchQuery
   let selectedType = 0
   let selectedVenue = 0
-  const globalDate = new Date()
-  let dateRange = {
-    min: new Date(globalDate.getFullYear(), globalDate.getMonth(), 1),
-    max: new Date(globalDate.getFullYear(), globalDate.getMonth() + 1, 0)
-  }    
+  let selectedDate = new Date()
 
   $: $refreshPage && RefreshData()
 
@@ -35,10 +25,11 @@
     let filter = ``
     if (selectedType > 0) filter += `&type=${selectedType}`
     if (selectedType < 0) filter += `&canceled=1`
+
+    const datemin = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 0,0,0,0)
+    const datemax = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0, 23, 59, 59, 999)
     
-    listHeader = await get(`/inventory/header?createmin=${dateFormater(dateRange.min, 'isoDateTime')}&createmax=${dateFormater(dateRange.max, 'isoDateTime')}${filter}`)
-    // let response = await get(`/utils/count?headerpurchase=1`)
-    // totalItem = response.total_purchase
+    listHeader = await get(`/inventory/header?createmin=${dateFormater(datemin, 'isoDateTime')}&createmax=${dateFormater(datemax, 'isoDateTime')}${filter}`)
     refreshPage.set(false)
   }
 
@@ -46,9 +37,9 @@
     window.open(`/app/inventory/report/${id}`, '_blank')
   }
 
-  function updateRange(data){
-    dateRange = data
-    RefreshData()
+  function changeMonth(date){
+    selectedDate = date
+    refreshPage.set(true)
   }
   
 </script>
@@ -60,7 +51,7 @@
         <span class="label-text">Type</span>
       </label>
       <select id="purchase-status" class="select select-bordered select-sm" bind:value={selectedType} on:change={() => RefreshData()}>
-        <option value={0}>all status</option>
+        <option value={0}>all type</option>
         {#each listType as type}
           <option value={type.id}>{type.movement_type}</option>
         {/each}
@@ -72,13 +63,13 @@
         <span class="label-text">Venue</span>
       </label>
       <select id="purchase-status" class="select select-bordered select-sm" bind:value={selectedVenue}>
-        <option value={0}>all venue</option>
+        <option value={0}>All Venue</option>
         {#each listVenue as venue}
           <option value={venue.id}>{venue.name}</option>
         {/each}
       </select>
     </div>
-    <DatePicker noRange noDaily defaultMonth={Date.now()} on:pickerSubmit={e => updateRange(e.detail)}/>
+    <MonthPicker on:monthSubmit={e => changeMonth(e.detail)} />
     <BtnAddNew text="Report" on:click={() => globalModal.createHeaderMovement()}/>
   </div>
 
@@ -107,8 +98,13 @@
             </td>
             <td>
               <div class="text-info">created: {dateFormater(header.create_at)}</div>
-              <div class="text-warning">finish: {header.finish_at != undefined ? dateFormater(header.finish_at) : '~'}</div>
-              <div class="text-error">cancel: {header.canceled_at != undefined ? dateFormater(header.canceled_at) : '~'}</div>
+              {#if header.finish_at}
+                <div class="text-warning">finish: {dateFormater(header.finish_at)}</div>
+              {:else if header.canceled_at}
+                <div class="text-error">cancel: {dateFormater(header.canceled_at)}</div>
+              {:else}
+                <div class="text-primary">On Progress</div>
+              {/if}
             </td>
             <td>
               <div class="text-info">origin: {header.origin_venue != undefined ? header.origin_venue.name : '~'}</div>

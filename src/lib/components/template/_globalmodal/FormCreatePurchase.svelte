@@ -24,7 +24,14 @@
     if (dataPurchase.id == undefined){
       response = await post('/purchase/header', dataPurchase)
     } else {
-      response = await patch(`/purchase/header/${dataPurchase.id}`, dataPurchase)
+      response = await patch(`/purchase/header/${dataPurchase.id}`, {
+        purchase_notes: dataPurchase.purchase_notes,
+        idr_buy_rate: dataPurchase.idr_buy_rate,
+        idr_sell_rate: dataPurchase.idr_sell_rate,
+        forex_symbol: dataPurchase.forex_symbol,
+        supplier_id: dataPurchase.supplier_id,
+        header_date: dataPurchase.header_date
+      })
     }
     if (response){
       refreshPage.set(true)
@@ -60,7 +67,11 @@
         <label class="label" for="supplier-id">
           <span class="label-text">Date</span>
         </label>
-        <DatePicker defaultDate={dataPurchase.header_date} noMonthly noRange on:pickerSubmit={e => dataPurchase.header_date = dateFormater(e.detail[0], 'isoDateTime')}/>
+        {#if dataPurchase.header_date && dataPurchase.header_date != undefined}
+          <DatePicker defaultDate={new Date(dataPurchase.header_date)} on:dateSubmit={e => dataPurchase.header_date = dateFormater(e.detail, 'isoDateTime')}/>
+        {:else}
+          <DatePicker on:dateSubmit={e => dataPurchase.header_date = dateFormater(e.detail, 'isoDateTime')} />
+        {/if}
       </div>
       <div id="purchase-note" class="form-control w-full col-span-6">
         <label class="label" for="purchase-note">

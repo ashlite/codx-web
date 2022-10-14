@@ -39,8 +39,8 @@
 <ul tabindex="0" class="menu bg-neutral w-4/5 absolute z-30">
   {#if resultList.length > 0}
     {#each resultList as item, index}
-      <li>
-        <BtnSuper on:click={() => handleSelected(index)} text={`${item}`} />
+      <li class="bg-secondary">
+        <BtnSuper on:click={() => handleSelected(index)} text={`${item}`} color="secondary" />
       </li>
     {/each}
   {/if}

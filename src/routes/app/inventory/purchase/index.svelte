@@ -6,24 +6,37 @@
   import { afterNavigate } from '$app/navigation'
   import { get } from "$lib/helper/api"
   import { dateFormater, priceFormater } from '$lib/helper/tools'
-  import DatePicker from "$lib/components/organism/DatePicker.svelte"
+  import MonthPicker from "$lib/components/organism/MonthPicker.svelte"
 
   let listPurchase = []
-  let itemPerPage = 50
-  let currentPage = 1
+  let listSupplier = []
+  let statusPurchase = 0
+  let selectedSupplier = 0
+  let selectedDate = new Date()
 
   $: $refreshPage && RefreshData()
 
   afterNavigate(() => RefreshData())
   
   async function RefreshData() {
-    let skipData = (currentPage - 1) * itemPerPage
-    listPurchase = await get(`/purchase/header?limit=${itemPerPage}&skip=${skipData}`)
+    if (statusPurchase == 0) {
+      listPurchase = await get(`/purchase/header`)
+    } else {
+      const dateMin = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 0, 0, 0, 0)
+      const dateMax = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0, 23, 59, 59, 999)
+      listPurchase = await get(`/purchase/header?finish=${statusPurchase}&supplier=${selectedSupplier}&datemin=${dateFormater(dateMin, 'isoDateTime')}&datemax=${dateFormater(dateMax, 'isoDateTime')}`)
+      listSupplier = await get(`/supplier`)
+    }
     refreshPage.set(false)
   }
 
   function openPurchase(id){
     window.open(`/app/inventory/purchase/${id}`, '_blank')
+  }
+
+  function changeMonth(date){
+    selectedDate = date
+    refreshPage.set(true)
   }
   
 </script>
@@ -34,23 +47,27 @@
       <label class="label" for="purchase_status">
         <span class="label-text">Purchase Status</span>
       </label>
-      <select id="purchase-status" class="select select-bordered select-sm">
-        <option selected>All Status</option>
-        <option>In Progress</option>
-        <option>Finish</option>
+      <select id="purchase-status" class="select select-bordered select-sm" bind:value={statusPurchase} on:change={() => refreshPage.set(true)}>
+        <option value={0}>On Progress</option>
+        <option value={1}>Done</option>
+        <option value={2}>Finish Only</option>
+        <option value={3}>Cancel Only</option>
       </select>
     </div>
-    <div class="form-control w-60 max-w-xs">
-      <label class="label" for="purchase_status">
-        <span class="label-text">Supplier</span>
-      </label>
-      <select id="purchase-status" class="select select-bordered select-sm">
-        <option selected>All Status</option>
-        <option>In Progress</option>
-        <option>Finish</option>
-      </select>
-    </div>
-    <DatePicker noRange on:pickerSubmit/>
+    {#if statusPurchase != 0}
+      <div class="form-control w-60 max-w-xs">
+        <label class="label" for="purchase_status">
+          <span class="label-text">Supplier</span>
+        </label>
+        <select id="Suplier" class="select select-bordered select-sm" bind:value={selectedSupplier} on:change={() => refreshPage.set(true)}>
+          <option value={0} >All Supplier</option>
+          {#each listSupplier as supplier}
+            <option value={supplier.id}>{supplier.supplier_name} - {supplier.country}</option>
+          {/each}
+        </select>
+      </div>
+      <MonthPicker on:monthSubmit={e => changeMonth(e.detail)} />
+    {/if}
     <BtnAddNew text="Purchase" on:click={() => globalModal.createPurchase()}/>
   </div>
 
@@ -77,7 +94,13 @@
               <td>
                 <div class="flex flex-col">
                   <div><span class="font-bold text-info">Created: </span>{dateFormater(purchase.header_date, 'date')}</div>
-                  <div><span class="font-bold text-warning">Finish: </span>{purchase.finish_date ? purchase.finish_date : 'In progress'}</div>
+                  {#if purchase.finish_at}
+                    <div><span class="font-bold text-warning">Finish: </span>{dateFormater(purchase.finish_at, 'date')}</div>
+                  {:else if purchase.canceled_at}
+                    <div><span class="font-bold text-error">Cancel: </span>{dateFormater(purchase.canceled_at, 'date')}</div>
+                  {:else}
+                    <div class="font-bold text-primary">On Progress</div>
+                  {/if}
                 </div>
               </td>
               <td>

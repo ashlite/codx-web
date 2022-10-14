@@ -1,22 +1,19 @@
 <script>
-  import SearchListProduct from '$lib/components/organism/SearchListProduct.svelte';
   import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte'
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
   import TextArea from '$lib/components/molecule/TextArea.svelte';
   import { dateFormater, priceFormater } from '$lib/helper/tools';
   import { post, get, patch } from '$lib/helper/api'
-	import { forexPricingRate, globalModal, refreshPage, toastAlert } from '$lib/helper/store';
-  import Toggle from '$lib/components/atom/Toggle.svelte';
-	import { onMount } from 'svelte';
-	import { list } from 'postcss';
-  import { page } from '$app/stores';
+	import { globalModal, refreshPage } from '$lib/helper/store';
+  import { onMount } from 'svelte';
 	import DatePicker from '$lib/components/organism/DatePicker.svelte';
+  import MonthPicker from '$lib/components/organism/MonthPicker.svelte';
 
   export let data = { headerPurchaseId:0 }
   let requestBody = {}
   let listForex = []
   let listType = []
-  let defaultDate = Date.now()
+  let selectedDate = new Date()
 
   $: if(requestBody.forex_symbol != 'IDR') requestBody.flow_amount = requestBody.forex_amount * requestBody.forex_rate
 
@@ -71,7 +68,7 @@
 
 <form on:submit|preventDefault={() => handleSubmit()}>
   <div class="col-span-6" id="dateInput">
-    <DatePicker noMonthly noRange defaultDate={defaultDate} on:pickerSubmit={e => requestBody.created_at = dateFormater(e.detail[0], 'isoDateTime')}/>
+    <DatePicker/>
   </div>
   <div class="grid grid-cols-6 gap-4">
     <div id="forex-symbol" class="form-control w-full col-span-2">

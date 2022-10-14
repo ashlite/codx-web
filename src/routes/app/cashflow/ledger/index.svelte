@@ -1,5 +1,6 @@
 <script>
   import DatePicker from "$lib/components/organism/DatePicker.svelte";
+  import MonthPicker from "$lib/components/organism/MonthPicker.svelte";
   import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte";
   import CellAction from "$lib/components/molecule/CellAction.svelte";
   import { globalModal, refreshPage} from "$lib/helper/store"
@@ -7,12 +8,8 @@
 	import { get } from "$lib/helper/api";
 	import { dateFormater, priceFormater } from "$lib/helper/tools";
 
-  const globalDate = new Date()
   let listLedger = []
-  let dateRange = {
-    min: new Date(globalDate.getFullYear(), globalDate.getMonth(), 1),
-    max: new Date(globalDate.getFullYear(), globalDate.getMonth() + 1, 0)
-  }
+  let selectedDate = new Date()
 
   afterNavigate(RefreshData)
 
@@ -24,15 +21,23 @@
   }
 
   async function RefreshData() {
-    listLedger = await get(`/cashflow?createmin=${dateFormater(dateRange.min, 'isoDateTime')}&createmax=${dateFormater(dateRange.max, 'isoDateTime')}&skip=0&limit=1000`)
+    const datemin = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 0,0,0,0)
+    const datemax = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0, 23, 59, 59, 999)
+    listLedger = await get(`/cashflow?createmin=${dateFormater(datemin, 'isoDateTime')}&createmax=${dateFormater(datemax, 'isoDateTime')}&skip=0&limit=1000`)
     refreshPage.set(false)
+  }
+
+  function changeMonth(date) {
+    selectedDate = date
+    refreshPage.set(true)
   }
 </script>
 
 <div class="min-h-screen pt-4 pb-8">
   <div class="flex flex-row gap-4">
     <div>
-      <DatePicker noRange noDaily defaultMonth={Date.now()} on:pickerSubmit={e => updateRange(e.detail)}/>
+      <!-- <DatePicker noRange noDaily defaultMonth={Date.now()} on:pickerSubmit={e => updateRange(e.detail)}/> -->
+      <MonthPicker on:monthSubmit={e => changeMonth(e.detail)} />
     </div>
     <div>
       <BtnAddNew text="Cashflow" on:click={() => globalModal.addCashflow()}/>
@@ -59,7 +64,7 @@
               {ledger.forex_symbol != undefined ? priceFormater(ledger.forex_amount, ledger.forex_symbol) : 0}
             </td>
             <td class="text-right">{priceFormater(ledger.flow_amount)}</td>
-            <td><CellAction edit remove 
+            <td><CellAction edit remove file
               on:remove={() => globalModal.deleteConfirmation(ledger.id, `cashflow id ${ledger.id}`, 'cashflow')} 
               on:edit={() => globalModal.editCashflow(ledger)} />
             </td>
