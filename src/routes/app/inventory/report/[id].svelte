@@ -27,6 +27,14 @@
 </script>
 
 <MovementApproval data={data} />
+<div class="my-2">
+  <h1 class="font-bold text-2xl text-secondary">NOTES:</h1>
+  {#if data.movement_notes}
+    <p>{data.movement_notes}</p>
+  {:else}
+    <p class="text-error">None</p>
+  {/if}
+</div>
 {#if data.finish_at == undefined && data.canceled_at == undefined && data.id != undefined}
   <div class="flex flex-row my-4 justify-between items-center">
     <div class="basis-2/4">
