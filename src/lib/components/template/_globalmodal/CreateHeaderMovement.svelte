@@ -2,24 +2,26 @@
   import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte'
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
   import TextArea from '$lib/components/molecule/TextArea.svelte';
-  import { post, get } from '$lib/helper/api'
+  import { post, get, patch } from '$lib/helper/api'
 	import { globalModal, refreshPage } from '$lib/helper/store';
 
   export let data = { header_purchase_id : 0 }
   let purchaseHeader = data.header_purchase_id
-  let selectedType = 1
-  let originVenue = 1
-  let targetVenue = 1
-  let movementNotes
-  const listType = get(`/inventory/type`)
-  const listVenue = get('/venue/')
+  let selectedType = data.id ? data.movement_type : 1
+  let originVenue = (data.id && data.origin_venue) ? data.origin_venue.id : 1
+  let targetVenue = (data.id && data.target_venue) ? data.target_venue.id : 1
+  let movementNotes = data.id ? data.movement_notes : undefined
+  let listType = get(`/inventory/type`)
+  let listVenue = get('/venue/')
 
   async function handleSubmit(){
     let requestBody = {movement_notes: movementNotes, movement_type: selectedType}
     if (purchaseHeader > 0) requestBody.header_purchase_id = purchaseHeader
     if (selectedType == 2 || selectedType == 3) requestBody.origin_venue_id = originVenue
     if (selectedType == 1 || selectedType == 3) requestBody.target_venue_id = targetVenue
-    const response = await post(`/inventory/header/`, requestBody)
+    let response
+    if (data.id) response = await patch(`/inventory/header/${data.id}`, requestBody) 
+    else response = await post(`/inventory/header/`, requestBody) 
     if (response) {
       globalModal.close()
       refreshPage.set(true)

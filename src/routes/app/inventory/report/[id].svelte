@@ -6,6 +6,7 @@
   import { get, del, patch } from '$lib/helper/api'
   import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
   import CellAction from '$lib/components/molecule/CellAction.svelte'
+	import BtnSuper from '$lib/components/atom/BtnSuper.svelte';
 
   let data = {}
 
@@ -26,15 +27,28 @@
 </script>
 
 <MovementApproval data={data} />
-<div class="my-2">
-  <h1 class="font-bold text-2xl text-secondary">NOTES:</h1>
-  {#if data.movement_notes}
-    <p>{data.movement_notes}</p>
-  {:else}
-    <p class="text-error">None</p>
+<div class="flex flex-row gap-4">
+  <div class="text-2xl font-bold text-secondary">
+    {#if data.movement_type == 1}
+      INC-{data.id}
+    {:else if data.movement_type == 2}
+      OUT-{data.id}
+    {:else}
+      TRF-{data.id}
+    {/if}
+  </div>
+  {#if data.origin_venue}
+    <div class="text-2xl font-bold text-primary">
+      Origin: <span class="font-normal text-base-content">{data.origin_venue.name}</span>
+    </div>
+  {/if}
+  {#if data.target_venue}
+    <div class="text-2xl font-bold text-primary">
+      Target: <span class="font-normal text-base-content">{data.target_venue.name}</span>
+    </div>
   {/if}
 </div>
-{#if data.finish_at == undefined && data.canceled_at == undefined && data.id != undefined}
+{#if data.id != undefined}
   <div class="flex flex-row my-4 justify-between items-center">
     <div class="basis-2/4">
       <h1 class="font-bold text-secondary">Movement Notes</h1>
@@ -45,18 +59,12 @@
       <div class="truncate">{`${data.create_user.first_name} ${data.create_user.last_name}`}</div>
       <div class="truncate">{`${data.create_user.email}`}</div>
     </div>
-    <div class="flex flex-col items-center gap-4 basis-1/4">
-      <div class="text-2xl font-bold text-secondary">
-        {#if data.movement_type == 1}
-          INC-{data.id}
-        {:else if data.movement_type == 2}
-          OUT-{data.id}
-        {:else}
-          TRF-{data.id}
-        {/if}
+    {#if data.finish_at == undefined && data.canceled_at == undefined}
+      <div class="flex flex-col items-center gap-2 basis-1/4">
+        <BtnSuper text="Edit Header" color="accent" icon="uil:edit" block on:click={() => globalModal.editHeaderMovement(data)} />
+        <BtnAddNew text="Movement" on:click={() => globalModal.addMovement()}/>
       </div>
-      <BtnAddNew text="Product Movement" on:click={() => globalModal.addMovement()}/>
-    </div>
+    {/if}
   </div> 
 {/if}
 
