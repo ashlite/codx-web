@@ -23,7 +23,6 @@
     await del(`/inventory/header/${$page.params.id}/movement/${movementId}`)
     refreshPage.set(true)
   }
-
 </script>
 
 <MovementApproval data={data} />
