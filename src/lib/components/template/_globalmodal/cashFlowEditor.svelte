@@ -7,11 +7,14 @@
 	import { globalModal, refreshPage } from '$lib/helper/store';
   import { onMount } from 'svelte';
 	import DatePicker from '$lib/components/organism/DatePicker.svelte';
+  import BtnSuper from '$lib/components/atom/BtnSuper.svelte';
+  import FileCard from '$lib/components/molecule/FileCard.svelte';
 
   export let data = { headerPurchaseId:0 }
   let requestBody = {}
   let listForex = []
   let listType = []
+  let fileInput
 
   $: if(requestBody.forex_symbol != 'IDR') requestBody.flow_amount = requestBody.forex_amount * requestBody.forex_rate
 
@@ -62,6 +65,18 @@
       }
     }
   }
+
+  async function handleUpload(e){
+    let formData = new FormData()
+    const fileData = e.detail.target.files[0]
+    formData.append("payload", fileData)
+    await post(`/file/upload?cashflow=${data.id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }}
+    )
+    refreshPage.set(true)
+  }
 </script>
 
 <form on:submit|preventDefault={() => handleSubmit()}>
@@ -110,5 +125,14 @@
       <TextArea labelTL="Cashflow Notes" required bind:value={requestBody.notes} limit=1000 />
     </div>
   </div>
-  <ModalSubmit form />
+  {#if data.id}
+    <div class="flex flex-row gap-2">
+      {#each data.list_doc as file}
+        <FileCard data={file} />
+      {/each}
+    </div>
+    <ModalSubmit form file on:fileUpload={e => handleUpload(e)} />
+  {:else}
+    <ModalSubmit form />
+  {/if}
 </form>

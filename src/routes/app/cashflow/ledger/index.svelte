@@ -7,6 +7,7 @@
 	import { afterNavigate } from "$app/navigation";
 	import { get } from "$lib/helper/api";
 	import { dateFormater, priceFormater } from "$lib/helper/tools";
+  import Icon from '@iconify/svelte';
 
   let listLedger = []
   let selectedDate = new Date()
@@ -59,7 +60,12 @@
         {#each listLedger as ledger}
           <tr>
             <td class="text-center">{dateFormater(ledger.created_at)}</td>
-            <td class="text-center tooltip cursor-help tooltip-accent" data-tip={ledger.notes}>{ledger.type.flow_type}</td>
+            <td class="text-center tooltip cursor-help tooltip-accent flex flex-row gap-2" data-tip={ledger.notes}>
+              {ledger.type.flow_type}
+              {#if ledger.list_doc.length > 0}
+                <Icon icon="uil:paperclip" width=26 height=26 />
+              {/if}
+            </td>
             <td class="text-right">
               {ledger.forex_symbol != undefined ? priceFormater(ledger.forex_amount, ledger.forex_symbol) : 0}
             </td>

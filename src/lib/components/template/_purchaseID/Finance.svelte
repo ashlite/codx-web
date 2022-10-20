@@ -6,6 +6,8 @@
 	import BtnAddNew from "$lib/components/atom/BtnAddNew.svelte";
 	import { globalModal, refreshPage, toastAlert } from "$lib/helper/store";
   import { del } from '$lib/helper/api'
+  import Icon from '@iconify/svelte';
+  
   export let data
   let invoiceAmount = {}
   
@@ -102,8 +104,11 @@
       {#each data.cashflow as cashflow}
         <tr class={cashflow.type.is_negative ? 'text-error' : 'text-success'}>
           <td>{dateFormater(cashflow.created_at)}</td>
-          <td class="tooltip cursor-help tooltip-accent" data-tip={cashflow.notes}>
-            <div>{cashflow.type.flow_type}</div>
+          <td class="tooltip cursor-help tooltip-accent flex flex-row" data-tip={cashflow.notes}>
+            {cashflow.type.flow_type}
+            {#if cashflow.list_doc.length > 0}
+              <Icon icon="uil:paperclip" width=26 height=26 />
+            {/if}
           </td>
           {#if cashflow.forex_symbol != undefined && cashflow.forex_symbol != 'IDR'}
           <td>{priceFormater(cashflow.forex_amount, cashflow.forex_symbol)}</td>
