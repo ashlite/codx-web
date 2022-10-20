@@ -64,7 +64,7 @@
               {ledger.forex_symbol != undefined ? priceFormater(ledger.forex_amount, ledger.forex_symbol) : 0}
             </td>
             <td class="text-right">{priceFormater(ledger.flow_amount)}</td>
-            <td><CellAction edit remove file
+            <td><CellAction edit remove
               on:remove={() => globalModal.deleteConfirmation(ledger.id, `cashflow id ${ledger.id}`, 'cashflow')} 
               on:edit={() => globalModal.editCashflow(ledger)} />
             </td>

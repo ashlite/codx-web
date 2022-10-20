@@ -5,6 +5,7 @@
   export let dataId
   export let currency = 'IDR'
   export let frontLabel = ''
+  export let notCurrency = false
   
   let editing = false
   const dispatch = createEventDispatcher()
@@ -25,7 +26,11 @@
     </form>
   {:else}
     <div on:click={() => editing = true} class="cursor-pointer underline decoration-dotted decoration-1 underline-offset-2 font-bold">
-      {`${frontLabel} ${priceFormater(value, currency)}`}
+      {#if notCurrency}
+        {`${frontLabel} ${value}`}
+      {:else}
+        {`${frontLabel} ${priceFormater(value, currency)}`}
+      {/if}
     </div>
   {/if}
 </div>

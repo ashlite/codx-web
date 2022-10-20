@@ -2,8 +2,9 @@
   import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
   import { priceFormater } from "$lib/helper/tools"
   import { globalModal, refreshPage } from '$lib/helper/store'
-  import { del } from '$lib/helper/api'
+  import { del, patch } from '$lib/helper/api'
   import CellAction from "$lib/components/molecule/CellAction.svelte";
+  import EditableInput from "$lib/components/atom/EditableInput.svelte";
 
   export let data
   let sumData = summaryPurchase()
@@ -26,6 +27,32 @@
 
   async function removePurchaseItem(listId){
     await del(`/purchase/items/${data.id}/${listId}`)
+    refreshPage.set(true)
+  }
+
+  async function updateForexPrice(e) {
+    const idrBuyPrice = e.newValue * data.idr_buy_rate
+    await patch(`/purchase/items/${data.id}/${e.dataId}`, {forex_buy: e.newValue, idr_buy_price: idrBuyPrice})
+    refreshPage.set(true)
+  }
+
+  async function updateIdrPrice(e) {
+    await patch(`/purchase/items/${data.id}/${e.dataId}`, {idr_buy_price: e.newValue})
+    refreshPage.set(true)
+  }
+
+  async function updateOrderedQty(e) {
+    await patch(`/purchase/items/${data.id}/${e.dataId}`, {ordered_qty: e.newValue})
+    refreshPage.set(true)
+  }
+
+  async function changeToNew(id){
+    await patch(`/purchase/items/${data.id}/${id}`, {is_new: true})
+    refreshPage.set(true)
+  }
+
+  async function changeToOld(id){
+    await patch(`/purchase/items/${data.id}/${id}`, {is_new: false})
     refreshPage.set(true)
   }
 
@@ -59,7 +86,9 @@
               </div>
               <div class="flex flex-col overflow-x-clip">
                 {#if item.is_new}
-                  <div class="badge badge-md badge-accent font-bold text-accent-content">NEW ITEMS</div>
+                  <div class="badge badge-md badge-accent font-bold text-accent-content cursor-pointer" on:click={() => changeToOld(item.id)}>NEW ITEMS</div>
+                {:else}
+                  <div class="badge badge-md font-bold cursor-pointer" on:click={() => changeToNew(item.id)}>RESTOCK</div>
                 {/if}
                 <div class="text-xl font-bold text-ellipsis">{item.product.collection.name}</div>
                 <div class="text-info text-ellipsis">{item.product.name}</div>
@@ -67,18 +96,23 @@
             </div>
           </td>
           <td class="text-center text-xl">
-            {item.ordered_qty}
+            <EditableInput notCurrency dataId={item.id} value={item.ordered_qty} on:editableSubmit={e => updateOrderedQty(e.detail)} />
           </td>
           {#if data.forex_symbol != undefined && data.forex_symbol != 'IDR'}
             <td class="text-right">
-              <div>{priceFormater(item.forex_buy, data.forex_symbol)}</div>
+              <div><EditableInput dataId={item.id} currency={data.forex_symbol} value={item.forex_buy} on:editableSubmit={e => updateForexPrice(e.detail)} /></div>
               <div class="text-info">{priceFormater(item.forex_buy * item.ordered_qty, data.forex_symbol)}</div>
             </td>
+            <td class="text-right">
+              <div>{priceFormater(item.idr_buy_price)}</div>
+              <div class="text-info">{priceFormater(item.idr_buy_price * item.ordered_qty)}</div>
+            </td>
+          {:else}
+            <td class="text-right">
+              <div><EditableInput dataId={item.id} value={item.idr_buy_price} on:editableSubmit={e => updateIdrPrice(e.detail)} /></div>
+              <div class="text-info">{priceFormater(item.idr_buy_price * item.ordered_qty)}</div>
+            </td>
           {/if}
-          <td class="text-right">
-            <div>{priceFormater(item.idr_buy_price)}</div>
-            <div class="text-info">{priceFormater(item.idr_buy_price * item.ordered_qty)}</div>
-          </td>
           <td class="justify-end">
             <CellAction remove on:remove={() => removePurchaseItem(item.id)}/>
           </td>

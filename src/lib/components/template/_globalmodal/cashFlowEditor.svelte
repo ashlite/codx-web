@@ -7,13 +7,11 @@
 	import { globalModal, refreshPage } from '$lib/helper/store';
   import { onMount } from 'svelte';
 	import DatePicker from '$lib/components/organism/DatePicker.svelte';
-  import MonthPicker from '$lib/components/organism/MonthPicker.svelte';
 
   export let data = { headerPurchaseId:0 }
   let requestBody = {}
   let listForex = []
   let listType = []
-  let selectedDate = new Date()
 
   $: if(requestBody.forex_symbol != 'IDR') requestBody.flow_amount = requestBody.forex_amount * requestBody.forex_rate
 
@@ -22,7 +20,7 @@
     listType = await get('/cashflow/type')
 
     if (data.id != undefined) {
-      defaultDate = new Date(data.created_at)
+      // defaultDate = new Date(data.created_at)
       if (data.forex_symbol != undefined) {
         requestBody = {...data}
       } else {

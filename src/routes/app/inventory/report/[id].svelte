@@ -3,10 +3,9 @@
   import { afterNavigate } from '$app/navigation'
   import { page } from '$app/stores'
 	import MovementApproval from "$lib/components/molecule/MovementApproval.svelte";
-  import { get, del } from '$lib/helper/api'
+  import { get, del, patch } from '$lib/helper/api'
   import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
   import CellAction from '$lib/components/molecule/CellAction.svelte'
-  import Collapsible from '$lib/components/molecule/Collapsible.svelte'
 
   let data = {}
 
