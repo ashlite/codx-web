@@ -109,6 +109,7 @@
               <div class="flex flex-col">
                 <div class="font-bold">{product.collection.name}</div>
                 <div class="text-info">{product.name}</div>
+                <div class="text-accent">SKU: {product.sku}</div>
               </div>
             </td>
             <td class="text-center">
