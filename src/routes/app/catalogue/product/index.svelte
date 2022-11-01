@@ -141,7 +141,7 @@
           <div class="flex flex-row items-center">
             Product Name
             {#if sort.attribute == 'name' } 
-              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+              <Icon icon={ sort.asc ? 'uil:angle-up' : 'uil:angle-down'} width={30} height={30} />
             {/if}
           </div>
         </th> 
@@ -149,7 +149,7 @@
           <div class="flex flex-row items-center">
             Stock
             {#if sort.attribute == 'stock' } 
-              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+              <Icon icon={ sort.asc ? 'uil:angle-up' : 'uil:angle-down'} width={30} height={30} />
             {/if}
           </div>
         </th>
@@ -157,7 +157,7 @@
           <div class="flex flex-row items-center">
             Buy Price
             {#if sort.attribute == 'buy' } 
-              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+              <Icon icon={ sort.asc ? 'uil:angle-up' : 'uil:angle-down'} width={30} height={30} />
             {/if}
           </div>
         </th> 
@@ -165,7 +165,7 @@
           <div class="flex flex-row items-center">
             Sell Price
             {#if sort.attribute == 'sell' } 
-              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+              <Icon icon={ sort.asc ? 'uil:angle-up' : 'uil:angle-down'} width={30} height={30} />
             {/if}
           </div>
         </th>
