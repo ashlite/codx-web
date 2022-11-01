@@ -10,12 +10,15 @@
   import CellAction from '$lib/components/molecule/CellAction.svelte';
   import { marginCalc } from '$lib/helper/tools'
   import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
+  import Icon from '@iconify/svelte'
+	import { list } from 'postcss';
 
   let listItem = []
   let totalItem = 0
   let searching = false
   let searchQuery = ''
   let pagination = { itemPerPage: 50, currentPage: 1 }
+  const sort = {attribute: 'name', asc: true}
   
   afterNavigate(() => RefreshData())
 
@@ -36,6 +39,7 @@
     const responseCount = await get(`/utils/count?product=1${urlParamCount}`)
     totalItem = await responseCount.total_product != undefined ? responseCount.total_product : 0
 
+    listSorting()
     refreshPage.set(false)
     searchQuery = ''
     searching = false
@@ -71,7 +75,47 @@
     } else {
       toastAlert.error('Failed to update price')
     }
-  } 
+  }
+
+  function updateSorting(attribute) {
+    sort.attribute = attribute
+    sort.asc = !sort.asc
+    listSorting()
+  }
+
+  function listSorting() {
+    if (sort.asc) {
+      switch(sort.attribute) {
+        case 'name':
+          listItem = listItem.sort((a,b) => a.collection.name.localeCompare(b.collection.name))
+          break
+        case 'stock':
+          listItem = listItem.sort((a,b) => a.total_stock - b.total_stock)
+          break
+        case 'buy':
+          listItem = listItem.sort((a,b) => a.buy_price - b.buy_price)
+          break
+        case 'sell':
+          listItem = listItem.sort((a,b) => a.sell_price - b.sell_price)  
+          break
+      }
+    } else {
+      switch(sort.attribute) {
+        case 'name':
+          listItem = listItem.sort((a,b) => b.collection.name.localeCompare(a.collection.name))
+          break
+        case 'stock':
+          listItem = listItem.sort((a,b) => b.total_stock - a.total_stock)
+          break
+        case 'buy':
+          listItem = listItem.sort((a,b) => b.buy_price - a.buy_price)
+          break
+        case 'sell':
+          listItem = listItem.sort((a,b) => b.sell_price - a.sell_price)  
+          break
+      }
+    }
+  }
 
 </script>
 
@@ -92,11 +136,39 @@
 <div class="overflow-x-auto">
   <table class="table table-compact w-full">
     <thead>
-      <tr> 
-        <th class="text-xl">Product Name</th> 
-        <th class="text-xl">Stock</th>
-        <th class="text-xl">Buy Price</th> 
-        <th class="text-xl">Sell Price</th>
+      <tr class="select-none"> 
+        <th class="text-xl cursor-pointer hover:bg-secondary hover:text-secondary-content" on:click={() => updateSorting('name')}>
+          <div class="flex flex-row items-center">
+            Product Name
+            {#if sort.attribute == 'name' } 
+              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+            {/if}
+          </div>
+        </th> 
+        <th class="text-xl cursor-pointer hover:bg-secondary hover:text-secondary-content" on:click={() => updateSorting('stock')}>
+          <div class="flex flex-row items-center">
+            Stock
+            {#if sort.attribute == 'stock' } 
+              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+            {/if}
+          </div>
+        </th>
+        <th class="text-xl cursor-pointer hover:bg-secondary hover:text-secondary-content" on:click={() => updateSorting('buy')}>
+          <div class="flex flex-row items-center">
+            Buy Price
+            {#if sort.attribute == 'buy' } 
+              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+            {/if}
+          </div>
+        </th> 
+        <th class="text-xl cursor-pointer hover:bg-secondary hover:text-secondary-content" on:click={() => updateSorting('sell')}>
+          <div class="flex flex-row items-center">
+            Sell Price
+            {#if sort.attribute == 'sell' } 
+              <Icon icon={ sort.asc ? 'uil:angle-down' : 'uil:angle-up'} width={30} height={30} />
+            {/if}
+          </div>
+        </th>
         <th class="text-xl">Margin</th>
         <th class="text-xl">Action</th>
       </tr>
