@@ -7,6 +7,7 @@
   let currentPage = 1
   let totalPages = 1
   let itemPerPage = 50
+  let bigLimit = false
   const dispatch = createEventDispatcher()
 
   function dispatchUpdate(){
@@ -44,10 +45,17 @@
   <div class="col-span-3 flex items-center gap-4">
     <h3 class="text-xl">Items per page:</h3>
     <select class="select select-bordered max-w-xs" bind:value={itemPerPage} on:change={() => dispatchUpdate()} >
-      <option value={50}>50</option>
-      <option value={100}>100</option>
-      <option value={150}>150</option>
-      <option value={200}>200</option>
+      {#if !bigLimit}
+        <option value={50}>50</option>
+        <option value={100}>100</option>
+        <option value={150}>150</option>
+        <option value={200}>200</option>
+      {:else}
+        <option value={100}>100</option>
+        <option value={200}>200</option>
+        <option value={400}>400</option>
+        <option value={800}>800</option>
+      {/if}
     </select>
   </div>
   <div class="col-start-4 col-span-7">

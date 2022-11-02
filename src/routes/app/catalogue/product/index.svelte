@@ -131,7 +131,7 @@
     <BtnAddNew text="Product" on:click={() => globalModal.editProduct({})} />
   </div>
 </div>
-<PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)}/>
+<PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)} bigLimit/>
 
 <div class="overflow-x-auto">
   <table class="table table-compact w-full">
