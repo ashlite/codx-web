@@ -4,10 +4,10 @@
   import BtnIcon from '../atom/BtnIcon.svelte'
   import BtnSuper from '../atom/BtnSuper.svelte'
   export let totalItems
+  export let bigLimit = false
   let currentPage = 1
   let totalPages = 1
-  let itemPerPage = 50
-  let bigLimit = false
+  let itemPerPage = bigLimit ? 100 : 50
   const dispatch = createEventDispatcher()
 
   function dispatchUpdate(){
