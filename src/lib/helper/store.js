@@ -38,6 +38,11 @@ function createModal(){
     addMovement:() => set({title: 'Add Product Movement', type: 'addMovement', size:'sm'}),
     addCashflow:(headerPurchaseId) => set({title: 'Add Cashflow', type: 'addCashflow', size:'md', data:{headerPurchaseId: headerPurchaseId}}),
     editCashflow:(oldData) => set({title: 'Edit Cashflow', type: 'addCashflow', size:'md', data:{...oldData, headerPurchaseId:0}}),
+    createHeaderSale:() => set({title: 'Create Sale', type: 'formHeaderSale', size:'sm'}),
+    updateHeaderSale:(id) => set({title: 'Update Sale', type: 'formHeaderSale', size:'sm', data: id}),
+    addSaleModifier:(headerId, grandTotal, itemTotal) => set({title: 'Sale Modifier', type: 'formSaleModifier', size:'sm', data:{headerId, grandTotal, itemTotal}}),
+    addSaleModifierType:() => set({title: 'Add Sale Modifier Type', type: 'formSaleModType', size:'sm'}),
+    updateSaleModifierType:(modTypeObj) => set({title: 'Update Sale Modifier Type', type: 'formSaleModType', size:'sm', data:modTypeObj})
   }
 }
 

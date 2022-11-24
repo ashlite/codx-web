@@ -1,4 +1,4 @@
-<script>
+<script script>
   import SearchList from "$lib/components/molecule/SearchList.svelte";
   import BtnSuper from '$lib/components/atom/BtnSuper.svelte'
   import { get } from '$lib/helper/api'

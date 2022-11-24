@@ -14,6 +14,9 @@
   import CreateHeaderMovement from '$lib/components/template/_globalmodal/CreateHeaderMovement.svelte'
   import AddMovement from '$lib/components/template/_globalmodal/AddMovement.svelte'
   import CashFlowEditor from '$lib/components/template/_globalmodal/cashFlowEditor.svelte'
+  import FormCreateHeaderSale from '$lib/components//template/_globalmodal/FormCreateHeaderSale.svelte'
+  import FormSaleModifier from '$lib/components/template/_globalmodal/FormSaleModifier.svelte'
+  import FormSaleModType from '$lib/components/template/_globalmodal/FormSaleModType.svelte'
   import { globalModal } from '$lib/helper/store'
   import { shortcut } from '$lib/helper/shortcut'
 </script>
@@ -58,6 +61,12 @@
         <AddMovement data={$globalModal.data} />
       {:else if $globalModal.type == 'addCashflow'}
         <CashFlowEditor data={$globalModal.data} />
+      {:else if $globalModal.type == 'formHeaderSale'}
+        <FormCreateHeaderSale id={$globalModal.data}/>
+      {:else if $globalModal.type == 'formSaleModifier'}
+        <FormSaleModifier data={$globalModal.data} />
+      {:else if $globalModal.type == 'formSaleModType'}
+        <FormSaleModType data={$globalModal.data}/>
       {/if}
     </div>
   </div>

@@ -27,7 +27,11 @@
   <form on:submit|preventDefault={() => handleSearch()}>
     <div class="input-group w-full">
       <span>{sideText}</span>
-      <input bind:this={firstFocus} type="text" class="input input-bordered flex-grow" bind:value={searchQuery} disabled={false} />
+      {#if first}
+        <input bind:this={firstFocus} type="text" class="input input-bordered flex-grow" bind:value={searchQuery} disabled={false} />
+      {:else}
+        <input type="text" class="input input-bordered flex-grow" bind:value={searchQuery} disabled={false} />
+      {/if}
       {#if searchState}
         <button class="btn btn-square btn-info loading" disabled />
       {:else}
