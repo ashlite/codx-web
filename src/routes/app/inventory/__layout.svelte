@@ -32,7 +32,7 @@
     },{
       shortcut: 'Digit3',
       kbd: 3,
-      href: '/app/inventory/movement',
+      href: `/app/inventory/movement`,
       name: 'Movement'
     },
   ]

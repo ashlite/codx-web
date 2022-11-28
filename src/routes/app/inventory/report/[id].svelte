@@ -19,8 +19,8 @@
     refreshPage.set(false)
   }
 
-  async function removeMovement(movementId){
-    await del(`/inventory/header/${$page.params.id}/movement/${movementId}`)
+  async function removeMovement(productId){
+    await del(`/inventory/header/${$page.params.id}/movement/${productId}`)
     refreshPage.set(true)
   }
 </script>
@@ -96,7 +96,7 @@
               {movement.qty}
             </td>
             <td>
-              <CellAction remove on:remove={() => removeMovement(movement.id)} />
+              <CellAction remove on:remove={() => removeMovement(movement.product.id)} />
             </td>
           </tr>
         {/each}

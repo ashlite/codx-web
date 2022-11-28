@@ -42,7 +42,8 @@ function createModal(){
     updateHeaderSale:(id) => set({title: 'Update Sale', type: 'formHeaderSale', size:'sm', data: id}),
     addSaleModifier:(headerId, grandTotal, itemTotal) => set({title: 'Sale Modifier', type: 'formSaleModifier', size:'sm', data:{headerId, grandTotal, itemTotal}}),
     addSaleModifierType:() => set({title: 'Add Sale Modifier Type', type: 'formSaleModType', size:'sm'}),
-    updateSaleModifierType:(modTypeObj) => set({title: 'Update Sale Modifier Type', type: 'formSaleModType', size:'sm', data:modTypeObj})
+    updateSaleModifierType:(modTypeObj) => set({title: 'Update Sale Modifier Type', type: 'formSaleModType', size:'sm', data:modTypeObj}),
+    cancelSaleHeader:(headerId) => set({title: `Cancel Sale ${headerId}`, type: 'cancelHeaderConfirmation', size:'sm', data:headerId}),
   }
 }
 

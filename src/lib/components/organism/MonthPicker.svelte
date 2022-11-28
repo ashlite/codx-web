@@ -28,7 +28,6 @@
   const dispatch = createEventDispatcher()  
   function forward(){
     dispatch('monthSubmit', dateValue)
-    console.log(dateValue)
     document.activeElement.blur()
   }
 

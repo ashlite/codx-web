@@ -7,6 +7,7 @@
   
   export let listProduct = []
   export let headerSale = 0
+  export let editable = true
 
   async function updateBody(data, type) {
     if (type == 'qty') {
@@ -51,16 +52,32 @@
           <div class="text-info">{product.product.name}</div>
         </td>
         <td>
-          <EditableInput value={product.qty} notCurrency dataId={product.id} on:editableSubmit={e => updateBody(e.detail, 'qty')}/>
+          {#if editable}
+            <EditableInput value={product.qty} notCurrency dataId={product.id} on:editableSubmit={e => updateBody(e.detail, 'qty')}/>
+          {:else}
+            {product.qty}
+          {/if}
         </td>
         <td>
-          <EditableInput value={product.sell_price} dataId={product.id} on:editableSubmit={e => updateBody(e.detail, 'sell')} />
+          {#if editable}
+            <EditableInput value={product.sell_price} dataId={product.id} on:editableSubmit={e => updateBody(e.detail, 'sell')} />
+          {:else}
+            {priceFormater(product.sell_price)}
+          {/if}
         </td>
         <td>
-          <EditableInput value={product.discount_price} dataId={product.id} on:editableSubmit={e => updateBody(e.detail, 'discount')} />
+          {#if editable}
+            <EditableInput value={product.discount_price} dataId={product.id} on:editableSubmit={e => updateBody(e.detail, 'discount')} />
+          {:else}
+            {priceFormater(product.discount_price)}
+          {/if}
         </td>
         <td class="font-bold">{priceFormater((product.sell_price - product.discount_price) * product.qty)}</td>
-        <td><BtnSuper color="error" size='sm' icon="uil:multiply" on:click={() => deleteItem(product.id)}/></td>
+        {#if editable}
+          <td>
+            <BtnSuper color="error" size='sm' icon="uil:multiply" on:click={() => deleteItem(product.id)}/>
+          </td>
+        {/if}
       </tr>
     {/each}
   </tbody>

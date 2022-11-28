@@ -1,6 +1,6 @@
 <script>
   import { refreshPage, globalModal } from '$lib/helper/store'
-  import { get, post } from '$lib/helper/api'
+  import { del, get, post } from '$lib/helper/api'
   import { page } from '$app/stores'
   import { afterNavigate } from '$app/navigation'
   import GlobalCard from '$lib/components/molecule/GlobalCard.svelte'
@@ -35,7 +35,7 @@
   }
 </script>
 
-<div class="flex flex-row gap-4">
+<div class="flex flex-row gap-4 items-center">
   <h1 class="text-3xl text-primary font-bold">Sale ID {$page.params.id}</h1>
   <BtnSuper text="Update Sale Data" color="secondary" on:click={() => globalModal.updateHeaderSale($page.params.id)} kbd='e' key='KeyE' />
 </div>
@@ -88,12 +88,24 @@
   
   <div>   
     {#key saleData}
-      <TableSaleProduct headerSale={data.id} listProduct={data.list_product} />
-      <TableSaleSummary headerSale={data.id} listProduct={data.list_product} listModifier={data.list_modifier} />
+      <TableSaleProduct 
+        headerSale={data.id} 
+        listProduct={data.list_product}
+        editable={data.status == 'PENDING' ? true : false}
+      />
+      <TableSaleSummary
+        headerSale={data.id}
+        listProduct={data.list_product}
+        listModifier={data.list_modifier}
+        editable={data.status == 'PENDING' ? true : false} 
+      />
     {/key}
   </div>
   <div class="flex flex-row-reverse gap-4 mt-4 pb-8">
-    <BtnSuper text="Proceed to Payment" color="success" icon="uil:bill"/>
-    <BtnSuper text="Cancel this Transaction" color="error" icon="uil:file-contract-dollar"/>
+    {#if data.status == 'PENDING'}
+      <BtnSuper text="Proceed to Cash Payment" color="success" icon="uil:bill"/>
+      <BtnSuper text="Proceed to Online Payment" color="info" icon="uil:bill"/>
+      <BtnSuper text="Cancel this Transaction" color="error" icon="uil:file-contract-dollar" on:click={() => globalModal.cancelSaleHeader(data.id)}/>
+    {/if}
   </div>
 {/await}

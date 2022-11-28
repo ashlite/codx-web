@@ -5,10 +5,10 @@
   import TextArea from '$lib/components/molecule/TextArea.svelte'
   import Toggle from '$lib/components/atom/Toggle.svelte'
 	import { onMount } from 'svelte'
-  import { globalModal, refreshPage } from '$lib/helper/store'
+  import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
   
   export let data = { headerId:0, grandTotal: 0, itemTotal:0}
-  let selectedType
+  let selectedType = undefined
   let modPrice
   let modNotes
   let applyToGrand = true
@@ -21,13 +21,17 @@
   // $: applyToGrand, calculatePrice()
 
   async function handleSubmit() {
-    await post(`/sale/header/${data.headerId}/mod`, {
-      mod_price: modPrice,
-      notes: modNotes,
-      type_id: listModType[selectedType].id,
-    })
-    refreshPage.set(true)
-    globalModal.close()
+    if (selectedType == undefined) {
+      toastAlert.error('Type must be selected')
+    } else {
+      await post(`/sale/header/${data.headerId}/mod`, {
+        mod_price: modPrice,
+        notes: modNotes,
+        type_id: listModType[selectedType].id,
+      })
+      refreshPage.set(true)
+      globalModal.close()
+    }
   }
 
   function calculatePrice() {
@@ -55,7 +59,7 @@
         </select>
       {:then modType}
         <select class="select select-bordered" bind:value={selectedType} on:change={() => calculatePrice()}>
-          <option value=0>Pick one</option>
+          <option value={undefined}>Pick one</option>
           {#each modType as modData, index}
             <option value={index}>{`${modData.sale_type} (${modData.default_mod}${modData.is_percentage ? '%' : ''})`}</option>
           {/each}

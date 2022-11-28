@@ -17,6 +17,7 @@
   import FormCreateHeaderSale from '$lib/components//template/_globalmodal/FormCreateHeaderSale.svelte'
   import FormSaleModifier from '$lib/components/template/_globalmodal/FormSaleModifier.svelte'
   import FormSaleModType from '$lib/components/template/_globalmodal/FormSaleModType.svelte'
+  import CancelSaleHeader from '$lib/components/template/_globalmodal/CancelSaleHeader.svelte'
   import { globalModal } from '$lib/helper/store'
   import { shortcut } from '$lib/helper/shortcut'
 </script>
@@ -67,6 +68,8 @@
         <FormSaleModifier data={$globalModal.data} />
       {:else if $globalModal.type == 'formSaleModType'}
         <FormSaleModType data={$globalModal.data}/>
+      {:else if $globalModal.type == 'cancelHeaderConfirmation'}
+        <CancelSaleHeader data={$globalModal.data}/>
       {/if}
     </div>
   </div>

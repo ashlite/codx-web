@@ -10,6 +10,7 @@
   export let listProduct = []
   export let listModifier = []
   export let headerSale = 0
+  export let editable = true
   let summary = { totalQty: 0, totalSell: 0, grandTotal: 0, totalMod: 0 }
 
   onMount(() => summaryData())
@@ -49,7 +50,10 @@
     <tr>
       <th>Summary</th>
       <th>Price</th>
-      <th>Action</th>
+      <th>Notes</th>
+      {#if editable}
+        <th>Action</th>
+      {/if}
     </tr>
   </thead>
   <tbody>
@@ -57,30 +61,44 @@
       <td>Total Product: {summary.totalQty}</td>
       <td>{priceFormater(summary.totalSell)}</td>
       <td></td>
+      {#if editable}
+        <td></td>
+      {/if}
     </tr>
     {#each listModifier as mod}
       <tr>
         <td>{mod.type_data.sale_type}</td>
-        <td>
-          <EditableInput value={mod.mod_price} dataId={mod.id} on:editableSubmit={e => updateMod(e.detail.newValue, e.detail.dataId)}/>
-        </td>
-        <td>
-          <BtnSuper color="error" icon="uil:trash" on:click={() => deleteMod(mod.id)}/>
-        </td>
+        {#if editable}
+          <td>
+            <EditableInput value={mod.mod_price} dataId={mod.id} on:editableSubmit={e => updateMod(e.detail.newValue, e.detail.dataId)}/>
+          </td>
+          <td>{mod.notes}</td>
+          <td>
+            <BtnSuper color="error" icon="uil:trash" on:click={() => deleteMod(mod.id)}/>
+          </td>
+        {:else}
+          <td>
+            {mod.mod_price}
+          </td>
+          <td>{mod.notes}</td>
+        {/if}
       </tr>
     {/each}
     <tr class="">
       <td>Total Modifier</td>
       <td>{priceFormater(summary.totalMod)}</td>
       <td></td>
+      <td></td>
     </tr>
-    <tr>
-      <td colspan="3">
-        <div class="w-4/5 mx-auto">
-          <BtnSuper full size="sm" color="primary" text="Add Price Modifier" key="KeyP" kbd="p" on:click={() => globalModal.addSaleModifier(headerSale, summary.grandTotal, summary.totalSell)}/>
-        </div>
-      </td>
-    </tr>
+    {#if editable}
+      <tr>
+        <td colspan="3">
+          <div class="w-4/5 mx-auto">
+            <BtnSuper full size="sm" color="primary" text="Add Price Modifier" key="KeyP" kbd="p" on:click={() => globalModal.addSaleModifier(headerSale, summary.grandTotal, summary.totalSell)}/>
+          </div>
+        </td>
+      </tr>
+    {/if}
     <tr class="text-info font-bold">
       <td>GRAND TOTAL</td>
       <td>{priceFormater(summary.grandTotal)}</td>
