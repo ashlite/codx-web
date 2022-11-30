@@ -44,6 +44,8 @@ function createModal(){
     addSaleModifierType:() => set({title: 'Add Sale Modifier Type', type: 'formSaleModType', size:'sm'}),
     updateSaleModifierType:(modTypeObj) => set({title: 'Update Sale Modifier Type', type: 'formSaleModType', size:'sm', data:modTypeObj}),
     cancelSaleHeader:(headerId) => set({title: `Cancel Sale ${headerId}`, type: 'cancelHeaderConfirmation', size:'sm', data:headerId}),
+    confirmSaleCash:(headerId) => set({title: `Confirm Cash Payment ${headerId}`, type: 'confirmPayment', size:'sm', data:{mode:'cash', headerId}}),
+    confirmSaleOnline:(headerId) => set({title: `Confirm Online Payment ${headerId}`, type: 'confirmPayment', size:'sm', data:{mode:'online', headerId}}),
   }
 }
 

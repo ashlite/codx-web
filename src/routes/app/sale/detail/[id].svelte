@@ -103,8 +103,8 @@
   </div>
   <div class="flex flex-row-reverse gap-4 mt-4 pb-8">
     {#if data.status == 'PENDING'}
-      <BtnSuper text="Proceed to Cash Payment" color="success" icon="uil:bill"/>
-      <BtnSuper text="Proceed to Online Payment" color="info" icon="uil:bill"/>
+      <BtnSuper text="Proceed to Cash Payment" color="success" icon="uil:bill" on:click={() => globalModal.confirmSaleCash(data.id)}/>
+      <BtnSuper text="Proceed to Online Payment" color="info" icon="uil:bill" on:click={() => globalModal.confirmSaleOnline(data.id)}/>
       <BtnSuper text="Cancel this Transaction" color="error" icon="uil:file-contract-dollar" on:click={() => globalModal.cancelSaleHeader(data.id)}/>
     {/if}
   </div>

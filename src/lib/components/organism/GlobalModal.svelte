@@ -18,6 +18,7 @@
   import FormSaleModifier from '$lib/components/template/_globalmodal/FormSaleModifier.svelte'
   import FormSaleModType from '$lib/components/template/_globalmodal/FormSaleModType.svelte'
   import CancelSaleHeader from '$lib/components/template/_globalmodal/CancelSaleHeader.svelte'
+  import ConfirmPayment from '$lib/components/template/_globalmodal/ConfirmPayment.svelte'
   import { globalModal } from '$lib/helper/store'
   import { shortcut } from '$lib/helper/shortcut'
 </script>
@@ -70,6 +71,8 @@
         <FormSaleModType data={$globalModal.data}/>
       {:else if $globalModal.type == 'cancelHeaderConfirmation'}
         <CancelSaleHeader data={$globalModal.data}/>
+      {:else if $globalModal.type == 'confirmPayment'}
+        <ConfirmPayment data={$globalModal.data} />
       {/if}
     </div>
   </div>

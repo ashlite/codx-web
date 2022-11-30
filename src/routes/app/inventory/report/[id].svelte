@@ -36,15 +36,23 @@
       TRF-{data.id}
     {/if}
   </div>
-  {#if data.origin_venue}
-    <div class="text-2xl font-bold text-primary">
-      Origin: <span class="font-normal text-base-content">{data.origin_venue.name}</span>
+  {#if data.movement_type == 3}
+    <div class="text-2xl font-bold text-primary">Transfer items from origin
+      <span class="font-normal text-base-content">{data.origin_venue.name}</span>
+      to
+      <span class="font-normal text-base-content">{data.target_venue.name}</span>
     </div>
-  {/if}
-  {#if data.target_venue}
-    <div class="text-2xl font-bold text-primary">
-      Target: <span class="font-normal text-base-content">{data.target_venue.name}</span>
-    </div>
+  {:else}
+    {#if data.origin_venue}
+      <div class="text-2xl font-bold text-primary">
+        Origin: <span class="font-normal text-base-content">{data.origin_venue.name}</span>
+      </div>
+    {/if}
+    {#if data.target_venue}
+      <div class="text-2xl font-bold text-primary">
+        Target: <span class="font-normal text-base-content">{data.target_venue.name}</span>
+      </div>
+    {/if}
   {/if}
 </div>
 {#if data.id != undefined}
@@ -80,25 +88,48 @@
     <tbody>
       {#if data.list_movement != undefined}
         {#each data.list_movement as movement}
-          <tr>
-            <td>
-              <figure class="h-24">
-                <img src={movement.product.collection.cover} alt="product" class="object-contain"/>
-              </figure>
-            </td>
-            <td>
-              <div class="flex flex-col">
-                <div class="font-bold">{movement.product.collection.name}</div>
-                <div class="text-info">{movement.product.name}</div>
-              </div>
-            </td>
-            <td>
-              {movement.qty}
-            </td>
-            <td>
-              <CellAction remove on:remove={() => removeMovement(movement.product.id)} />
-            </td>
-          </tr>
+          {#if data.movement_type != 3}
+            <tr>
+              <td>
+                <figure class="h-24">
+                  <img src={movement.product.collection.cover} alt="product" class="object-contain"/>
+                </figure>
+              </td>
+              <td>
+                <div class="flex flex-col">
+                  <div class="font-bold">{movement.product.collection.name}</div>
+                  <div class="text-info">{movement.product.name}</div>
+                </div>
+              </td>
+              <td>
+                {movement.qty}
+              </td>
+              <td>
+                <CellAction remove on:remove={() => removeMovement(movement.product.id)} />
+              </td>
+            </tr>
+          {:else if movement.qty > 0}
+            <tr>
+              <td>
+                <figure class="h-24">
+                  <img src={movement.product.collection.cover} alt="product" class="object-contain"/>
+                </figure>
+              </td>
+              <td>
+                <div class="flex flex-col">
+                  <div class="font-bold">{movement.product.collection.name}</div>
+                  <div class="text-info">{movement.product.name}</div>
+                </div>
+              </td>
+              <td>
+                {movement.qty}
+              </td>
+              <td>
+                <CellAction remove on:remove={() => removeMovement(movement.product.id)} />
+              </td>
+            </tr>
+          {/if}
+          
         {/each}
       {/if}
     </tbody>
