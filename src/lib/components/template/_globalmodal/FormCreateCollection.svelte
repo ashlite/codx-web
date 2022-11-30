@@ -7,13 +7,11 @@
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
   import TextInput from '$lib/components/molecule/TextInput.svelte'
   import SearchBarBggId from '$lib/components/molecule/SearchBarBggId.svelte'
-	// import { priceFormater } from '$lib/helper/tools';
   export let data = {}
   
   let listCollectionCategory = get('/category')
   let dataCollection = {category: 'Core Game', bgg_id: 0}
   let dataProduct = {name:'retail', track_inventory:true}
-  // let dataProductPurchase = {is_new: true}
   let parentGame = []
   let childrenGame = []
   let searchQuery = ''
@@ -21,7 +19,6 @@
   let startSearching = false
   let inputProduct = data.headerId > 0 ? true : false
   let inputExpansion = false
-  // let firstInput
 
   // $: forexToIdr = dataProductPurchase.forex_buy * data.idrBuyRate
 
@@ -36,8 +33,8 @@
     let response = await BggSingleItem(bggId)
     dataCollection = {
       bgg_id: bggId,
-      ...response.boardgame,
-      bgg_group: response.bggGroup
+      ...response.data,
+      bgg_group: response.group
     }
   }
   

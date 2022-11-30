@@ -16,6 +16,19 @@ export async function BggSingleItem(bggId){
   if (bggObject === undefined){
     toastAlert.error('Failed to get BGG data')
     return false
+  }else if(bggObject.type == 'boardgameaccessory') {
+    return {
+      is_game: false,
+      data: {
+        name: decodeXML(decodeXML(Array.isArray(bggObject.name) ? bggObject.name[0].value : bggObject.name.value)),
+        released: bggObject.yearpublished.value,
+        category: 'Game Aksesori',
+        cover: bggObject.image,
+        thumb_cover: bggObject.thumbnail,
+        description: decodeXML(decodeXML(bggObject.description)),
+      },
+      group: []
+    }
   } else {
     const arrayBggStat = bggObject.link
     arrayBggStat.forEach(item => {
@@ -29,7 +42,8 @@ export async function BggSingleItem(bggId){
     })
   
     return {
-      boardgame:{
+      is_game: true,
+      data:{
         name: decodeXML(decodeXML(Array.isArray(bggObject.name) ? bggObject.name[0].value : bggObject.name.value)),
         released: bggObject.yearpublished.value,
         category: (bggObject.type == 'boardgame' ? 'Core Game' : 'Expansion'),
@@ -43,7 +57,7 @@ export async function BggSingleItem(bggId){
         thumb_cover: bggObject.thumbnail,
         description: decodeXML(decodeXML(bggObject.description)),
       },
-      bggGroup: fixArray
+      group: fixArray
     }
   }
 }
