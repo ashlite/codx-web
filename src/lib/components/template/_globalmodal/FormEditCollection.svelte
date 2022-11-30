@@ -25,8 +25,8 @@
     dataCollection = {
       ...dataCollection,
       bgg_id: bggId,
-      ...response.boardgame,
-      bgg_group: response.bggGroup
+      ...response.data,
+      bgg_group: response.group
     }
   }
 
