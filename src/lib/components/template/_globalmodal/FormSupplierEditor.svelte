@@ -2,7 +2,7 @@
   import { get, post, patch} from '$lib/helper/api'
   import { globalModal, toastAlert, refreshPage } from '$lib/helper/store'
   import { onMount } from 'svelte'
-  import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte';
+  import ModalSubmit from '$lib/components/molecule/ModalSubmit.svelte'
   export let data
   
   let dataSupplier = {}

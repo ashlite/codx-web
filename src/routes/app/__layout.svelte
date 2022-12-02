@@ -89,6 +89,7 @@
             <li><a sveltekit:prefetch href='/app/inventory' class={$page.url.pathname.includes('/inventory') ? "active" : ""}>Inventory</a></li>
           {/if}
           <li><a sveltekit:prefetch href='/app/sale' class={$page.url.pathname.includes('/sale') ? "active" : ""}>Web Sale</a></li>
+          <li><a sveltekit:prefetch href='/app/library/dashboard' class={$page.url.pathname.includes('/library') ? "active" : ""}>Library</a></li>
           {#if access.cashflow.root || level >= 20}
             <li><a sveltekit:prefetch href='/app/cashflow' class={$page.url.pathname.includes('/cashflow') ? "active" : ""}>Cashflow</a></li>
           {/if}

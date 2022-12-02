@@ -46,6 +46,8 @@ function createModal(){
     cancelSaleHeader:(headerId) => set({title: `Cancel Sale ${headerId}`, type: 'cancelHeaderConfirmation', size:'sm', data:headerId}),
     confirmSaleCash:(headerId) => set({title: `Confirm Cash Payment ${headerId}`, type: 'confirmPayment', size:'sm', data:{mode:'cash', headerId}}),
     confirmSaleOnline:(headerId) => set({title: `Confirm Online Payment ${headerId}`, type: 'confirmPayment', size:'sm', data:{mode:'online', headerId}}),
+    createPriceGroup:() => set({title: `Add Price Group`, type: 'priceGroupEditor', size:'lg'}),
+    editPriceGroup:(priceId) => set({title: `Update Price Group`, type: 'priceGroupEditor', size:'lg', data: priceId}),
   }
 }
 

@@ -1,9 +1,9 @@
 <script context="module">
   export async function load({ url }) {
-    if (url.pathname === '/app/inventory'){
+    if (url.pathname === '/app/library'){
       return {
         status: 307,
-        redirect: '/app/inventory/purchase'
+        redirect: '/app/library/dashboard'
       }
     } else {
       return {}
@@ -12,8 +12,6 @@
 </script>
 
 <script>
-  import { page } from '$app/stores'
-  import { shortcut } from '$lib/helper/shortcut'
   import TopNavbar from '$lib/components/molecule/TopNavbar.svelte'
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
@@ -22,18 +20,23 @@
     {
       shortcut: 'Digit1',
       kbd: 1,
-      href: '/app/inventory/purchase',
-      name: 'Purchase'
+      href: '/app/library/dashboard',
+      name: 'Dashboard'
     },{
       shortcut: 'Digit2',
       kbd: 2,
-      href: '/app/inventory/report',
-      name: 'Report'
+      href: '/app/library/history',
+      name: 'History'
     },{
       shortcut: 'Digit3',
       kbd: 3,
-      href: `/app/inventory/movement`,
-      name: 'Movement'
+      href: `/app/library/pricegroup`,
+      name: 'Price Group'
+    },{
+      shortcut: 'Digit4',
+      kbd: 4,
+      href: `/app/library/card`,
+      name: 'Card Admin'
     },
   ]
 

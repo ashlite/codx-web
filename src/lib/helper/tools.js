@@ -25,3 +25,26 @@ export function dateFormater(date, settings='date'){
   else if (settings == 'monthly') return new Intl.DateTimeFormat('id-ID',{month: 'long', year:'numeric'}).format(formatedDate)
   else if (settings == 'month') return new Intl.DateTimeFormat('id-ID',{month: 'long'}).format(formatedDate)
 }
+
+export function durationFormater(stime) {
+  let resultString = ''
+  let tempTime = stime
+
+  if (tempTime > 3600) {
+    const totalHour = Math.floor(tempTime/3600)
+    tempTime = tempTime % 3600
+    resultString += `${totalHour} jam `
+  }
+
+  if (tempTime > 60) {
+    const totalMinute = Math.floor(tempTime/60)
+    tempTime = tempTime % 60
+    resultString += `${totalMinute} menit `
+  }
+
+  if (tempTime != 0) {
+    resultString +=`${tempTime} detik`
+  }
+
+  return resultString
+}
