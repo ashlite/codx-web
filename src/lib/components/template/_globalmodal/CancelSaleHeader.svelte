@@ -12,7 +12,7 @@
 
   async function handleSubmit() {
     if (data > 0) {
-      await del(`/sale/header/${data}`, {
+      await post(`/sale/cancel/${data}`, {
         notes: cancelNote
       })
     } else {
