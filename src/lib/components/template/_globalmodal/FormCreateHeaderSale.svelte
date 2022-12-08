@@ -49,6 +49,7 @@
     if (response){
       refreshPage.set(true)
       globalModal.close()
+      window.open(`/app/sale/detail/${response.id}`)
     }
   }
 </script>

@@ -53,6 +53,7 @@
           <th>ID</th>
           <th>Customer</th>
           <th>Metadata</th>
+          <th>Notes</th>
           <th>Venue</th>
         </tr>
       </thead>
@@ -77,6 +78,9 @@
               <div class="text-warning">Status: {header.status}</div>
             </td>
             <td>
+              <div>{header.notes}</div>
+            </td>
+            <td>
               <div class="font-bold">{header.venue.name}</div>
             </td>
           </tr>
@@ -87,6 +91,7 @@
           <th>ID</th>
           <th>Customer</th>
           <th>Metadata</th>
+          <th>Notes</th>
           <th>Venue</th>
         </tr>
       </tfoot>
