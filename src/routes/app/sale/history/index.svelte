@@ -8,6 +8,7 @@
 
   let listHeader = []
   let filterList = 0
+  let dateFilter = new Date()
 
   $: $refreshPage && RefreshData()
 
@@ -16,7 +17,14 @@
   })
 
   async function RefreshData() {    
-    const result = await get(`/sale/header`)
+    const dateMin = new Date(dateFilter)
+    dateMin.setDate(1)
+    dateMin.setHours(0,0,0,0)
+    const dateMax = new Date(dateFilter)
+    dateMax.setMonth(dateMax.getMonth() + 1)
+    dateMax.setDate(0)
+    dateMax.setHours(23,59,59,999)
+    const result = await get(`/sale/header?finish=2&datemin=${dateFormater(dateMin, 'isoDateTime')}&datemax=${dateFormater(dateMax, 'isoDateTime')}`)
     switch (filterList) {
       case 0:
         listHeader = result
@@ -43,6 +51,11 @@
   function openSale(id) {
     window.open(`/app/sale/detail/${id}`, '_blank')
   }
+
+  function updateDateFilter(newDate) {
+    dateFilter = newDate
+    refreshPage.set(true)
+  }
 </script>
 
 <div class="w-full min-h-screen pb-4 px-4">
@@ -55,7 +68,7 @@
       <option value={4}>Cancel</option>
       <option value={5}>Trouble</option>
     </select>
-    <MonthPicker />
+    <MonthPicker on:monthSubmit={e => updateDateFilter(e.detail)}/>
   </div>
 
   <div class="overflow-x-auto overflow-y-clip">
@@ -65,6 +78,7 @@
           <th>ID</th>
           <th>Customer</th>
           <th>Metadata</th>
+          <th>Notes</th>
           <th>Venue</th>
         </tr>
       </thead>
@@ -89,6 +103,9 @@
               <div class="text-warning">Status: {header.status}</div>
             </td>
             <td>
+              <div>{header.notes}</div>
+            </td>
+            <td>
               <div class="font-bold">{header.venue.name}</div>
             </td>
           </tr>
@@ -99,6 +116,7 @@
           <th>ID</th>
           <th>Customer</th>
           <th>Metadata</th>
+          <th>Notes</th>
           <th>Venue</th>
         </tr>
       </tfoot>
