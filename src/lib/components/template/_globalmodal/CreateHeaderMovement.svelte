@@ -25,6 +25,7 @@
     if (response) {
       globalModal.close()
       refreshPage.set(true)
+      window.open(`/app/inventory/report/${response.id}`, '_blank')
     }
   }
 </script>
