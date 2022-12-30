@@ -16,8 +16,9 @@
   export let square = false
   export let block = false
   export let href = undefined
+  export let textAlign = 'center'
 
-  let globalClass = `btn gap-2 btn-${size} btn-${color} ${full && 'w-full'} ${grow && 'grow'} ${outline && 'btn-outline'} ${square && 'btn-square'} ${block && 'btn-block'}`
+  let globalClass = `btn gap-2 btn-${size} btn-${color} ${full && 'w-full'} ${grow && 'grow'} ${outline && 'btn-outline'} ${square && 'btn-square'} ${block && 'btn-block'} text-${textAlign}`
 
   const shortcutSetting = { alt:true, shift:true, code:key }
 

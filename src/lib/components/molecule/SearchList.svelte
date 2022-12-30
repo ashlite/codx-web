@@ -44,7 +44,7 @@
   {#if resultList.length > 0}
     {#each resultList as item, index}
       <li class="bg-secondary">
-        <BtnSuper on:click={() => handleSelected(index)} text={`${item}`} color="secondary" />
+        <BtnSuper on:click={() => handleSelected(index)} text={`${item}`} color="secondary" textAlign='left' />
       </li>
     {/each}
   {/if}
