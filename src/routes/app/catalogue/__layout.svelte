@@ -30,6 +30,11 @@
     },{
       shortcut: 'Digit3',
       kbd: 3,
+      href: '/app/catalogue/insight',
+      name: 'Insight'
+    },{
+      shortcut: 'Digit4',
+      kbd: 4,
       href: '/app/catalogue/bgglibrary',
       name: 'BoardGameGeek'
     },
