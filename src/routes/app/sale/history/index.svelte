@@ -29,7 +29,7 @@
     dateMax.setMonth(dateMax.getMonth() + 1)
     dateMax.setDate(0)
     dateMax.setHours(23,59,59,999)
-    const result = await get(`/sale/header?finish=2&datemin=${dateFormater(dateMin, 'isoDateTime')}&datemax=${dateFormater(dateMax, 'isoDateTime')}&sort=${sortList}&take=${itemPerPage}&skip=${(currentPage - 1) * itemPerPage}`)
+    const result = await get(`/sale/header?finish=2&datemin=${dateFormater(dateMin, 'isoDateTime')}&datemax=${dateFormater(dateMax, 'isoDateTime')}&sort=${sortList}&limit=${itemPerPage}&skip=${(currentPage - 1) * itemPerPage}`)
     switch (filterList) {
       case 0:
         listHeader = result
