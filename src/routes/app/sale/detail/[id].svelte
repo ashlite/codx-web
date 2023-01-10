@@ -105,7 +105,7 @@
     {#if data.status == 'PENDING'}
       <BtnSuper text="Proceed to Cash Payment" color="success" icon="uil:bill" on:click={() => globalModal.confirmSaleCash(data.id)}/>
       <BtnSuper text="Proceed to Online Payment" color="info" icon="uil:bill" on:click={() => globalModal.confirmSaleOnline(data.id)}/>
-      <BtnSuper text="Cancel this Transaction" color="error" icon="uil:file-contract-dollar" on:click={() => globalModal.cancelSaleHeader(data.id)}/>
     {/if}
+    <BtnSuper text="Cancel this Transaction" color="error" icon="uil:file-contract-dollar" on:click={() => globalModal.cancelSaleHeader(data.id)}/>
   </div>
 {/await}

@@ -11,7 +11,7 @@ async function handleSelect(product) {
 }
 </script>
 
-<div class="mx-auto">
+<div class="mx-auto mb-4">
   <ProductPicker on:selected={e => handleSelect(e.detail)} />
 </div>
 
@@ -39,7 +39,7 @@ async function handleSelect(product) {
     <div class="text-secondary font-bold justify-self-end">Total Stock: </div>
     <div class="col-span-2">{item.product.total_stock}</div>
   </div>
-  <div class="text-lg text-accent">Stock Location</div>
+  <div class="text-lg text-accent font-bold">Stock Location</div>
   <div class="stats shadow">
     {#each item.stock as stock}
       <div class="stat">

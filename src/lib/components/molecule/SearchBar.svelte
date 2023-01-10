@@ -17,12 +17,12 @@
 </script>
 
 <div>
-  <form class="flex gap-2" on:submit|preventDefault={() => dispatchSearch()}>
+  <form class="flex justify-start gap-2" on:submit|preventDefault={() => dispatchSearch()}>
     {#if searchState}
-      <input type="text" class="input input-bordered w-full max-w-xs" disabled bind:value={searchQuery} />
-      <button type="submit" class="btn loading btn-disabled" />
+      <input type="text" class="input input-bordered w-4/5" disabled bind:value={searchQuery} />
+      <button type="submit" class="btn loading btn-disabled w-1/5" />
     {:else}
-      <div class="form-control w-full">
+      <div class="form-control w-4/5">
         <input type="text" placeholder="Search Bar" class="input input-bordered input-info w-full max-w-xs" bind:value={searchQuery} />
         {#if searchTotal != undefined}
           <label for="input" class="label">
@@ -30,7 +30,7 @@
           </label>
         {/if}
       </div>
-      <button type="submit" class="btn btn-info">
+      <button type="submit" class="btn btn-info w-1/5">
         <Icon icon="uil:search" width="30" height="30" />
       </button>
     {/if}

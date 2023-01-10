@@ -1,5 +1,6 @@
 <script>
-  import { get, patch } from '$lib/helper/api'
+  import { download, get, patch } from '$lib/helper/api'
+  import handleDownloadResponse from '$lib/helper/donwloadFile'
   import PaginationNav from '$lib/components/organism/PaginationNav.svelte'
   import { afterNavigate } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
@@ -7,11 +8,11 @@
   import EditableInput from '$lib/components/atom/EditableInput.svelte'
   import BadgePercentage from '$lib/components/atom/BadgePercentage.svelte'
   import BtnAddNew from '$lib/components/atom/BtnAddNew.svelte'
+  import BtnSuper from '$lib/components/atom/BtnSuper.svelte'
   import CellAction from '$lib/components/molecule/CellAction.svelte';
   import { marginCalc } from '$lib/helper/tools'
   import { globalModal, refreshPage, toastAlert } from '$lib/helper/store'
   import Icon from '@iconify/svelte'
-	import { list } from 'postcss';
 
   let listItem = []
   let totalItem = 0
@@ -117,18 +118,24 @@
     }
   }
 
+  async function downloadExcel(){
+    const response = await download(`/file/excel/down/1`)
+    handleDownloadResponse(response.data, 'List Product.xlsx')
+  }
+
 </script>
 
 <div class="flex justify-between items-center gap-4">
-  <div class="stat w-32">
+  <div class="stat w-1/5">
     <div class="stat-title">Total Products</div>
     <div class="stat-value text-primary">{totalItem}</div>
   </div>
-  <div class="w-80">
+  <div class="w-2/5">
     <SearchBar on:searchTrigger={event => searchProduct(event.detail.searchQuery)} searchState={searching} />
   </div>
-  <div class="w-60">
+  <div class="w-2/5 flex justify-end gap-4">
     <BtnAddNew text="Product" on:click={() => globalModal.editProduct({})} />
+    <BtnSuper color="accent" icon="uil:file-download-alt" on:click={() => downloadExcel()}/>
   </div>
 </div>
 <PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)} bigLimit/>
