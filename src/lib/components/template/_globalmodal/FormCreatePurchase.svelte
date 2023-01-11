@@ -79,6 +79,12 @@
         </label>
         <input id="purchase-note" type="text" class="input input-bordered w-full" bind:value={dataPurchase.purchase_notes}/>
       </div>
+      <div id="sell-rate" class="form-control w-full col-span-2">
+        <label class="label" for="sell-rate">
+          <span class="label-text">External Ref</span>
+        </label>
+        <input id="sell-rate" type="text" class="input input-bordered w-full" bind:value={dataPurchase.external_ref}/>
+      </div>
       <div id="forex-symbol" class="form-control w-full col-span-2">
         <label class="label" for="forex-symbol">
           <span class="label-text">Forex Symbol</span>
@@ -90,13 +96,13 @@
           {/each}
         </select>
       </div>
-      <div id="buy-rate" class="form-control w-full col-span-5">
+      <div id="buy-rate" class="form-control w-full col-span-4">
         <label class="label" for="buy-rate">
           <span class="label-text">Forex Rate for Buying Items</span>
         </label>
         <input id="buy-rate" type="number" class="input input-bordered w-full" bind:value={dataPurchase.idr_buy_rate}/>
       </div>
-      <div id="sell-rate" class="form-control w-full col-span-5">
+      <div id="sell-rate" class="form-control w-full col-span-4">
         <label class="label" for="sell-rate">
           <span class="label-text">Forex Rate for Selling Items</span>
         </label>
