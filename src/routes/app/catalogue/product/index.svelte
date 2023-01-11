@@ -118,11 +118,6 @@
     }
   }
 
-  async function downloadExcel(){
-    const response = await download(`/file/excel/down/1`)
-    handleDownloadResponse(response.data, 'List Product.xlsx')
-  }
-
 </script>
 
 <div class="flex justify-between items-center gap-4">
@@ -135,7 +130,7 @@
   </div>
   <div class="w-2/5 flex justify-end gap-4">
     <BtnAddNew text="Product" on:click={() => globalModal.editProduct({})} />
-    <BtnSuper color="accent" icon="uil:file-download-alt" on:click={() => downloadExcel()}/>
+    <BtnSuper color="accent" icon="uil:file-redo-alt" on:click={() => globalModal.excelEditor(1)}/>
   </div>
 </div>
 <PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)} bigLimit/>

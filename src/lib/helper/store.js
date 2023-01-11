@@ -48,6 +48,7 @@ function createModal(){
     confirmSaleOnline:(headerId) => set({title: `Confirm Online Payment ${headerId}`, type: 'confirmPayment', size:'sm', data:{mode:'online', headerId}}),
     createPriceGroup:() => set({title: `Add Price Group`, type: 'priceGroupEditor', size:'lg'}),
     editPriceGroup:(priceId) => set({title: `Update Price Group`, type: 'priceGroupEditor', size:'lg', data: priceId}),
+    excelEditor:(type) => set({title: `Excel Editor`, type: 'excelEditor', size:'md', data: type})
   }
 }
 
