@@ -6,6 +6,7 @@
   import { refreshPage } from '$lib/helper/store';
 	import { get } from "$lib/helper/api";
   import { dateFormater } from "$lib/helper/tools";
+	import BtnSuper from "$lib/components/atom/BtnSuper.svelte";
 
   const today = new Date()
   let selectedMonth = today.getMonth()
@@ -45,6 +46,15 @@
   function handleChangePage(pagination) {
     limit = pagination.itemPerPage
     skip = (pagination.currentPage - 1) * limit
+  }
+
+  function gotoHeaderMovement(id) {
+    window.open(`/app/inventory/report/${id}`, '_blank')
+  }
+
+  async function gotoHeaderSale(id) {
+    const header = await get(`/sale/headerfrombody/${id}`)
+    window.open(`/app/sale/detail/${header.id}`, '_blank')
   }
 </script>
 
@@ -88,11 +98,21 @@
             </td>
             <td>{dateFormater(data.move_at)}</td>
             <td>
-              {#if data.apply_movement}
-                <div class="badge badge-success font-bold">applied</div>
-              {:else}
-                <div class="badge badge-error font-bold">not applied</div>
-              {/if}
+              <div class="flex flex-row gap-4 items-center">
+                {#if data.apply_movement}
+                  <div class="badge badge-success font-bold">applied</div>
+                {:else}
+                  <div class="badge badge-error font-bold">not applied</div>
+                {/if}
+
+                {#if data.header_movement_id != undefined}
+                  <BtnSuper size="sm" icon="uil:external-link-alt" color="info" on:click={() => gotoHeaderMovement(data.header_movement_id)}/>
+                {:else if data.sale_id != undefined}
+                  <BtnSuper size="sm" icon="uil:external-link-alt" color="info" on:click={() => gotoHeaderSale(data.sale_id)}/>
+                {:else}
+                  No Source
+                {/if}
+              </div>
             </td>
           </tr>
         {/each}
