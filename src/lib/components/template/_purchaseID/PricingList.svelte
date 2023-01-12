@@ -30,7 +30,7 @@
     const requestBody = {
       forex_sell: newPrice
     }
-    await patch(`/purchase/items/${data.id}/${id}`, requestBody)
+    await patch(`/purchase/items/${data.id}/${id}?pricing=1`, requestBody)
     refreshPage.set(true)
   }
 
@@ -38,7 +38,7 @@
     const requestBody = {
       idr_sell_price: newPrice
     }
-    await patch(`/purchase/items/${data.id}/${id}`, requestBody)
+    await patch(`/purchase/items/${data.id}/${id}?pricing=1`, requestBody)
     refreshPage.set(true)
   }
 
