@@ -89,6 +89,7 @@
                 <div class="flex flex-col">
                   <p><span class="font-bold text-info">ID: </span>{purchase.id}</p>
                   <p><span class="font-bold text-info">Supplier: </span>{purchase.supplier.supplier_name}</p>
+                  <p><span class="font-bold text-info">External: </span>{purchase.external_ref}</p>
                 </div>
               </td>
               <td>
