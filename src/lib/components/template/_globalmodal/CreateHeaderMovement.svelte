@@ -3,7 +3,7 @@
   import NumberInput from '$lib/components/molecule/NumberInput.svelte'
   import TextArea from '$lib/components/molecule/TextArea.svelte';
   import { post, get, patch } from '$lib/helper/api'
-	import { globalModal, refreshPage } from '$lib/helper/store';
+	import { globalModal, refreshPage, toastAlert } from '$lib/helper/store';
 
   export let data = { header_purchase_id : 0 }
   let purchaseHeader = data.header_purchase_id
@@ -19,13 +19,20 @@
     if (purchaseHeader > 0) requestBody.header_purchase_id = purchaseHeader
     if (selectedType == 2 || selectedType == 3) requestBody.origin_venue_id = originVenue
     if (selectedType == 1 || selectedType == 3) requestBody.target_venue_id = targetVenue
-    let response
-    if (data.id) response = await patch(`/inventory/header/${data.id}`, requestBody) 
-    else response = await post(`/inventory/header/`, requestBody) 
-    if (response) {
-      globalModal.close()
-      refreshPage.set(true)
-      window.open(`/app/inventory/report/${response.id}`, '_blank')
+    try {
+      if (data.id) {
+        await patch(`/inventory/header/${data.id}`, requestBody)
+        globalModal.close()
+        refreshPage.set(true)
+      } else {
+        await post(`/inventory/header/`, requestBody)
+        globalModal.close()
+        refreshPage.set(true)
+        window.open(`/app/inventory/report/${response.id}`, '_blank')
+      }  
+    } catch (error) {
+      console.log(error)
+      toastAlert.error('Error when creating or update header purchase, please check your log.')
     }
   }
 </script>
