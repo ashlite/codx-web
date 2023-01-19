@@ -54,35 +54,39 @@
 
 </script>
 
-<div class="flex justify-between items-center gap-4">
-  <div class="stat w-32">
-    <div class="stat-title">Total Items</div>
-    <div class="stat-value text-primary">{totalItem}</div>
-  </div>
-  <div class="form-control w-30">
-    <label class="flex flex-col gap-2 label cursor-pointer">
-      <span class="stat-title">No Product Only</span> 
-      <input type="checkbox" class="toggle toggle-md" bind:checked={noProduct} />
-    </label>
-  </div>
-  <div class="w-96">
-    <SearchBar on:searchTrigger={e => searchGame(e.detail.searchQuery)} searchState={searching} />
-  </div>
-  <div class="w-60">
-    <BtnAddNew text='Collection' on:click={() => globalModal.collectionCreate()}/>
-  </div>
-</div>
-
-<PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)}/>
-
-<div class="grid grid-cols-2 gap-4 pb-8">
-  {#if searching}
-    <div class="mx-auto my-6 w-fit">
-      <RingLoader size="200" color="#FF3E00" unit="px" duration="2s"/>
+<div class="relative">
+  <div class="sticky top-16 bg-base-100 w-full h-40 z-20 mb-4">
+    <div class="flex flex-row justify-between items-center gap-4">
+      <div class="stat w-32">
+        <div class="stat-title">Total Items</div>
+        <div class="stat-value text-primary">{totalItem}</div>
+      </div>
+      <div class="form-control w-30">
+        <label class="flex flex-col gap-2 label cursor-pointer">
+          <span class="stat-title">No Product Only</span> 
+          <input type="checkbox" class="toggle toggle-md" bind:checked={noProduct} />
+        </label>
+      </div>
+      <div class="w-96">
+        <SearchBar on:searchTrigger={e => searchGame(e.detail.searchQuery)} searchState={searching} />
+      </div>
+      <div class="w-60">
+        <BtnAddNew text='Collection' on:click={() => globalModal.collectionCreate()}/>
+      </div>
     </div>
-  {:else}
-    {#each listItem as collection}
-      <CollectionCard data={collection} />
-    {/each}
-  {/if}
+    
+    <PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)}/>
+  </div>
+  
+  <div class="grid grid-cols-2 gap-4 pb-8 overflow-auto">
+    {#if searching}
+      <div class="mx-auto my-6 w-fit">
+        <RingLoader size="200" color="#FF3E00" unit="px" duration="2s"/>
+      </div>
+    {:else}
+      {#each listItem as collection}
+        <CollectionCard data={collection} />
+      {/each}
+    {/if}
+  </div>
 </div>
