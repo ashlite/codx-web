@@ -11,7 +11,7 @@
   {#if data.cover}
     <img src={data.cover} alt="Collection Cover" class="mx-auto object-contain object-center h-full" />
   {:else}
-    <img src="https://dummyimage.com/400x600/edb200/ffffff&text=NO+IMG" alt="No Img Fallback" class="object-contain object-center h-full" />
+    <img src="https://dummyimage.com/600x600/edb200/ffffff&text=NO+IMG" alt="No Img Fallback" class="object-contain object-center h-full" />
   {/if}
   </figure>
   <div class="col-span-3 pt-2 pr-4">

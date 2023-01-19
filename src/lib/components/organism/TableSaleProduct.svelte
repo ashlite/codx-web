@@ -48,8 +48,15 @@
     {#each listProduct as product}
       <tr>
         <td>
-          <div class="font-bold">{product.product.collection.name}</div>
-          <div class="text-info">{product.product.name}</div>
+          <div class="flex flex-row gap-2">
+            <div class="h-24 w-24">
+              <img class="object-contain" src={product.product_image ?? product.collection.cover ?? `https://dummyimage.com/600x600/edb200/ffffff&text=NO+IMG`} alt="gambar product" />
+            </div>
+            <div>
+              <div class="font-bold">{product.product.collection.name}</div>
+              <div class="text-info">{product.product.name}</div>
+            </div>
+          </div>
         </td>
         <td>
           {#if editable}
