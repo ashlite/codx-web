@@ -136,7 +136,7 @@
 <PaginationNav totalItems={totalItem} on:changePage={e => updatePage(e.detail)} bigLimit/>
 
 <div class="overflow-x-auto">
-  <table class="table table-compact w-full">
+  <table class="table w-full">
     <thead>
       <tr class="select-none"> 
         <th class="text-xl cursor-pointer hover:bg-secondary hover:text-secondary-content" on:click={() => updateSorting('name')}>
@@ -180,10 +180,15 @@
         {#each listItem as product}
           <tr>
             <td>
-              <div class="flex flex-col">
-                <div class="font-bold">{product.collection.name}</div>
-                <div class="text-info">{product.name}</div>
-                <div class="text-accent">SKU: {product.sku}</div>
+              <div class="flex flex-row gap-2">
+                <div class="w-16 h-16">
+                  <img class="object-contain" src={product.collection.cover} alt="gambar product" />
+                </div>
+                <div class="flex flex-col">
+                  <div class="font-bold">{product.collection.name}</div>
+                  <div class="text-info">{product.name}</div>
+                  <div class="text-accent">SKU: {product.sku}</div>
+                </div>
               </div>
             </td>
             <td class="text-center">
