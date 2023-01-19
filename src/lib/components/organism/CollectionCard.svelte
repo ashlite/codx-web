@@ -18,7 +18,9 @@
   <div class="col-span-3 pt-2 pr-4">
     <div class="flex flex-row justify-between gap-4 mt-2">
       <div class="">{data.category}</div>
-      <div class="text-primary">{data.released ?? 0}</div>
+      {#if (data.released ?? 0) > 0}
+        <div class="text-primary">{data.released}</div>
+      {/if}
       <div class="">
         Variant:
         {#if data.total_product > 0}
@@ -29,7 +31,7 @@
       </div>
     </div>
 
-    <h2 class="text-xl truncate">{data.name}</h2>
+    <h2 class="text-xl truncate text-start">{data.name}</h2>
     {#if data.category == 'Expansion' || data.category == 'Core Game' || data.category == 'Core & Expansion'}
       <div class="flex flex-row h-16 w-full mb-4">
         <div class="">
