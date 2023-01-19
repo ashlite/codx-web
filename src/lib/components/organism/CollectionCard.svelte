@@ -6,7 +6,8 @@
 
 </script>
 
-<div class="grid grid-cols-5 gap-4 bg-base-300 shadow-xl h-52 overflow-clip rounded-lg">
+<div class="tooltip z-10" data-tip={data.name}>
+  <div class="grid grid-cols-5 gap-4 bg-base-300 shadow-xl h-52 overflow-clip rounded-lg">
   <figure class="col-span-2 h-52">
   {#if data.cover}
     <img src={data.cover} alt="Collection Cover" class="mx-auto object-contain object-center h-full" />
@@ -15,17 +16,19 @@
   {/if}
   </figure>
   <div class="col-span-3 pt-2 pr-4">
-    <div class="flex flex-row gap-4 mt-2">
-      <div class="badge badge-secondary">{data.category}</div>
-      {#if data.released}
-        <div class="badge badge-primary">{data.released}</div>
-      {/if}
-      {#if data.total_product > 0}
-        <div class="badge badge-success">{data.total_product}</div>
-      {:else}
-        <div class="badge badge-error">0</div>
-      {/if}
+    <div class="flex flex-row justify-between gap-4 mt-2">
+      <div class="">{data.category}</div>
+      <div class="text-primary">{data.released ?? 0}</div>
+      <div class="">
+        Variant:
+        {#if data.total_product > 0}
+          <div class="badge badge-success">{data.total_product}</div>
+        {:else}
+          <div class="badge badge-error">0</div>
+        {/if}
+      </div>
     </div>
+
     <h2 class="text-xl truncate">{data.name}</h2>
     {#if data.category == 'Expansion' || data.category == 'Core Game' || data.category == 'Core & Expansion'}
       <div class="flex flex-row h-16 w-full mb-4">
@@ -72,6 +75,6 @@
       <BtnSuper color="error" icon="uil:trash-alt" on:click={() => globalModal.deleteConfirmation(data.id, data.name, 'collection')}/>
     </div>
   </div>
+  </div>
 </div>
-
 
