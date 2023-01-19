@@ -7,11 +7,11 @@
 </script>
 
 <div class="grid grid-cols-5 gap-4 bg-base-300 shadow-xl h-52 overflow-clip rounded-lg">
-  <figure class="col-span-2">
+  <figure class="col-span-2 h-52">
   {#if data.cover}
-    <img src={data.cover} alt="Collection Cover" class="object-contain" />
+    <img src={data.cover} alt="Collection Cover" class="mx-auto object-contain object-center h-full" />
   {:else}
-    <img src="https://dummyimage.com/400x600/edb200/ffffff&text=NO+IMG" alt="No Img Fallback" class="object-contain" />
+    <img src="https://dummyimage.com/400x600/edb200/ffffff&text=NO+IMG" alt="No Img Fallback" class="object-contain object-center h-full" />
   {/if}
   </figure>
   <div class="col-span-3 pt-2 pr-4">

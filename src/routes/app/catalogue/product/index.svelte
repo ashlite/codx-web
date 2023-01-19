@@ -182,7 +182,7 @@
             <td>
               <div class="flex flex-row gap-2">
                 <div class="w-16 h-16">
-                  <img class="object-contain" src={product.collection.cover} alt="gambar product" />
+                  <img class="object-contain" src={product.product_image ?? product.collection.cover ?? `https://dummyimage.com/400x600/edb200/ffffff&text=NO+IMG`} alt="gambar product" />
                 </div>
                 <div class="flex flex-col">
                   <div class="font-bold">{product.collection.name}</div>
