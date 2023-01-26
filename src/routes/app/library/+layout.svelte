@@ -1,15 +1,4 @@
-<script context="module">
-  export async function load({ url }) {
-    if (url.pathname === '/app/library'){
-      return {
-        status: 307,
-        redirect: '/app/library/dashboard'
-      }
-    } else {
-      return {}
-    }
-  }
-</script>
+
 
 <script>
   import TopNavbar from '$lib/components/molecule/TopNavbar.svelte'

@@ -1,15 +1,4 @@
-<script context="module">
-  export async function load({ url }) {
-    if (url.pathname === '/app/crm'){
-      return {
-        status: 307,
-        redirect: '/app/crm/customer'
-      }
-    } else {
-      return {}
-    }
-  }
-</script>
+
 
 <script>
 	import { goto } from '$app/navigation';

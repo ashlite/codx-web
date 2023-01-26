@@ -1,19 +1,4 @@
-<script context="module">
-	export function load({ session }) {
-		if (!session.user) {
-			return {
-				status: 307,
-				redirect: `/unauthorized`
-			}
-		}
-		return {
-      status: 200,
-      props:{
-        user: session.user
-      }
-    }
-	}
-</script>
+
 
 <script>
   export let user

@@ -1,15 +1,4 @@
-<script context="module">
-  export async function load({ url }) {
-    if (url.pathname === '/app/inventory'){
-      return {
-        status: 307,
-        redirect: '/app/inventory/purchase'
-      }
-    } else {
-      return {}
-    }
-  }
-</script>
+
 
 <script>
   import { page } from '$app/stores'
