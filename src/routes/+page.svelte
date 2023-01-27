@@ -1,23 +1,25 @@
 <script>
   import { onMount } from 'svelte'
-  import { session } from '$app/stores'
+  // import { session } from '$app/stores'
   import { goto } from '$app/navigation'
   import { RingLoader } from 'svelte-loading-spinners'
   import * as jose from 'jose'
+  export let data
+
   let gsiReady = false
   let mounted = false
   let loginProcess = false
 
   function gsiLoaded(){
     gsiReady = true
-    if (mounted && !session.user){
+    if (mounted && !data.user){
       displayGsi()
     }
   }
 
   onMount(() => {
     mounted = true
-    if (gsiReady && !session.user) {
+    if (gsiReady && !data.user) {
       displayGsi()
     }
   })
@@ -46,16 +48,16 @@
     let responseJson = await responseXdocToken.json()
     console.log(responseJson)
     if (responseXdocToken.status === 200){
-      if (responseJson.forwardBody.user_level > 0) {
-        localStorage.access = JSON.stringify(responseJson.forwardBody.access)
-        localStorage.level = responseJson.forwardBody.user_level
-        const claims = jose.decodeJwt(responseJson.forwardBody.access_token)
-        $session.user = {
-          name: claims.name,
-          email: claims.email,
-          avatar: claims.avatar,
-          level: claims.level,
-        }
+      if (responseJson.user_level > 0) {
+        localStorage.access = JSON.stringify(responseJson.access)
+        localStorage.level = responseJson.user_level
+        // const claims = jose.decodeJwt(responseJson.forwardBody.access_token)
+        // $session.user = {
+        //   name: claims.name,
+        //   email: claims.email,
+        //   avatar: claims.avatar,
+        //   level: claims.level,
+        // }
         goto('/app')
       } else {
         goto('/unauthorized')
@@ -77,11 +79,11 @@
       {:else}
         <h1 class="text-6xl font-bold">Codx Web</h1>
         <p class="py-6">Aplikasi codx internal, khusus untuk karyawan yang memiliki hak akses. Silahkan pilih user google yang mau anda gunakan untuk login.</p>
-        {#if $session.user}
+        {#if data.user}
           <button class="btn btn-secondary" on:click={() => goto('/app')}>Go to App</button>
         {:else}
           <div class="flex w-full justify-center">
-            <div id="googleButton" class="" />
+            <div id="googleButton" class="bg-transparent" />
           </div>
         {/if}
       {/if}

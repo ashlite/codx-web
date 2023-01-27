@@ -1,7 +1,7 @@
 
 
 <script>
-  export let user
+  export let data
   import { page } from '$app/stores'
   import ToastAlert from '$lib/components/organism/ToastAlert.svelte'
   import GlobalModal from '$lib/components/organism/GlobalModal.svelte'
@@ -11,6 +11,7 @@
 	import { onMount } from 'svelte';
   import Cookies from 'js-cookie'
   
+  const user = data.user
   let access = undefined
   let level = undefined
   onMount(() => {

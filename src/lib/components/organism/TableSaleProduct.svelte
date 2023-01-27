@@ -50,7 +50,7 @@
         <td>
           <div class="flex flex-row gap-2">
             <div class="h-24 w-24">
-              <img class="object-contain" src={product.product_image ?? product.collection.cover ?? `https://dummyimage.com/600x600/edb200/ffffff&text=NO+IMG`} alt="gambar product" />
+              <img class="object-contain" src={product.product.product_image ?? product.product.collection.cover ?? `https://dummyimage.com/600x600/edb200/ffffff&text=NO+IMG`} alt="gambar product" />
             </div>
             <div>
               <div class="font-bold">{product.product.collection.name}</div>

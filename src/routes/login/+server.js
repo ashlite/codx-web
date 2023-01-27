@@ -1,8 +1,8 @@
-export const get = async () => {
+export const GET = async () => {
   return new Response()
 }
 
-export const post = async ({ request }) => {
+export const POST = async ({ request, cookies }) => {
   const jsonData = await request.json()
   const resData = await fetch(`${import.meta.env.VITE_BACKEND}/idtokenauth?source=web`,{
     method: 'POST',
@@ -16,10 +16,8 @@ export const post = async ({ request }) => {
     }),
     withCredentials: true
   })
-  const cookieData = resData.headers.get('set-cookie')
-  const forwardBody = await resData.json()
-  const headersData = new Headers()
-  headersData.append('set-cookie', cookieData)
+  const bodyData = await resData.json()
+  cookies.set('codx_token', bodyData.access_token, {path: '/'})
 
-  return new Response(JSON.stringify(forwardBody), headersData)
+  return new Response(JSON.stringify(bodyData))
 }
