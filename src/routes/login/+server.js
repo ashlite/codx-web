@@ -1,14 +1,10 @@
-throw new Error("@migration task: Update +server.js (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
-
 export const get = async () => {
-  return{
-    status:200
-  }
+  return new Response()
 }
 
 export const post = async ({ request }) => {
   const jsonData = await request.json()
-  const response = await fetch(`${import.meta.env.VITE_BACKEND}/idtokenauth?source=web`,{
+  const resData = await fetch(`${import.meta.env.VITE_BACKEND}/idtokenauth?source=web`,{
     method: 'POST',
     mode: 'cors',
     headers:{
@@ -20,15 +16,10 @@ export const post = async ({ request }) => {
     }),
     withCredentials: true
   })
-  const cookieData = response.headers.get('set-cookie')
-  const forwardBody = await response.json()
+  const cookieData = resData.headers.get('set-cookie')
+  const forwardBody = await resData.json()
+  const headersData = new Headers()
+  headersData.append('set-cookie', cookieData)
 
-  return {
-    headers: {
-      'set-cookie': cookieData
-    },
-    body: {
-      forwardBody,
-    }
-  }
+  return new Response(JSON.stringify(forwardBody), headersData)
 }
